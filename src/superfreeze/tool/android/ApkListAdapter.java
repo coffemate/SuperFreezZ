@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -30,7 +31,7 @@ import java.util.concurrent.ThreadFactory;
 public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHolder> {
 	private ThreadFactory tFactory = new ThreadFactory() {
 		@Override
-		public Thread newThread(Runnable r) {
+		public Thread newThread(@NonNull Runnable r) {
 			Thread t = new Thread(r);
 			t.setDaemon(true);
 			return t;
@@ -42,17 +43,17 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 	private ExecutorService        executorServiceNames = Executors.newFixedThreadPool(3, tFactory);
 	private ExecutorService        executorServiceIcons = Executors.newFixedThreadPool(3, tFactory);
 	private Handler                handler              = new Handler();
-	public       MainActivity   mActivity;
-	public final PackageManager packageManager;
+	private MainActivity           mActivity;
+	private final PackageManager   packageManager;
 
-	int names_to_load = 0;
+	private int names_to_load = 0;
 
 	private Map<String, String>   cache_appName = Collections.synchronizedMap(new LinkedHashMap<String, String>(10, 1.5f, true));
 	private Map<String, Drawable> cache_appIcon = Collections.synchronizedMap(new LinkedHashMap<String, Drawable>(10, 1.5f, true));
 
 	private String search_pattern;
 
-	public ApkListAdapter(MainActivity activity) {
+	ApkListAdapter(MainActivity activity) {
 		this.packageManager = activity.getPackageManager();
 		mActivity = activity;
 	}
@@ -60,7 +61,7 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 	class AppNameLoader implements Runnable {
 		private PackageInfo package_info;
 
-		public AppNameLoader(PackageInfo info) {
+		AppNameLoader(PackageInfo info) {
 			package_info = info;
 		}
 
@@ -84,7 +85,7 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 		private ViewHolder  viewHolder;
 		private PackageInfo package_info;
 
-		public GuiLoader(ViewHolder h, PackageInfo info) {
+		GuiLoader(ViewHolder h, PackageInfo info) {
 			viewHolder = h;
 			package_info = info;
 		}
@@ -129,7 +130,7 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 		public  ImageView      imgIcon;
 		private Context        context;
 
-		public ViewHolder(View v, ApkListAdapter adapter, Context context) {
+		ViewHolder(View v, ApkListAdapter adapter, Context context) {
 			super(v);
 			this.adapter = adapter;
 			txtPackageName = (TextView)v.findViewById(R.id.txtPackageName);
@@ -152,7 +153,7 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 			setAndHighlight(txtAppName, name, highlight);
 		}
 
-		public void setPackageName(String name, String highlight) {
+		void setPackageName(String name, String highlight) {
 			setAndHighlight(txtPackageName, name, highlight);
 		}
 
@@ -215,6 +216,10 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 		this.notifyDataSetChanged();
 	}
 
+
+	/**
+	 * Filters the apps list by the search pattern the user typed in.
+	 */
 	private void filterListByPattern() {
 		list.clear();
 		for (PackageInfo info : list_original) {
