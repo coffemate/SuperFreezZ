@@ -99,35 +99,6 @@ public class MainActivity extends AppCompatActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	public void doExctract(final PackageInfo info) {
-		if (!permissionResolver.resolve()) return;
-
-		final Extractor extractor = new Extractor();
-		try {
-			String dst = extractor.extractWithoutRoot(info);
-			Toast.makeText(this, String.format(this.getString(R.string.toast_extracted), dst), Toast.LENGTH_SHORT).show();
-			return;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		new AlertDialog.Builder(this)
-			.setTitle(R.string.alert_root_title)
-			.setMessage(R.string.alert_root_body)
-			.setPositiveButton(R.string.alert_root_yes, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					try {
-						String dst = extractor.extractWithRoot(info);
-						Toast.makeText(MainActivity.this, String.format(MainActivity.this.getString(R.string.toast_extracted), dst), Toast.LENGTH_SHORT).show();
-					} catch (Exception e) {
-						e.printStackTrace();
-						Toast.makeText(MainActivity.this, R.string.toast_failed, Toast.LENGTH_SHORT).show();
-					}
-				}
-			}).setNegativeButton(R.string.alert_root_no, null)
-			.show();
-	}
-
 	class Loader extends AsyncTask<Void, PackageInfo, Void> {
 		ProgressDialog dialog;
 		MainActivity   mainActivity;

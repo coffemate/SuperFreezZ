@@ -1,10 +1,14 @@
 package axp.tool.apkextractor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -124,20 +128,25 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 		private TextView       txtPackageName;
 		private TextView       txtAppName;
 		public  ImageView      imgIcon;
+		private Context        context;
 
-		public ViewHolder(View v, ApkListAdapter adapter) {
+		public ViewHolder(View v, ApkListAdapter adapter, Context context) {
 			super(v);
 			this.adapter = adapter;
 			txtPackageName = (TextView)v.findViewById(R.id.txtPackageName);
 			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);
 			txtAppName = (TextView)v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
+			this.context = context;
 		}
 
 		@Override
 		public void onClick(View v) {
 			PackageInfo info = adapter.getItem(getAdapterPosition());
-			adapter.mActivity.doExctract(info);
+			Intent intent = new Intent();
+			intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+			intent.setData(Uri.fromParts("package", info.packageName, null));
+			context.startActivity(intent);
 		}
 
 		public void setAppName(String name, String highlight) {
@@ -164,7 +173,10 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-		return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false), this);
+		return new ViewHolder(
+				LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false),
+				this,
+				viewGroup.getContext());
 	}
 
 	@Override
