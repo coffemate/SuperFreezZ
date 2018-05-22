@@ -125,7 +125,6 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 
 	static class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 		private ApkListAdapter adapter;
-		private TextView       txtPackageName;
 		private TextView       txtAppName;
 		public  ImageView      imgIcon;
 		private Context        context;
@@ -133,7 +132,6 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 		ViewHolder(View v, ApkListAdapter adapter, Context context) {
 			super(v);
 			this.adapter = adapter;
-			txtPackageName = (TextView)v.findViewById(R.id.txtPackageName);
 			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);
 			txtAppName = (TextView)v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
@@ -151,10 +149,6 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 
 		public void setAppName(String name, String highlight) {
 			setAndHighlight(txtAppName, name, highlight);
-		}
-
-		void setPackageName(String name, String highlight) {
-			setAndHighlight(txtPackageName, name, highlight);
 		}
 
 		private void setAndHighlight(TextView view, String value, String pattern) {
@@ -182,7 +176,6 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int i) {
 		PackageInfo item = list.get(i);
-		holder.setPackageName(item.packageName, search_pattern);
 		if (cache_appIcon.containsKey(item.packageName) && cache_appName.containsKey(item.packageName)) {
 			holder.setAppName(cache_appName.get(item.packageName), search_pattern);
 			holder.imgIcon.setImageDrawable(cache_appIcon.get(item.packageName));
