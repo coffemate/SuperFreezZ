@@ -1,4 +1,4 @@
-package axp.tool.apkextractor;
+package superfreeze.tool.android;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

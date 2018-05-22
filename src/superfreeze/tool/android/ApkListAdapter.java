@@ -1,4 +1,4 @@
-package axp.tool.apkextractor;
+package superfreeze.tool.android;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
