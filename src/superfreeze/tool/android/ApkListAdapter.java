@@ -220,11 +220,9 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 
 			if (search_pattern == null || search_pattern.isEmpty()) {
 				add = true;// empty search pattern: add everything
-			}
-			if (info.packageName.toLowerCase().contains(search_pattern)) {
+			} else if (info.packageName.contains(search_pattern)) {
 				add = true;// search in package name
-			}
-			if (cache_appName.containsKey(info.packageName) && cache_appName.get(info.packageName).toLowerCase().contains(search_pattern)) {
+			} else if (cache_appName.containsKey(info.packageName) && cache_appName.get(info.packageName).toLowerCase().contains(search_pattern)) {
 				add = true;// search in application name
 			}
 
