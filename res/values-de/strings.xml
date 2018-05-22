@@ -9,5 +9,6 @@
 	<string name="alert_perm_title">Berechtigung benötigt</string>
 	<string name="alert_perm_body">Um eine APK-Datei zu erstellen, muss die App die \"Speicher\" Berechtigung haben.\nBitte öffne die App-Einstellungen und erteile die \"Speicher\"-Berechtigung.</string>
 	<string name="alert_perm_btn">Einstellungen öffnen</string>
+	<string name="share_exception">Ein Fehler ist aufgetreten. Infos teilen über...</string>
 
 </resources>

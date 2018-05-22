@@ -10,5 +10,6 @@
 	<string name="alert_perm_title">Permission required</string>
 	<string name="alert_perm_body">In order to write apk file application must be granted with \"Storage\" permission.\nPlease, open app\'s settings and grant \"Storage\" permission to it.</string>
 	<string name="alert_perm_btn">Open settings</string>
+	<string name="share_exception">An exception occured. Share infos using...</string>
 
 </resources>
