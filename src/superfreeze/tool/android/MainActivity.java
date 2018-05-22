@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -122,7 +123,11 @@ public class MainActivity extends AppCompatActivity {
 		@Override
 		protected void onProgressUpdate(PackageInfo... values) {
 			super.onProgressUpdate(values);
-			mainActivity.addItem(values[0]);
+
+			//Add the package only if it is NOT a system app
+			if ((values[0].applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+				mainActivity.addItem(values[0]);
+			}
 		}
 
 		@Override
