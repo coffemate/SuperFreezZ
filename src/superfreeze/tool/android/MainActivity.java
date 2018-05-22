@@ -1,5 +1,6 @@
 package superfreeze.tool.android;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,12 +72,16 @@ public class MainActivity extends AppCompatActivity {
 
 		SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
 		final SearchView searchView = (SearchView)MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+		assert searchManager != null;
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
+			@SuppressLint("RestrictedApi")//I guess that this is necessary because of a bug: in the build tools
 			public void onFocusChange(View view, boolean queryTextFocused) {
 				if (!queryTextFocused && searchView.getQuery().length() < 1) {
-					getSupportActionBar().collapseActionView();
+					ActionBar supportActionBar = getSupportActionBar();
+					assert supportActionBar != null;
+					supportActionBar.collapseActionView();
 				}
 			}
 		});
@@ -99,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 		ProgressDialog dialog;
 		MainActivity   mainActivity;
 
-		public Loader(MainActivity a) {
+		Loader(MainActivity a) {
 			dialog = ProgressDialog.show(a, getString(R.string.dlg_loading_title), getString(R.string.dlg_loading_body));
 			mainActivity = a;
 		}
