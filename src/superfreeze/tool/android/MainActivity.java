@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-	private ApkListAdapter apkListAdapter;
+	private AppsListAdapter appsListAdapter;
 
 	private ProgressBar progressBar;
 	private PermissionResolver permissionResolver;
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
 		RecyclerView listView = (RecyclerView)findViewById(android.R.id.list);
 
-		apkListAdapter = new ApkListAdapter(this);
+		appsListAdapter = new AppsListAdapter(this);
 		listView.setLayoutManager(new LinearLayoutManager(this));
-		listView.setAdapter(apkListAdapter);
+		listView.setAdapter(appsListAdapter);
 
 		progressBar = (ProgressBar) findViewById(android.R.id.progress);
 		progressBar.setVisibility(View.VISIBLE);
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void addItem(PackageInfo item) {
-		apkListAdapter.addItem(item);
+		appsListAdapter.addItem(item);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public boolean onQueryTextChange(String s) {
-				apkListAdapter.setSearchPattern(s);
+				appsListAdapter.setSearchPattern(s);
 				return true;
 			}
 		});

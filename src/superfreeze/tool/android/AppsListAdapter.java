@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHolder> {
+public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHolder> {
 	private ThreadFactory tFactory = new ThreadFactory() {
 		@Override
 		public Thread newThread(@NonNull Runnable r) {
@@ -53,7 +53,7 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 
 	private String search_pattern;
 
-	ApkListAdapter(MainActivity activity) {
+	AppsListAdapter(MainActivity activity) {
 		this.packageManager = activity.getPackageManager();
 		mActivity = activity;
 	}
@@ -124,12 +124,12 @@ public class ApkListAdapter extends RecyclerView.Adapter<ApkListAdapter.ViewHold
 	}
 
 	static class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-		private ApkListAdapter adapter;
+		private AppsListAdapter adapter;
 		private TextView       txtAppName;
 		public  ImageView      imgIcon;
 		private Context        context;
 
-		ViewHolder(View v, ApkListAdapter adapter, Context context) {
+		ViewHolder(View v, AppsListAdapter adapter, Context context) {
 			super(v);
 			this.adapter = adapter;
 			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);

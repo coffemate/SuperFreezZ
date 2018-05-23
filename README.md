@@ -1,20 +1,9 @@
-# apkExtractor
+#SuperFreeze
 
-apkExtractor is an app for extracting apk's from your android device.
-<br>
-<a href="https://f-droid.org/repository/browse/?fdid=axp.tool.apkextractor" target="_blank">
-  <img src="https://f-droid.org/badge/get-it-on.png" height="80"/>
-</a>
+It makes it possible to entirely stop all background activities of an app.
+Currently, the user has to force stop apps by hand, SuperFreeze only shows the app settings page.
 
-<img src=https://raw.githubusercontent.com/axxapy/apkExtractor/screenshots/screenshots/one.png width=182><img src=https://raw.githubusercontent.com/axxapy/apkExtractor/screenshots/screenshots/two.png width=182><img src=https://raw.githubusercontent.com/axxapy/apkExtractor/screenshots/screenshots/three.png width=182><img src=https://raw.githubusercontent.com/axxapy/apkExtractor/screenshots/screenshots/four.png width=182>
+##Features
 
-Features
---------
-
-* Extract free apps (no root needed)
-* Extract paid apps (with root)
+* Works without accessibility service as this slows down the device
 * Supports android >= 2.3.3 (api 10)
-
-License
--------
-MIT, see [LICENSE](https://raw.githubusercontent.com/axxapy/apkExtractor/master/LICENSE) file

@@ -1,2 +1,0 @@
-Extract APKs from your device, even if installed from the Google Play Store.
-Root access is required for paid apps.
