@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="superfreeze.tool.android"
-	android:versionCode="5"
-	android:versionName="1.4">
+	android:versionCode="001"
+	android:versionName="0.0.1-alpha">
 
 	<uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
