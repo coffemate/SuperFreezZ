@@ -1,6 +1,6 @@
 #SuperFreeze
 
-It makes it possible to entirely stop all background activities of an app.
+An android that makes it possible to entirely stop all background activities of an app.
 Currently, the user has to force stop apps by hand, SuperFreeze only shows the app settings page.
 
 ##Features
