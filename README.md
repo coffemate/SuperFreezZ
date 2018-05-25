@@ -1,7 +1,7 @@
 SuperFreeze
 ===========
 
-An android that makes it possible to entirely stop all background activities of an app.
+An android app that makes it possible to entirely stop all background activities of an app.
 Currently, the user has to force stop apps by hand, SuperFreeze only shows the app settings page.
 
 Greenify is another app that can do this, but it is not Open Source.
