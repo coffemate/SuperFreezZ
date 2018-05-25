@@ -67,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
 		appsListAdapter.addItem(item);
 	}
 
+    /**
+     * The method that is responsible for showing the search icon in the top right hand corner.
+     * @param menu The Menu to which the search icon is added.
+     * @return
+     */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
-			@SuppressLint("RestrictedApi")//I guess that this is necessary because of a bug: in the build tools
+			@SuppressLint("RestrictedApi")//I guess that this is necessary because of a bug in the build tools
 			public void onFocusChange(View view, boolean queryTextFocused) {
 				if (!queryTextFocused && searchView.getQuery().length() < 1) {
 					ActionBar supportActionBar = getSupportActionBar();

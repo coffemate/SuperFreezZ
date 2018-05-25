@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class is responsible for showing a dialog if the user denies a necessary permission.
+ */
 public class PermissionResolver {
 	private static final int REQUEST_CODE = 100500;
 

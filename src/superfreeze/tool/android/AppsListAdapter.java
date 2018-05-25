@@ -28,6 +28,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+/**
+ * This class is responsible for viewing the list of installed apps.
+ */
 public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHolder> {
 	private ThreadFactory tFactory = new ThreadFactory() {
 		@Override
@@ -138,6 +141,11 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 			this.context = context;
 		}
 
+		/**
+		 * This method defines what is done when a list item (that is, an app) is clicked.
+		 * In this case, the app settings page is shown.
+		 * @param v The clicked view.
+		 */
 		@Override
 		public void onClick(View v) {
 			PackageInfo info = adapter.getItem(getAdapterPosition());
