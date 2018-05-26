@@ -1,12 +1,10 @@
 package superfreeze.tool.android;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -143,16 +141,11 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		/**
 		 * This method defines what is done when a list item (that is, an app) is clicked.
-		 * In this case, the app settings page is shown.
 		 * @param v The clicked view.
 		 */
 		@Override
 		public void onClick(View v) {
-			PackageInfo info = adapter.getItem(getAdapterPosition());
-			Intent intent = new Intent();
-			intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-			intent.setData(Uri.fromParts("package", info.packageName, null));
-			context.startActivity(intent);
+			FreezerKt.freezeApp(adapter.getItem(getAdapterPosition()).packageName, context);
 		}
 
 		public void setAppName(String name, String highlight) {
