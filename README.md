@@ -8,8 +8,9 @@ Currently, the user has to force stop apps by hand, SuperFreeze only shows the a
 
 Greenify is another app that can do this, but it is not Open Source.
 
+Any contributions are welcome.
+
 Features
 --------
 
 * Works without accessibility service as this slows down the device
-* Supports android >= 2.3.3 (api 10)
