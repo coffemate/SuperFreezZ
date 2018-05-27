@@ -41,8 +41,16 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	};
 
+	/**
+	 * This list contains the apps that are shown to the user. If the user searches, this are not all user apps.
+	 */
 	private ArrayList<PackageInfo> list                 = new ArrayList<PackageInfo>();
+
+	/**
+	 * This list contains all user apps.
+	 */
 	private ArrayList<PackageInfo> list_original        = new ArrayList<PackageInfo>();
+
 	private ExecutorService        executorServiceNames = Executors.newFixedThreadPool(3, tFactory);
 	private ExecutorService        executorServiceIcons = Executors.newFixedThreadPool(3, tFactory);
 	private Handler                handler              = new Handler();
@@ -207,14 +215,15 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		names_to_load++;
 		executorServiceNames.submit(new AppNameLoader(item));
 		list_original.add(item);
-		filterListByPattern();
+		if (isMatchedBySearchPattern(item)) {
+			list.add(item);
+		}
 		notifyDataSetChanged();
 	}
 
 	public void setSearchPattern(String pattern) {
 		search_pattern = pattern.toLowerCase();
 		filterListByPattern();
-		this.notifyDataSetChanged();
 	}
 
 
@@ -224,17 +233,29 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	private void filterListByPattern() {
 		list.clear();
 		for (PackageInfo info : list_original) {
-			boolean add = false;
 
-			if (search_pattern == null || search_pattern.isEmpty()) {
-				add = true;// empty search pattern: add everything
-			} else if (info.packageName.contains(search_pattern)) {
-				add = true;// search in package name
-			} else if (cache_appName.containsKey(info.packageName) && cache_appName.get(info.packageName).toLowerCase().contains(search_pattern)) {
-				add = true;// search in application name
+			if (isMatchedBySearchPattern(info)){
+				list.add(info);
 			}
-
-			if (add) list.add(info);
 		}
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * Returns true if the the app name contains the search pattern.
+	 * @param info The PackageInfo describing the package.
+	 * @return Whether the the app name contains the search pattern.
+	 */
+	private boolean isMatchedBySearchPattern(PackageInfo info) {
+
+		if (search_pattern == null || search_pattern.isEmpty()) {
+			return true;// empty search pattern: Show all apps
+		} else if (info.packageName.contains(search_pattern)) {
+			return true;// search in package name
+		} else if (cache_appName.containsKey(info.packageName) && cache_appName.get(info.packageName).toLowerCase().contains(search_pattern)) {
+			return true;// search in application name
+		}
+
+		return false;
 	}
 }
