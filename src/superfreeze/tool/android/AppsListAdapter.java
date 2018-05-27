@@ -148,9 +148,16 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		public void onClick(View v) {
 			FreezerKt.freezeApp(getItem(getAdapterPosition()).packageName, context);
 
-			//Remove it from the list
-			list.remove(getAdapterPosition());
-			notifyDataSetChanged();
+			//Remove it from the list after a delay of 300ms
+			// (if it is removed faster, it will disappear while the list is still shown)
+			final Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					list.remove(getAdapterPosition());
+					notifyDataSetChanged();
+				}
+			}, 300);
 		}
 
 		public void setAppName(String name, String highlight) {
