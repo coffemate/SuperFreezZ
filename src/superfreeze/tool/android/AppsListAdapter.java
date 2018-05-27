@@ -127,15 +127,13 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	}
 
-	static class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-		private AppsListAdapter adapter;
+	class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 		private TextView       txtAppName;
 		public  ImageView      imgIcon;
 		private Context        context;
 
-		ViewHolder(View v, AppsListAdapter adapter, Context context) {
+		ViewHolder(View v, Context context) {
 			super(v);
-			this.adapter = adapter;
 			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);
 			txtAppName = (TextView)v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
@@ -148,11 +146,11 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		 */
 		@Override
 		public void onClick(View v) {
-			FreezerKt.freezeApp(adapter.getItem(getAdapterPosition()).packageName, context);
+			FreezerKt.freezeApp(getItem(getAdapterPosition()).packageName, context);
 
 			//Remove it from the list
-			adapter.list.remove(getAdapterPosition());
-			adapter.notifyDataSetChanged();
+			list.remove(getAdapterPosition());
+			notifyDataSetChanged();
 		}
 
 		public void setAppName(String name, String highlight) {
@@ -177,7 +175,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 		return new ViewHolder(
 				LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false),
-				this,
 				viewGroup.getContext());
 	}
 
