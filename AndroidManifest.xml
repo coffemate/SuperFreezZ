@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="superfreeze.tool.android"
-	android:versionCode="001"
-	android:versionName="0.0.1-alpha">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="superfreeze.tool.android"
+    android:versionCode="001"
+    android:versionName="0.0.1-alpha">
 
-	<application
-		android:name=".MyApplication"
-		android:allowBackup="true"
-		android:icon="@mipmap/ic_launcher"
-		android:label="@string/app_name"
-		android:theme="@style/AppTheme">
-		<activity
-			android:name=".MainActivity"
-			android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-			android:launchMode="singleTask"
-			android:theme="@style/AppTheme.NoActionBar"
-			android:label="@string/app_name">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
-			<intent-filter>
-				<action android:name="android.intent.action.SEARCH" />
-			</intent-filter>
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-			<meta-data
-				android:name="android.app.default_searchable"
-				android:value=".MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
-			<meta-data
-				android:name="android.app.searchable"
-				android:resource="@xml/searchable" />
-		</activity>
-	</application>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".MainActivity" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+    </application>
 </manifest>

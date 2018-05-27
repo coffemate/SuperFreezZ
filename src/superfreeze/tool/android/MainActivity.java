@@ -1,12 +1,9 @@
 package superfreeze.tool.android;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 	private AppsListAdapter appsListAdapter;
@@ -45,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
 		progressBar = (ProgressBar) findViewById(android.R.id.progress);
 		progressBar.setVisibility(View.VISIBLE);
 
-		new Loader(this).execute();
-
+		new Loader(this, getApplicationContext()).execute();
+		
 		permissionResolver = new PermissionResolver(this);
 	}
 
@@ -107,38 +102,5 @@ public class MainActivity extends AppCompatActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	class Loader extends AsyncTask<Void, PackageInfo, Void> {
-		ProgressDialog dialog;
-		MainActivity   mainActivity;
 
-		Loader(MainActivity a) {
-			dialog = ProgressDialog.show(a, getString(R.string.dlg_loading_title), getString(R.string.dlg_loading_body));
-			mainActivity = a;
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			List<PackageInfo> packages = getPackageManager().getInstalledPackages(PackageManager.GET_META_DATA);
-			for (PackageInfo packageInfo : packages) {
-				publishProgress(packageInfo);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(PackageInfo... values) {
-			super.onProgressUpdate(values);
-
-			//Add the package only if it is NOT a system app
-			if ((values[0].applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-				mainActivity.addItem(values[0]);
-			}
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			super.onPostExecute(aVoid);
-			dialog.dismiss();
-		}
-	}
 }
