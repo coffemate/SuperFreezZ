@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;

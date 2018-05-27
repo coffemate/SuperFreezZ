@@ -22,12 +22,12 @@ public class MyApplication extends Application {
                 e.printStackTrace();
 
                 //Share info about the exception so that it can be viewed or sent to someone else
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, e.getClass());
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, e.getClass());
 
                 String message = e.toString() + "\n\n" + getStackTrace(e);
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, message);
 
                 startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_exception)));
             }

@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -177,7 +176,9 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 			if (pattern == null || pattern.isEmpty()) return;// nothing to highlight
 
 			value = value.toLowerCase();
-			for (int offset = 0, index = value.indexOf(pattern, offset); index >= 0 && offset < value.length(); index = value.indexOf(pattern, offset)) {
+			for (int offset = 0, index = value.indexOf(pattern, offset);
+			     index >= 0 && offset < value.length();
+			     index = value.indexOf(pattern, offset)) {
 				Spannable span = new SpannableString(view.getText());
 				span.setSpan(new ForegroundColorSpan(Color.BLUE), index, index + pattern.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 				view.setText(span);
