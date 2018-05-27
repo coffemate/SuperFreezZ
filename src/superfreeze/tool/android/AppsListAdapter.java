@@ -250,8 +250,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		if (search_pattern == null || search_pattern.isEmpty()) {
 			return true;// empty search pattern: Show all apps
-		} else if (info.packageName.contains(search_pattern)) {
-			return true;// search in package name
 		} else if (cache_appName.containsKey(info.packageName) && cache_appName.get(info.packageName).toLowerCase().contains(search_pattern)) {
 			return true;// search in application name
 		}
