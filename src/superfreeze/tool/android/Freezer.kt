@@ -38,7 +38,6 @@ internal fun freezeApp(packageName: String, context: Context) {
 }
 
 
-
 internal class Loader(private val mainActivity: MainActivity, private val context: Context) : AsyncTask<Void, PackageInfo, Void>() {
     private var dialog: ProgressDialog = ProgressDialog.show(mainActivity, context.getString(R.string.dlg_loading_title), context.getString(R.string.dlg_loading_body))
     private val usageStatsMap = getAggregatedUsageStats(context)
@@ -56,9 +55,10 @@ internal class Loader(private val mainActivity: MainActivity, private val contex
 
         //Add the package only if it is NOT a system app
         if (values[0].applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-            //...and if it has been awoken since last freeze TODO
-            if (isRunning(values[0].packageName))
-            mainActivity.addItem(values[0])
+            //...and if it has been awoken since last freeze
+            if (isRunning(values[0].packageName)) {
+	            mainActivity.addItem(values[0])
+            }
         }
     }
 
@@ -91,11 +91,8 @@ internal class Loader(private val mainActivity: MainActivity, private val contex
 		}
 
 		val usageStats = usageStatsMap[packageName]
-
-		if (usageStats == null) {
-			//The app has not been used
-			return false
-		}
+				?: //If usageStatsMap[packageName] is null, return false as the app has not been used.
+				return false
 
 		return usageStats.lastTimeUsed > lastFreeze
 	}

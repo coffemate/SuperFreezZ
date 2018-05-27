@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -146,6 +149,10 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		@Override
 		public void onClick(View v) {
 			FreezerKt.freezeApp(adapter.getItem(getAdapterPosition()).packageName, context);
+
+			//Remove it from the list
+			adapter.list.remove(getAdapterPosition());
+			adapter.notifyDataSetChanged();
 		}
 
 		public void setAppName(String name, String highlight) {
@@ -187,7 +194,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	}
 
-	public PackageInfo getItem(int pos) {
+	@Contract(pure = true)
+	private PackageInfo getItem(int pos) {
 		return list.get(pos);
 	}
 
