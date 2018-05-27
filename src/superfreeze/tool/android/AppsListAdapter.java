@@ -42,7 +42,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	};
 
 	/**
-	 * This list contains the apps that are shown to the user. If the user searches, this are not all user apps.
+	 * This list contains the apps that are shown to the user. If the user searches, this is a subset of list_original.
 	 */
 	private ArrayList<PackageInfo> list                 = new ArrayList<PackageInfo>();
 
