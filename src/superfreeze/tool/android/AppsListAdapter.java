@@ -1,12 +1,10 @@
 package superfreeze.tool.android;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +17,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -134,15 +135,13 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	}
 
-	static class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-		private AppsListAdapter adapter;
+	class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
 		private TextView       txtAppName;
 		public  ImageView      imgIcon;
 		private Context        context;
 
-		ViewHolder(View v, AppsListAdapter adapter, Context context) {
+		ViewHolder(View v, Context context) {
 			super(v);
-			this.adapter = adapter;
 			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);
 			txtAppName = (TextView)v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
@@ -151,16 +150,22 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		/**
 		 * This method defines what is done when a list item (that is, an app) is clicked.
-		 * In this case, the app settings page is shown.
 		 * @param v The clicked view.
 		 */
 		@Override
 		public void onClick(View v) {
-			PackageInfo info = adapter.getItem(getAdapterPosition());
-			Intent intent = new Intent();
-			intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-			intent.setData(Uri.fromParts("package", info.packageName, null));
-			context.startActivity(intent);
+			FreezerKt.freezeApp(getItem(getAdapterPosition()).packageName, context);
+
+			//Remove it from the list after a delay of 300ms
+			// (if it is removed faster, it will disappear while the list is still shown)
+			final Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					list.remove(getAdapterPosition());
+					notifyDataSetChanged();
+				}
+			}, 300);
 		}
 
 		public void setAppName(String name, String highlight) {
@@ -185,7 +190,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 		return new ViewHolder(
 				LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false),
-				this,
 				viewGroup.getContext());
 	}
 
@@ -202,7 +206,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	}
 
-	public PackageInfo getItem(int pos) {
+	@Contract(pure = true)
+	private PackageInfo getItem(int pos) {
 		return list.get(pos);
 	}
 
