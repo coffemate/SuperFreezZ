@@ -141,8 +141,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		ViewHolder(View v, Context context) {
 			super(v);
-			imgIcon = v.findViewById(R.id.imgIcon);
-			txtAppName = v.findViewById(R.id.txtAppName);
+			imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
+			txtAppName = (TextView) v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
 			this.context = context;
 		}

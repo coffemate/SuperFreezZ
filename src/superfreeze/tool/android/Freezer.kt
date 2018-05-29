@@ -11,7 +11,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import org.jetbrains.annotations.Contract
 
 
@@ -46,7 +45,7 @@ internal fun freezeApp(packageName: String, context: Context) {
  * @param mainActivity The MainActivity
  * @param context The application context.
  */
-internal fun loadRunningApplications(mainActivity: AppCompatActivity, context: Context) {
+internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
 
 	val loader = object : AsyncTask<Void, PackageInfo, Void>() {
 		private var dialog: ProgressDialog = ProgressDialog.show(mainActivity, context.getString(R.string.dlg_loading_title), context.getString(R.string.dlg_loading_body))
