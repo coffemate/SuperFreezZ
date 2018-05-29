@@ -39,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
 		progressBar = (ProgressBar) findViewById(android.R.id.progress);
 		progressBar.setVisibility(View.VISIBLE);
 
-		new Loader(this, getApplicationContext()).execute();
-		
+		FreezerKt.loadRunningApplications(this, getApplicationContext());
+
 		permissionResolver = new PermissionResolver(this);
 	}
-
 
 
 	@Override

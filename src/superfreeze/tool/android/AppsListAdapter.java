@@ -42,7 +42,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	};
 
 	/**
-	 * This list contains the apps that are shown to the user. If the user searches, this is a subset of list_original.
+	 * This list contains the apps that are shown to the user. When the user searches, this is a subset of list_original.
 	 */
 	private ArrayList<PackageInfo> list                 = new ArrayList<PackageInfo>();
 
@@ -141,8 +141,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		ViewHolder(View v, Context context) {
 			super(v);
-			imgIcon = (ImageView)v.findViewById(R.id.imgIcon);
-			txtAppName = (TextView)v.findViewById(R.id.txtAppName);
+			imgIcon = v.findViewById(R.id.imgIcon);
+			txtAppName = v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
 			this.context = context;
 		}
