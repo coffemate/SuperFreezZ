@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * The method that is responsible for showing the search icon in the top right hand corner.
      * @param menu The Menu to which the search icon is added.
-     * @return
      */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
