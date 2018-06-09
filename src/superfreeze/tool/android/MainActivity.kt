@@ -15,21 +15,22 @@ import android.support.annotation.RequiresApi
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
-
+/**
+ * The activity that is shown
+ */
 class MainActivity : AppCompatActivity() {
-	private var appsListAdapter: AppsListAdapter? = null
+	private lateinit var appsListAdapter: AppsListAdapter
 
-	private var progressBar: ProgressBar? = null
-	private var permissionResolver: PermissionResolver? = null
+	private lateinit var progressBar: ProgressBar
+	private lateinit var permissionResolver: PermissionResolver
 
 	private var appWasLeftForUsageStatsSettings: Boolean = false
 
@@ -37,16 +38,16 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
+		setSupportActionBar(toolbar)
 
-		val listView = findViewById(android.R.id.list) as RecyclerView
+		val listView = list
 
 		appsListAdapter = AppsListAdapter(this)
 		listView.layoutManager = LinearLayoutManager(this)
 		listView.adapter = appsListAdapter
 
-		progressBar = findViewById(android.R.id.progress) as ProgressBar
-		progressBar!!.visibility = View.VISIBLE
+		progressBar = progress
+		progressBar.visibility = View.VISIBLE
 
 		permissionResolver = PermissionResolver(this)
 
@@ -55,17 +56,25 @@ class MainActivity : AppCompatActivity() {
 
 
 	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-		if (!permissionResolver!!.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+		if (!permissionResolver.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
 			super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 		}
 	}
 
+	/**
+	 * At startup, there will be a spinning progress bar at the top right hand corner.
+	 * Invoking this method will hide this progress bar.
+	 */
 	fun hideProgressBar() {
-		progressBar?.visibility = View.GONE
+		progressBar.visibility = View.GONE
 	}
 
+	/**
+	 * This will add item to the apps list.
+	 * @param item The item to add, as a PackageInfo.
+	 */
 	fun addItem(item: PackageInfo) {
-		appsListAdapter!!.addItem(item)
+		appsListAdapter.addItem(item)
 	}
 
 	/**
@@ -81,8 +90,12 @@ class MainActivity : AppCompatActivity() {
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 		searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
 			if (!queryTextFocused && searchView.query.isEmpty()) {
-				val supportActionBar = supportActionBar!!
-				supportActionBar.collapseActionView()
+				val supportActionBar = supportActionBar
+				if(supportActionBar != null) {
+					supportActionBar.collapseActionView()
+				} else {
+					Log.e("SuperFreezeUI", "There is no action bar")
+				}
 			}
 		}
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -91,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 			}
 
 			override fun onQueryTextChange(s: String): Boolean {
-				appsListAdapter!!.setSearchPattern(s)
+				appsListAdapter.setSearchPattern(s)
 				return true
 			}
 		})
@@ -105,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 				if (!usageStatsPermissionGranted()) {
-					showToast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
+					toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
 				}
 			}
 			loadRunningApplications(this, applicationContext)
@@ -147,14 +160,13 @@ class MainActivity : AppCompatActivity() {
 	private fun showUsageStatsSettings() {
 		val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
 		startActivity(intent)
-		showToast("Please select SuperFreeze, then enable access", Toast.LENGTH_LONG)
+		toast("Please select SuperFreeze, then enable access", Toast.LENGTH_LONG)
 	}
 
 	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	private fun usageStatsPermissionGranted(): Boolean {
 		val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
-		try {
 			val mode = appOpsManager.checkOpNoThrow(
 					AppOpsManager.OPSTR_GET_USAGE_STATS,
 					android.os.Process.myUid(),
@@ -169,18 +181,11 @@ class MainActivity : AppCompatActivity() {
 			} else {
 				mode == AppOpsManager.MODE_ALLOWED
 			}
-		} catch (e: NullPointerException) {
-			Log.w("", e)
-			return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
-			} else {
-				false//TODO check if this assumption is right: At Lollipop, mode will be AppOpsManager.MODE_ALLOWED if it was allowed
-			}
-		}
+
 
 	}
 
-	private fun showToast(s: String, duration: Int) {
+	private fun toast(s: String, duration: Int) {
 		Toast.makeText(this, s, duration).show()
 	}
 }
