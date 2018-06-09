@@ -70,8 +70,6 @@ internal fun loadRunningApplications(mainActivity: MainActivity, context: Contex
 		}
 
 		override fun onProgressUpdate(vararg values: UsedPackage) {
-			super.onProgressUpdate(*values)
-
 			mainActivity.addItem(values[0].packageInfo)
 		}
 
