@@ -41,34 +41,38 @@ internal fun freezeApp(packageName: String, context: Context) {
 
 /**
  * Loads all running applications and add them to MainActivity.
- * Currently, as a workaround, this is those apps that were
+ * Currently, as a workaround, this is those apps that were interacted with since the last freeze.
  * @param mainActivity The MainActivity
  * @param context The application context.
  */
 internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
 
-	val loader = object : AsyncTask<Void, PackageInfo, Void>() {
+	val loader = object : AsyncTask<Void, UsedPackage, Void>() {
 		private var dialog: ProgressDialog = ProgressDialog.show(mainActivity, context.getString(R.string.dlg_loading_title), context.getString(R.string.dlg_loading_body))
 		private val usageStatsMap: Map<String, UsageStats>? = getAggregatedUsageStats(context)
 
 		override fun doInBackground(vararg params: Void): Void? {
-			val packages = context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-			for (packageInfo in packages) {
-				publishProgress(packageInfo)
+			val packages =
+					context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+							.filter {
+								//Add the package only if it is NOT a system app:
+								it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0
+										//...and if it is running
+										&& isRunning(it.packageName, usageStatsMap, context)
+							}
+							.map{ UsedPackage(it, usageStatsMap?.get(it.packageName)) }
+							.sorted()
+
+			for (usedPackage in packages) {
+				publishProgress(usedPackage)
 			}
 			return null
 		}
 
-		override fun onProgressUpdate(vararg values: PackageInfo) {
+		override fun onProgressUpdate(vararg values: UsedPackage) {
 			super.onProgressUpdate(*values)
 
-			//Add the package only if it is NOT a system app
-			if (values[0].applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0) {
-				//...and if it has been awoken since last freeze
-				if (isRunning(values[0].packageName, usageStatsMap, context)) {
-					mainActivity.addItem(values[0])
-				}
-			}
+			mainActivity.addItem(values[0].packageInfo)
 		}
 
 		override fun onPostExecute(aVoid: Void?) {
@@ -99,7 +103,7 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L*60*60*24*365*2
 
-	return usageStatsManager.queryAndAggregateUsageStats(startDate, System.currentTimeMillis())
+	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
 
 /**
@@ -130,4 +134,22 @@ private fun isRunning(packageName: String, usageStatsMap: Map<String, UsageStats
 			return false
 
 	return usageStats.lastTimeUsed > lastFreeze
+}
+
+private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {
+
+	/**
+	 * The timestamp at which this app was used last or 0 if it was never used/no infos are available
+	 */
+	internal val lastTimeUsed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+		usageStats?.lastTimeUsed
+				?: Long.MIN_VALUE
+	} else {
+		Long.MIN_VALUE
+	}
+
+	override fun compareTo(other: UsedPackage): Int {
+		return this.lastTimeUsed.compareTo(other.lastTimeUsed)
+	}
+
 }
