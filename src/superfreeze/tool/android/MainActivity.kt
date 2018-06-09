@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 	private var progressBar: ProgressBar? = null
 	private var permissionResolver: PermissionResolver? = null
 
+	private var appWasLeftForUsageStatsSettings: Boolean = false
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
@@ -46,11 +48,9 @@ class MainActivity : AppCompatActivity() {
 		progressBar = findViewById(android.R.id.progress) as ProgressBar
 		progressBar!!.visibility = View.VISIBLE
 
-		loadRunningApplications(this, applicationContext)
-
 		permissionResolver = PermissionResolver(this)
 
-		requestUsageStatsPermission()
+		requestUsageStatsPermissionAndLoadApps()
 	}
 
 
@@ -99,7 +99,22 @@ class MainActivity : AppCompatActivity() {
 		return super.onCreateOptionsMenu(menu)
 	}
 
-	private fun requestUsageStatsPermission() {
+	override fun onResume() {
+		super.onResume()
+		if (appWasLeftForUsageStatsSettings) {
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				if (!usageStatsPermissionGranted()) {
+					showToast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
+				}
+			}
+			loadRunningApplications(this, applicationContext)
+			appWasLeftForUsageStatsSettings = false
+
+		}
+	}
+
+	private fun requestUsageStatsPermissionAndLoadApps() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 			return
 		}
@@ -111,13 +126,19 @@ class MainActivity : AppCompatActivity() {
 					.setMessage("If you enable UsageStats access, SuperFreeze can:\n - see which apps have been awoken since last freeze\n - freeze only apps you did not use for some time.")
 					.setPositiveButton("Enable", { _, _ ->
 						showUsageStatsSettings()
+						appWasLeftForUsageStatsSettings = true
 					})
 					.setNeutralButton("Now now", { _, _ ->
-						//do nothing
+						//directly load running applications
+						loadRunningApplications(this, applicationContext)
 					})
 					//TODO add negative button "never"
 					.setIcon(R.mipmap.ic_launcher)
+					.setCancelable(false)
 					.show()
+		} else {
+			//directly load running applications
+			loadRunningApplications(this, applicationContext)
 		}
 
 	}
