@@ -51,20 +51,22 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 SuperFreeze contains files distributed under the MIT license. These are licensed both under GPLv3-or-later (see above) and MIT (see below), that is, you may choose. These files are:
 
-./build.gradle
-./src/axp/tool/apkextractor/ApkListAdapter.java
-./src/axp/tool/apkextractor/MainActivity.kt
-./src/axp/tool/apkextractor/PermissionResolver.java
-./res/layout/list_item.xml
-./res/layout/activity_main.xml
-./res/values/strings.xml
-./res/values/colors.xml
-./res/values/styles.xml
-./res/values/attrs.xml
-./res/values-de/strings.xml
-./res/xml/searchable.xml
-./res/menu/main.xml
-./AndroidManifest.xml
+```
+build.gradle
+src/axp/tool/apkextractor/ApkListAdapter.java
+src/axp/tool/apkextractor/MainActivity.kt
+src/axp/tool/apkextractor/PermissionResolver.java
+res/layout/list_item.xml
+res/layout/activity_main.xml
+res/values/strings.xml
+res/values/colors.xml
+res/values/styles.xml
+res/values/attrs.xml
+res/values-de/strings.xml
+res/xml/searchable.xml
+res/menu/main.xml
+AndroidManifest.xml
+```
 
 The MIT License (MIT)
 
