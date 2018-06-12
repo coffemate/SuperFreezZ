@@ -33,20 +33,6 @@ Copying
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
-This file is part of SuperFreeze.
-
-SuperFreeze is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SuperFreeze is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 SuperFreeze is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -83,6 +69,7 @@ SuperFreeze contains files distributed under the MIT license. These are licensed
 The MIT License (MIT)
 
 Copyright (c) 2015 axxapy
+Copyright (c) 2018 Hocceruser
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
