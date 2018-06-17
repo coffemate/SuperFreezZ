@@ -16,8 +16,6 @@ class FreezerService : AccessibilityService() {
 		PRESS_FORCE_STOP, PRESS_OK, PRESS_BACK, DO_NOTHING
 	}
 
-	private var nextAction = NextAction.DO_NOTHING
-
 	override fun onAccessibilityEvent(event: AccessibilityEvent) {
 
 		//Does not work on older versions of Android.
@@ -73,18 +71,17 @@ class FreezerService : AccessibilityService() {
 		}
 	}
 
-	/**
-	 * Clicks the "Force Stop", the "OK" and the "Back" button.
-	 */
-	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-	public fun performFreeze() {
-		//Clicks the "Force Stop" button TODO
+	internal companion object {
 
+		private var nextAction = NextAction.DO_NOTHING
 
-		//Clicks the "OK" button TODO
-
-
-		//Clicks the "Back" button
-		performGlobalAction(GLOBAL_ACTION_BACK)
+		/**
+		 * Clicks the "Force Stop", the "OK" and the "Back" button.
+		 */
+		@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+		internal fun performFreeze() {
+			if (nextAction == NextAction.DO_NOTHING)
+				nextAction = NextAction.PRESS_FORCE_STOP
+		}
 	}
 }
