@@ -45,28 +45,35 @@ class FreezerService : AccessibilityService() {
 		}
 	}
 
-	private fun pressForceStopButton() {
-		TODO()
+	override fun onInterrupt() {
 	}
 
+	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	private fun pressForceStopButton() {
 
-	override fun onInterrupt() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			val r = rootInActiveWindow
-		}
+		val rootNode = rootInActiveWindow
+
+
+
+		clickAll(rootNode.findAccessibilityNodeInfosByText("FORCE STOP"))
+
+		clickAll(rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/left_button"))
+
+		clickAll(rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button"))
+
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(nodeInfo: AccessibilityNodeInfo) {
 
-		var list = nodeInfo.findAccessibilityNodeInfosByViewId("com.android.settings:id/left_button")
-		for (node in list) {
-			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-		}
+		clickAll(nodeInfo.findAccessibilityNodeInfosByText(getString(android.R.string.ok)))
 
-		list = nodeInfo.findAccessibilityNodeInfosByViewId("android:id/button1")
+	}
 
-		for (node in list) {
+
+	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+	private fun clickAll(nodes: List<AccessibilityNodeInfo>) {
+		for (node in nodes) {
 			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 		}
 	}
