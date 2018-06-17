@@ -10,5 +10,5 @@
 	<string name="alert_perm_body">Um eine APK-Datei zu erstellen, muss die App die \"Speicher\" Berechtigung haben.\nBitte öffne die App-Einstellungen und erteile die \"Speicher\"-Berechtigung.</string>
 	<string name="alert_perm_btn">Einstellungen öffnen</string>
 	<string name="share_exception">Ein Fehler ist aufgetreten. Infos teilen über...</string>
-
+	<string name="accessibility_service_description">Die Bedienungshilfe ermöglicht es SuperFreeze, das Freezen zu automatisieren.\n\Dies hat die folgenden Vorteile:\n - Der Benutzer muss es nicht selbst machen: Es ist deutlich schneller und der Benutzer muss sich nicht darum kümmern, wie das geht.\n - Benutzer mit Einschränkungen brauchen nur eine Möglichkeit, den Shortcut "AutoFreeze" auszuführen (zum Beispiel mittels Spracherkennung). So können sie alle Apps automatisch freezen. \n\nSuperFreeze benutzt die Bedienungshilfe nur, um die Buttons "Beenden erzwingen", "OK" und "Zurück" zu drücken und um das Ergebnis dieser Aktionen zu erfahren.</string>
 </resources>
