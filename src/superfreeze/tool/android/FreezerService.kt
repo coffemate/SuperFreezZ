@@ -7,7 +7,9 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
 
-
+/**
+ * This is the Accessibility service class, responsible to automatically freeze apps.
+ */
 class FreezerService : AccessibilityService() {
 
 	private enum class NextAction {
