@@ -53,15 +53,17 @@ class FreezerService : AccessibilityService() {
 
 		val rootNode = rootInActiveWindow
 
+		var nodesToClick = rootNode.findAccessibilityNodeInfosByText("FORCE STOP")
 
+		if (nodesToClick.isEmpty())
+			nodesToClick = rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
 
-		clickAll(rootNode.findAccessibilityNodeInfosByText("FORCE STOP"))
+		if (nodesToClick.isEmpty())
+			nodesToClick = rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
 
-		clickAll(rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/left_button"))
-
-		clickAll(rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button"))
-
+		clickAll(nodesToClick)
 	}
+
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(nodeInfo: AccessibilityNodeInfo) {
