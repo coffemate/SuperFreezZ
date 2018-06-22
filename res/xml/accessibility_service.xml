@@ -1,8 +1,2 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-	android:accessibilityFeedbackType="feedbackGeneric"
-	android:accessibilityFlags="flagDefault"
-	android:canPerformGestures="true"
-	android:canRetrieveWindowContent="true"
-	android:packageNames="com.android.settings"
-	android:accessibilityEventTypes="typeWindowStateChanged"
-	android:description="@string/accessibility_service_description" />
+	android:description="@string/accessibility_service_unavailable" />
