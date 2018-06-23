@@ -3,6 +3,7 @@ package superfreeze.tool.android
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
 import android.support.annotation.RequiresApi
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
@@ -61,20 +62,26 @@ class FreezerService : AccessibilityService() {
 		if (nodesToClick.isEmpty())
 			nodesToClick = rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
 
-		clickAll(nodesToClick)
+		clickAll(nodesToClick, "force stop")
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(nodeInfo: AccessibilityNodeInfo) {
 
-		clickAll(nodeInfo.findAccessibilityNodeInfosByText(getString(android.R.string.ok)))
+		clickAll(nodeInfo.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
 
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-	private fun clickAll(nodes: List<AccessibilityNodeInfo>) {
+	private fun clickAll(nodes: List<AccessibilityNodeInfo>, buttonName: String) {
+
+		if (nodes.isEmpty()) {
+			Log.w(TAG, "Could not find the $buttonName button.")
+			nextAction = NextAction.DO_NOTHING
+		}
+
 		for (node in nodes) {
 			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 		}
@@ -94,3 +101,5 @@ class FreezerService : AccessibilityService() {
 		}
 	}
 }
+
+private const val TAG = "FreezerService"
