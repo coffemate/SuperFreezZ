@@ -30,7 +30,7 @@ class FreezerService : AccessibilityService() {
 				NextAction.DO_NOTHING -> {}
 
 				NextAction.PRESS_FORCE_STOP -> {
-					pressForceStopButton()
+					pressForceStopButton(event.source)
 					nextAction = NextAction.PRESS_OK
 				}
 				NextAction.PRESS_OK -> {
@@ -50,26 +50,24 @@ class FreezerService : AccessibilityService() {
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressForceStopButton() {
+	private fun pressForceStopButton(node: AccessibilityNodeInfo) {
 
-		val rootNode = rootInActiveWindow
-
-		var nodesToClick = rootNode.findAccessibilityNodeInfosByText("FORCE STOP")
+		var nodesToClick = node.findAccessibilityNodeInfosByText("FORCE STOP")
 
 		if (nodesToClick.isEmpty())
-			nodesToClick = rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
+			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
 
 		if (nodesToClick.isEmpty())
-			nodesToClick = rootNode.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
+			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
 
 		clickAll(nodesToClick, "force stop")
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressOkButton(nodeInfo: AccessibilityNodeInfo) {
+	private fun pressOkButton(node: AccessibilityNodeInfo) {
 
-		clickAll(nodeInfo.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+		clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
 
 	}
 
