@@ -80,6 +80,8 @@ class FreezerService : AccessibilityService() {
 		if (nodes.isEmpty()) {
 			Log.w(TAG, "Could not find the $buttonName button.")
 			nextAction = NextAction.DO_NOTHING
+		} else if (nodes.size > 1) {
+			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
 		}
 
 		for (node in nodes) {
