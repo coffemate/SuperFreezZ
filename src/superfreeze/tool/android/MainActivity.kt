@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var appsListAdapter: AppsListAdapter
 
 	private lateinit var progressBar: ProgressBar
-	private lateinit var permissionResolver: PermissionResolver
 
 	private var appWasLeftForUsageStatsSettings: Boolean = false
 
@@ -69,17 +68,9 @@ class MainActivity : AppCompatActivity() {
 		progressBar = progress
 		progressBar.visibility = View.VISIBLE
 
-		permissionResolver = PermissionResolver(this)
-
 		requestUsageStatsPermissionAndLoadApps()
 	}
 
-
-	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-		if (!permissionResolver.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-			super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-		}
-	}
 
 	/**
 	 * At startup, there will be a spinning progress bar at the top right hand corner.
