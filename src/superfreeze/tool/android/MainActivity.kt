@@ -157,14 +157,14 @@ class MainActivity : AppCompatActivity() {
 			AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog)
 					.setTitle("UsageStats access")
 					.setMessage("If you enable UsageStats access, SuperFreeze can:\n - see which apps have been awoken since last freeze\n - freeze only apps you did not use for some time.")
-					.setPositiveButton("Enable", { _, _ ->
+					.setPositiveButton("Enable") { _, _ ->
 						showUsageStatsSettings()
 						appWasLeftForUsageStatsSettings = true
-					})
-					.setNeutralButton("Now now", { _, _ ->
+					}
+					.setNeutralButton("Now now") { _, _ ->
 						//directly load running applications
 						loadRunningApplications(this, applicationContext)
-					})
+					}
 					//TODO add negative button "never"
 					.setIcon(R.mipmap.ic_launcher)
 					.setCancelable(false)

@@ -86,20 +86,18 @@ class FreezerService : AccessibilityService() {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
 		}
 
-		var clickedSomething = false
+		val clickableNodes = nodes.filter { it.isClickable && it.isEnabled }
 
-		for (node in nodes) {
-			if (node.isClickable && node.isEnabled) {
-				node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-				clickedSomething = true
-			}
-		}
-
-		if (!clickedSomething) {
+		if (clickableNodes.isEmpty()) {
 			Log.i(TAG,"The button is not clickable, aborting.")
 			pressBackButton()
 			return false
 		}
+
+		for (node in clickableNodes) {
+			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+		}
+
 		return true
 	}
 
