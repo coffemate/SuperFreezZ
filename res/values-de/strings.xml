@@ -5,7 +5,7 @@
 	<string name="dlg_loading_title">Lade</string>
 	<string name="dlg_loading_body">Lade Liste mit installierten Apps...</string>
 	<string name="msg_search">Suche</string>
-	<string name="msg_search_help">Suche per App- oder Paketname</string>
+	<string name="msg_search_help">Suchen</string>
 	<string name="alert_perm_title">Berechtigung benötigt</string>
 	<string name="alert_perm_body">Um eine APK-Datei zu erstellen, muss die App die \"Speicher\" Berechtigung haben.\nBitte öffne die App-Einstellungen und erteile die \"Speicher\"-Berechtigung.</string>
 	<string name="alert_perm_btn">Einstellungen öffnen</string>

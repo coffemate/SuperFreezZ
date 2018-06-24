@@ -6,7 +6,7 @@
 	<string name="dlg_loading_title">Loading</string>
 	<string name="dlg_loading_body">Loading list of installed applications...</string>
 	<string name="msg_search">Search</string>
-	<string name="msg_search_help">Search by app or package names</string>
+	<string name="msg_search_help">Search</string>
 	<string name="alert_perm_title">Permission required</string>
 	<string name="alert_perm_body">In order to write apk file application must be granted with \"Storage\" permission.\nPlease, open app\'s settings and grant \"Storage\" permission to it.</string>
 	<string name="alert_perm_btn">Open settings</string>
