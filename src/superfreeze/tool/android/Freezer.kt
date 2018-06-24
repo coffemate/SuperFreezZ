@@ -54,12 +54,6 @@ internal fun freezeApp(packageName: String, context: Context) {
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 		FreezerService.performFreeze()
 	}
-
-	//remember that the app was freezed
-	val preferences = context.getSharedPreferences("lastAppFreeze", Context.MODE_PRIVATE)
-	val editor = preferences.edit()
-	editor.putLong(packageName, System.currentTimeMillis())
-	editor.apply()//preferences.getLong();
 }
 
 /**
