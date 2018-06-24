@@ -79,9 +79,9 @@ internal fun loadRunningApplications(mainActivity: MainActivity, context: Contex
 					context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 							.filter {
 								//Add the package only if it is NOT a system app:
-								it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0
+								! it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
 										//...and if it is running
-										&& isRunning(it.packageName, usageStatsMap, context)
+										&& isRunning(it)
 							}
 							.map{ UsedPackage(it, usageStatsMap?.get(it.packageName)) }
 							.sorted()
@@ -127,34 +127,13 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
 
-/**
- * Returns true if the app is running.
- * Currently, as a workaround, this returns if the app was interacted with since the last freeze.
- * @param packageName The name of the app
- * @param usageStatsMap The result of queryAndAggregateUsageStats()
- * @param context The application context
- * @return If the app is running
- */
-private fun isRunning(packageName: String, usageStatsMap: Map<String, UsageStats>?, context: Context): Boolean {
-	val preferences = context.getSharedPreferences("lastAppFreeze", Context.MODE_PRIVATE)
-	val lastFreeze = preferences.getLong(packageName, 0)
-	if (lastFreeze == 0L) {
-		//The app was never freezed
-		//simply assume that it was launched once after its installation and is now running
+private fun isRunning(packageInfo: PackageInfo): Boolean {
+	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+		! packageInfo.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
+	} else {
+		//TODO Currently, on older versions, we just show all installed apps
 		return true
 	}
-
-	if (usageStatsMap == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-		//No usage stats available because we are on an older Android version
-		//TODO
-		return true
-	}
-
-	val usageStats = usageStatsMap[packageName]
-			?: //If usageStatsMap[packageName] is null, return false as the app has not been used.
-			return false
-
-	return usageStats.lastTimeUsed > lastFreeze
 }
 
 private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {
@@ -173,4 +152,8 @@ private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?)
 		return this.lastTimeUsed.compareTo(other.lastTimeUsed)
 	}
 
+}
+
+private fun Int.isFlagSet(value: Int): Boolean {
+	return (this and value) == value
 }
