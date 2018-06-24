@@ -30,15 +30,15 @@ class FreezerService : AccessibilityService() {
 				NextAction.DO_NOTHING -> {}
 
 				NextAction.PRESS_FORCE_STOP -> {
-					pressForceStopButton(event.source)
-					nextAction = NextAction.PRESS_OK
+					val success = pressForceStopButton(event.source)
+					nextAction = if (success) NextAction.PRESS_OK else NextAction.DO_NOTHING
 				}
 				NextAction.PRESS_OK -> {
-					pressOkButton(event.source)
-					nextAction = NextAction.PRESS_BACK
+					val success = pressOkButton(event.source)
+					nextAction = if (success) NextAction.PRESS_BACK else NextAction.DO_NOTHING
 				}
 				NextAction.PRESS_BACK -> {
-					performGlobalAction(GLOBAL_ACTION_BACK)
+					pressBackButton()
 					nextAction = NextAction.DO_NOTHING
 				}
 			}
@@ -50,7 +50,7 @@ class FreezerService : AccessibilityService() {
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressForceStopButton(node: AccessibilityNodeInfo) {
+	private fun pressForceStopButton(node: AccessibilityNodeInfo): Boolean {
 
 		var nodesToClick = node.findAccessibilityNodeInfosByText("FORCE STOP")
 
@@ -60,31 +60,47 @@ class FreezerService : AccessibilityService() {
 		if (nodesToClick.isEmpty())
 			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
 
-		clickAll(nodesToClick, "force stop")
+		return clickAll(nodesToClick, "force stop")
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressOkButton(node: AccessibilityNodeInfo) {
+	private fun pressOkButton(node: AccessibilityNodeInfo): Boolean {
 
-		clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+		return clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
 
 	}
 
+	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+	private fun pressBackButton() {
+		performGlobalAction(GLOBAL_ACTION_BACK)
+	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-	private fun clickAll(nodes: List<AccessibilityNodeInfo>, buttonName: String) {
+	private fun clickAll(nodes: List<AccessibilityNodeInfo>, buttonName: String): Boolean {
 
 		if (nodes.isEmpty()) {
 			Log.w(TAG, "Could not find the $buttonName button.")
-			nextAction = NextAction.DO_NOTHING
+			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
 		}
 
+		var clickedSomething = false
+
 		for (node in nodes) {
-			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+			if (node.isClickable && node.isEnabled) {
+				node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+				clickedSomething = true
+			}
 		}
+
+		if (!clickedSomething) {
+			Log.i(TAG,"The button is not clickable, aborting.")
+			pressBackButton()
+			return false
+		}
+		return true
 	}
 
 	internal companion object {
