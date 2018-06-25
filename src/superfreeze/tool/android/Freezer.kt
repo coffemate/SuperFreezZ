@@ -19,7 +19,6 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android
 
-import android.app.ProgressDialog
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
@@ -63,7 +62,6 @@ internal fun freezeApp(packageName: String, context: Context) {
 internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
 
 	val loader = object : AsyncTask<Void, UsedPackage, Void>() {
-		private var dialog: ProgressDialog = ProgressDialog.show(mainActivity, context.getString(R.string.dlg_loading_title), context.getString(R.string.dlg_loading_body))
 		private val usageStatsMap: Map<String, UsageStats>? = getAggregatedUsageStats(context)
 
 		override fun doInBackground(vararg params: Void): Void? {
@@ -88,10 +86,6 @@ internal fun loadRunningApplications(mainActivity: MainActivity, context: Contex
 			mainActivity.addItem(values[0].packageInfo)
 		}
 
-		override fun onPostExecute(aVoid: Void?) {
-			super.onPostExecute(aVoid)
-			dialog.dismiss()
-		}
 
 	}
 
