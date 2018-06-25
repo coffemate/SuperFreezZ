@@ -32,7 +32,6 @@ import android.os.AsyncTask
 import android.os.Build
 import org.jetbrains.annotations.Contract
 
-
 /**
  * This file is responsible for freezing apps and connected things, like loading the list of apps
  * that were not freezed yet.
@@ -58,7 +57,6 @@ internal fun freezeApp(packageName: String, context: Context) {
 
 /**
  * Loads all running applications and add them to MainActivity.
- * Currently, as a workaround, this is those apps that were interacted with since the last freeze.
  * @param mainActivity The MainActivity
  * @param context The application context.
  */
