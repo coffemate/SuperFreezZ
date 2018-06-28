@@ -72,7 +72,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	 */
 	private ArrayList<PackageInfo> list_original        = new ArrayList<PackageInfo>();
 
-	private ExecutorService        executorServiceNames = Executors.newFixedThreadPool(3, tFactory);
+	private ExecutorService        executorServiceNames;
 	private ExecutorService        executorServiceIcons = Executors.newFixedThreadPool(3, tFactory);
 	private Handler                handler              = new Handler();
 	private MainActivity           mActivity;
@@ -107,6 +107,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 					if (names_to_load == 0) {
 						mActivity.hideProgressBar();
 						executorServiceNames.shutdown();
+						executorServiceNames = null;
 					}
 				}
 			});
@@ -239,6 +240,9 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	}
 
 	public void addItem(PackageInfo item) {
+		if (executorServiceNames == null) {
+			executorServiceNames = Executors.newFixedThreadPool(3, tFactory);
+		}
 		names_to_load++;
 		executorServiceNames.submit(new AppNameLoader(item));
 		list_original.add(item);
