@@ -32,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +54,7 @@ import java.util.concurrent.ThreadFactory;
  * This class is responsible for viewing the list of installed apps.
  */
 public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHolder> {
+	private static final String TAG = "AppsListAdapter";
 	private ThreadFactory tFactory = new ThreadFactory() {
 		@Override
 		public Thread newThread(@NonNull Runnable r) {
@@ -176,17 +178,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		@Override
 		public void onClick(View v) {
 			FreezerKt.freezeApp(getItem(getAdapterPosition()).packageName, context);
-
-			//Remove it from the list after a delay of 500ms
-			// (if it is removed faster, it will disappear while the list is still shown)
-			final Handler handler = new Handler();
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					list.remove(getAdapterPosition());
-					notifyDataSetChanged();
-				}
-			}, 500);
 		}
 
 		public void setAppName(String name, String highlight) {
@@ -258,7 +249,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	}
 
 
-	private void filterList() {
+	void filterList() {
 		list.clear();
 		for (PackageInfo info : list_original) {
 
@@ -277,7 +268,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	private boolean isToBeShown(PackageInfo info) {
 
 		if (!FreezerKt.isRunning(info)) {
-			return  false;
+			return false;
 		}
 
 		if (search_pattern == null || search_pattern.isEmpty()) {
@@ -287,5 +278,17 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 
 		return false;
+	}
+
+	void refreshPackageInfoList() {
+		for (int i = 0; i < list_original.size(); i++) {
+			String packageName = list_original.get(i).packageName;
+			try {
+				list_original.set(i, packageManager.getPackageInfo(packageName, 0));
+			} catch (PackageManager.NameNotFoundException e) {
+				e.printStackTrace();
+				Log.e(TAG, "The package "+packageName+"was not found when refreshing");
+			}
+		}
 	}
 }

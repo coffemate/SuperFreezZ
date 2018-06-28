@@ -101,9 +101,18 @@ class FreezerService : AccessibilityService() {
 		return true
 	}
 
+	public override fun onServiceConnected() {
+		isEnabled = true
+	}
+
+	override fun onDestroy() {
+		isEnabled = false
+	}
+
 	internal companion object {
 
 		private var nextAction = NextAction.DO_NOTHING
+		private var isEnabled = false
 
 		/**
 		 * Clicks the "Force Stop", the "OK" and the "Back" button.
@@ -112,6 +121,11 @@ class FreezerService : AccessibilityService() {
 		internal fun performFreeze() {
 			if (nextAction == NextAction.DO_NOTHING)
 				nextAction = NextAction.PRESS_FORCE_STOP
+		}
+
+		fun busy(): Boolean {
+			return (nextAction != NextAction.DO_NOTHING
+					&& isEnabled)
 		}
 	}
 }

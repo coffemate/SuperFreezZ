@@ -46,7 +46,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
- * The activity that is shown
+ * The activity that is shown at startup
  */
 class MainActivity : AppCompatActivity() {
 	private lateinit var appsListAdapter: AppsListAdapter
@@ -128,6 +128,11 @@ class MainActivity : AppCompatActivity() {
 
 		//Execute all tasks and retain only those that returned true.
 		toBeDoneOnResume.retainAll { it() }
+
+		if (!FreezerService.busy()) {
+			appsListAdapter.refreshPackageInfoList()
+			appsListAdapter.filterList()
+		}
 	}
 
 	companion object {
@@ -155,10 +160,8 @@ class MainActivity : AppCompatActivity() {
 						showUsageStatsSettings()
 						doOnResume {
 
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-								if (!usageStatsPermissionGranted()) {
-									toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
-								}
+							if (!usageStatsPermissionGranted()) {
+								toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
 							}
 							loadRunningApplications(this, applicationContext)
 
@@ -188,8 +191,13 @@ class MainActivity : AppCompatActivity() {
 		toast("Please select SuperFreeze, then enable access", Toast.LENGTH_LONG)
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	private fun usageStatsPermissionGranted(): Boolean {
+
+		//On earlier versions there are no usage stats
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+			return false
+		}
+
 		val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
 			val mode = appOpsManager.checkOpNoThrow(
