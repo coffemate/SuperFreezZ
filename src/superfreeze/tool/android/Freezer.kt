@@ -70,8 +70,6 @@ internal fun loadRunningApplications(mainActivity: MainActivity, context: Contex
 							.filter {
 								//Add the package only if it is NOT a system app:
 								! it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-										//...and if it is running
-										&& isRunning(it)
 							}
 							.map{ UsedPackage(it, usageStatsMap?.get(it.packageName)) }
 							.sorted()
@@ -113,7 +111,7 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
 
-private fun isRunning(packageInfo: PackageInfo): Boolean {
+internal fun isRunning(packageInfo: PackageInfo): Boolean {
 	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
 		! packageInfo.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 	} else {

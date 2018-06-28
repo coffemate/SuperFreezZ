@@ -246,7 +246,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		names_to_load++;
 		executorServiceNames.submit(new AppNameLoader(item));
 		list_original.add(item);
-		if (isMatchedBySearchPattern(item)) {
+		if (isToBeShown(item)) {
 			list.add(item);
 		}
 		notifyDataSetChanged();
@@ -254,18 +254,18 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 	public void setSearchPattern(String pattern) {
 		search_pattern = pattern.toLowerCase();
-		filterListByPattern();
+		filterList();
 	}
 
 
 	/**
 	 * Filters the apps list by the search pattern the user typed in.
 	 */
-	private void filterListByPattern() {
+	private void filterList() {
 		list.clear();
 		for (PackageInfo info : list_original) {
 
-			if (isMatchedBySearchPattern(info)){
+			if (isToBeShown(info)){
 				list.add(info);
 			}
 		}
@@ -277,7 +277,11 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 	 * @param info The PackageInfo describing the package.
 	 * @return Whether the the app name contains the search pattern.
 	 */
-	private boolean isMatchedBySearchPattern(PackageInfo info) {
+	private boolean isToBeShown(PackageInfo info) {
+
+		if (!FreezerKt.isRunning(info)) {
+			return  false;
+		}
 
 		if (search_pattern == null || search_pattern.isEmpty()) {
 			return true;// empty search pattern: Show all apps
