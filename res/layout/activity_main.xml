@@ -35,7 +35,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
-		app:theme="@style/AppTheme.PopupOverlay">
+		android:theme="@style/AppTheme.PopupOverlay">
 
 		<ProgressBar
 			android:id="@android:id/progress"
