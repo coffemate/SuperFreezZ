@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-	tools:ignore="MissingTranslation">
+<resources>
 
 	<string name="app_name">SuperFreeze</string>
 	<string name="msg_search">Search</string>
-	<string name="msg_search_help">Search</string>
-	<string name="alert_perm_title">Permission required</string>
-	<string name="alert_perm_body">In order to write apk file application must be granted with \"Storage\" permission.\nPlease, open app\'s settings and grant \"Storage\" permission to it.</string>
-	<string name="alert_perm_btn">Open settings</string>
-	<string name="share_exception">An exception occured. Share infos using...</string>
+	<string name="msg_search_help">Search by name&#8230;</string>
+	<string name="share_exception">An exception occurred. Share infos using&#8230;</string>
 	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically. \n\nSuperFreeze just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the result of these interactions.</string>
-	<string name="accessibility_service_unavailable">accessibility_service_description</string>
+	<string name="accessibility_service_unavailable">Accessibility service is not available on your Android version.</string>
 
 </resources>
