@@ -20,6 +20,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.AppOpsManager
@@ -30,6 +31,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
 import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.support.v4.view.MenuItemCompat
@@ -50,8 +52,6 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var appsListAdapter: AppsListAdapter
 
 	private lateinit var progressBar: ProgressBar
-
-	private var appWasLeftForUsageStatsSettings: Boolean = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -125,16 +125,19 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onResume() {
 		super.onResume()
-		if (appWasLeftForUsageStatsSettings) {
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				if (!usageStatsPermissionGranted()) {
-					toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
-				}
-			}
-			loadRunningApplications(this, applicationContext)
-			appWasLeftForUsageStatsSettings = false
+		//Execute all tasks and retain only those that returned true.
+		toBeDoneOnResume.retainAll { it() }
+	}
 
+	companion object {
+		private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
+		/**
+		 * Execute this task on resume.
+		 * @param task If it returns true, then it will be executed again at the next onResume.
+		 */
+		internal fun doOnResume(task: ()->Boolean) {
+			toBeDoneOnResume.add(task)
 		}
 	}
 
@@ -150,7 +153,18 @@ class MainActivity : AppCompatActivity() {
 					.setMessage("If you enable UsageStats access, SuperFreeze can:\n - see which apps have been awoken since last freeze\n - freeze only apps you did not use for some time.")
 					.setPositiveButton("Enable") { _, _ ->
 						showUsageStatsSettings()
-						appWasLeftForUsageStatsSettings = true
+						doOnResume {
+
+							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+								if (!usageStatsPermissionGranted()) {
+									toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
+								}
+							}
+							loadRunningApplications(this, applicationContext)
+
+							//Do not execute again
+							false
+						}
 					}
 					.setNeutralButton("Now now") { _, _ ->
 						//directly load running applications
@@ -180,12 +194,12 @@ class MainActivity : AppCompatActivity() {
 
 			val mode = appOpsManager.checkOpNoThrow(
 					AppOpsManager.OPSTR_GET_USAGE_STATS,
-					android.os.Process.myUid(),
+					Process.myUid(),
 					packageName)
 
 			return if (mode == AppOpsManager.MODE_DEFAULT) {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-					checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
+					checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
 				} else {
 					false//TODO check if this assumption is right: At Lollipop, mode will be AppOpsManager.MODE_ALLOWED if it was allowed
 				}
