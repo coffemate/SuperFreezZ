@@ -123,6 +123,9 @@ class FreezerService : AccessibilityService() {
 				nextAction = NextAction.PRESS_FORCE_STOP
 		}
 
+        /**
+         * Returns whether this service is busy (i. e. freezing an app)
+         */
 		fun busy(): Boolean {
 			return (nextAction != NextAction.DO_NOTHING
 					&& isEnabled)
