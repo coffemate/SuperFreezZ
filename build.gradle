@@ -28,8 +28,8 @@ android {
 	}
 
 	defaultConfig {
-		minSdkVersion 10
-		targetSdkVersion 26
+		minSdkVersion 14
+		targetSdkVersion 27
 	}
 
 	sourceSets {
@@ -52,7 +52,7 @@ android {
 }
 
 dependencies {
-	implementation 'com.android.support:appcompat-v7:25.4.0'
-	implementation 'com.android.support:recyclerview-v7:25.4.0'
+	implementation 'com.android.support:appcompat-v7:27.1.1'
+	implementation 'com.android.support:recyclerview-v7:27.1.1'
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
