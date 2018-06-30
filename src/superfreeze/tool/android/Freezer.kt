@@ -112,12 +112,7 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 }
 
 internal fun isRunning(packageInfo: PackageInfo): Boolean {
-	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-		! packageInfo.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
-	} else {
-		//TODO Currently, on older versions, we just show all installed apps
-		return true
-	}
+	return ! packageInfo.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
 private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {

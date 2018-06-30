@@ -34,7 +34,6 @@ import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
 import android.support.annotation.RequiresApi
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -97,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 		menuInflater.inflate(R.menu.main, menu)
 
 		val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-		val searchView = MenuItemCompat.getActionView(menu.findItem(R.id.action_search)) as SearchView
+		val searchView = menu.findItem(R.id.action_search).actionView as SearchView
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 		searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
 			if (!queryTextFocused && searchView.query.isEmpty()) {
