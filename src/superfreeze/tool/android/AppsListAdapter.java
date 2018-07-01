@@ -165,8 +165,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 
 		ViewHolder(View v, Context context) {
 			super(v);
-			imgIcon = (ImageView) v.findViewById(R.id.imgIcon);
-			txtAppName = (TextView) v.findViewById(R.id.txtAppName);
+			imgIcon = v.findViewById(R.id.imgIcon);
+			txtAppName = v.findViewById(R.id.txtAppName);
 			v.setOnClickListener(this);
 			this.context = context;
 		}
@@ -200,15 +200,16 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHo
 		}
 	}
 
+	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 		return new ViewHolder(
 				LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false),
 				viewGroup.getContext());
 	}
 
 	@Override
-	public void onBindViewHolder(ViewHolder holder, int i) {
+	public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
 		PackageInfo item = list.get(i);
 		if (cache_appIcon.containsKey(item.packageName) && cache_appName.containsKey(item.packageName)) {
 			holder.setAppName(cache_appName.get(item.packageName), search_pattern);
