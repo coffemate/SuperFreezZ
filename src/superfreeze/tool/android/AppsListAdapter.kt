@@ -73,22 +73,22 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	private val handler = Handler()
 	private val packageManager: PackageManager = mActivity.packageManager
 
-	private var names_to_load = 0
+	private var namesToLoad = 0
 
-	private val cache_appName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
-	private val cache_appIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
+	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
+	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
 
-	private var search_pattern: String? = null
+	private var searchPattern: String? = null
 
 	internal inner class AppNameLoader(private val package_info: PackageInfo) : Runnable {
 
 		override fun run() {
-			cache_appName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager) as String
+			cacheAppName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager) as String
 			handler.post {
-				names_to_load--
-				if (names_to_load == 0) {
+				namesToLoad--
+				if (namesToLoad == 0) {
 					mActivity.hideProgressBar()
-					executorServiceNames!!.shutdown()
+					executorServiceNames?.shutdown()
 					executorServiceNames = null
 				}
 			}
@@ -101,22 +101,21 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			var first = true
 			do {
 				try {
-					val appName = if (cache_appName.containsKey(package_info.packageName))
-						cache_appName[package_info.packageName]!!
-					else
-						package_info.applicationInfo.loadLabel(packageManager) as String
+					val appName = cacheAppName[package_info.packageName]
+							?: package_info.applicationInfo.loadLabel(packageManager) as String
+
 					val icon = package_info.applicationInfo.loadIcon(packageManager)
-					cache_appName[package_info.packageName] = appName
-					cache_appIcon[package_info.packageName] = icon
+					cacheAppName[package_info.packageName] = appName
+					cacheAppIcon[package_info.packageName] = icon
 					handler.post {
-						viewHolder.setAppName(appName, search_pattern)
+						viewHolder.setAppName(appName, searchPattern)
 						viewHolder.imgIcon.setImageDrawable(icon)
 					}
 
 
 				} catch (ex: OutOfMemoryError) {
-					cache_appIcon.clear()
-					cache_appName.clear()
+					cacheAppIcon.clear()
+					cacheAppName.clear()
 					if (first) {
 						first = false
 						continue
@@ -129,12 +128,10 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	inner class ViewHolder(v: View, private val context: Context) : RecyclerView.ViewHolder(v), OnClickListener {
-		private val txtAppName: TextView
-		var imgIcon: ImageView
+		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
+		var imgIcon: ImageView = v.findViewById(R.id.imgIcon)
 
 		init {
-			imgIcon = v.findViewById(R.id.imgIcon)
-			txtAppName = v.findViewById(R.id.txtAppName)
 			v.setOnClickListener(this)
 		}
 
@@ -151,19 +148,18 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 
 		private fun setAndHighlight(view: TextView, value: String, pattern: String?) {
-			var value = value
 			view.text = value
 			if (pattern == null || pattern.isEmpty()) return // nothing to highlight
 
-			value = value.toLowerCase()
+			val valueLower = value.toLowerCase()
 			var offset = 0
-			var index = value.indexOf(pattern, offset)
-			while (index >= 0 && offset < value.length) {
+			var index = valueLower.indexOf(pattern, offset)
+			while (index >= 0 && offset < valueLower.length) {
 				val span = SpannableString(view.text)
 				span.setSpan(ForegroundColorSpan(Color.BLUE), index, index + pattern.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 				view.text = span
 				offset += index + pattern.length
-				index = value.indexOf(pattern, offset)
+				index = valueLower.indexOf(pattern, offset)
 			}
 		}
 	}
@@ -176,12 +172,13 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 	override fun onBindViewHolder(holder: ViewHolder, i: Int) {
 		val item = list[i]
-		if (cache_appIcon.containsKey(item.packageName) && cache_appName.containsKey(item.packageName)) {
-			holder.setAppName(cache_appName[item.packageName]!!, search_pattern)
-			holder.imgIcon.setImageDrawable(cache_appIcon[item.packageName])
-		} else {
-			holder.setAppName(item.packageName, search_pattern)
-			holder.imgIcon.setImageDrawable(null)
+
+		holder.setAppName(
+				cacheAppName[item.packageName] ?: item.packageName,
+				searchPattern)
+
+		holder.imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
+		if (cacheAppIcon[item.packageName] == null) {
 			executorServiceIcons.submit(GuiLoader(holder, item))
 		}
 	}
@@ -199,7 +196,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		if (executorServiceNames == null) {
 			executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
 		}
-		names_to_load++
+		namesToLoad++
 		executorServiceNames!!.submit(AppNameLoader(item))
 		listOriginal.add(item)
 		if (isToBeShown(item)) {
@@ -209,7 +206,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	fun setSearchPattern(pattern: String) {
-		search_pattern = pattern.toLowerCase()
+		searchPattern = pattern.toLowerCase()
 		filterList()
 	}
 
@@ -236,9 +233,9 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			return false
 		}
 
-		if (search_pattern == null || search_pattern!!.isEmpty()) {
+		if (searchPattern.isNullOrEmpty()) {
 			return true// empty search pattern: Show all apps
-		} else if (cache_appName[info.packageName]?.toLowerCase()?.contains(search_pattern!!) == true) {
+		} else if (cacheAppName[info.packageName]?.toLowerCase()?.contains(searchPattern!!) == true) {
 			return true// search in application name
 		}
 
@@ -259,7 +256,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	companion object {
-		private val TAG = "AppsListAdapter"
+		private const val TAG = "AppsListAdapter"
 	}
 
 }
