@@ -21,7 +21,9 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android
 
+import android.app.usage.UsageStats
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -31,7 +33,6 @@ import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -59,14 +60,18 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	/**
-	 * This list contains the apps that are shown to the user. This is a subset of listOriginal.
-	 */
-	private val list = ArrayList<PackageInfo>()
-
-	/**
 	 * This list contains all user apps.
 	 */
-	private val listOriginal = ArrayList<PackageInfo>()
+	private val listOriginal = ArrayList<ListItemApp>()
+
+	private val listPendingFreeze = ArrayList<PackageInfo>()
+	private val listNotPendingFreeze = ArrayList<PackageInfo>()
+
+	/**
+	 * This list contains the items that are shown to the user, including section headers.
+	 */
+	private val list = ArrayList<AbstractListItem>()
+
 
 	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
@@ -80,7 +85,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 	private var searchPattern: String? = null
 
-	internal inner class AppNameLoader(private val package_info: PackageInfo) : Runnable {
+	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {
 
 		override fun run() {
 			cacheAppName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager) as String
@@ -95,36 +100,12 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 	}
 
-	internal inner class GuiLoader(private val viewHolder: ViewHolder, private val package_info: PackageInfo) : Runnable {
+	internal inner class GuiLoader(private val viewHolder: ViewHolder, private val listItem: AbstractListItem) : Runnable {
 
 		override fun run() {
-			var first = true
-			do {
-				try {
-					val appName = cacheAppName[package_info.packageName]
-							?: package_info.applicationInfo.loadLabel(packageManager) as String
-
-					val icon = package_info.applicationInfo.loadIcon(packageManager)
-					cacheAppName[package_info.packageName] = appName
-					cacheAppIcon[package_info.packageName] = icon
-					handler.post {
-						viewHolder.setAppName(appName, searchPattern)
-						viewHolder.imgIcon.setImageDrawable(icon)
-					}
-
-
-				} catch (ex: OutOfMemoryError) {
-					cacheAppIcon.clear()
-					cacheAppName.clear()
-					if (first) {
-						first = false
-						continue
-					}
-				}
-
-				break
-			} while (true)
+			listItem.loadNameAndIcon(viewHolder)
 		}
+
 	}
 
 	inner class ViewHolder(v: View, private val context: Context) : RecyclerView.ViewHolder(v), OnClickListener {
@@ -140,7 +121,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		 * @param v The clicked view.
 		 */
 		override fun onClick(v: View) {
-			freezeApp(getItem(adapterPosition).packageName, context)
+			getItem(adapterPosition).freeze(context)
 		}
 
 		fun setAppName(name: String, highlight: String?) {
@@ -174,7 +155,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		val item = list[i]
 
 		holder.setAppName(
-				cacheAppName[item.packageName] ?: item.packageName,
+				cacheAppName[item.packageName] ?: item.packageName ?: return,
 				searchPattern)
 
 		holder.imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
@@ -184,7 +165,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	@Contract(pure = true)
-	private fun getItem(pos: Int): PackageInfo {
+	private fun getItem(pos: Int): AbstractListItem {
 		return list[pos]
 	}
 
@@ -192,10 +173,11 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		return list.size
 	}
 
-	fun addItem(item: PackageInfo) {
+	fun addItem(packageInfo: PackageInfo, usageStats: UsageStats?) {
 		if (executorServiceNames == null) {
 			executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
 		}
+		val item = ListItemApp(packageInfo.packageName, usageStats)
 		namesToLoad++
 		executorServiceNames!!.submit(AppNameLoader(item))
 		listOriginal.add(item)
@@ -224,34 +206,27 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 	/**
 	 * Returns true if the the app name contains the search pattern.
-	 * @param info The PackageInfo describing the package.
+	 * @param app The AppsListAdapter.ListItemApp describing the package.
 	 * @return Whether the the app name contains the search pattern.
 	 */
-	private fun isToBeShown(info: PackageInfo): Boolean {
+	private fun isToBeShown(app: ListItemApp): Boolean {
 
-		if (!isRunning(info)) {
+		if (!isRunning(app.applicationInfo)) {
 			return false
 		}
 
 		if (searchPattern.isNullOrEmpty()) {
 			return true// empty search pattern: Show all apps
-		} else if (cacheAppName[info.packageName]?.toLowerCase()?.contains(searchPattern!!) == true) {
+		} else if (cacheAppName[app.packageName]?.toLowerCase()?.contains(searchPattern!!) == true) {
 			return true// search in application name
 		}
 
 		return false
 	}
 
-	internal fun refreshPackageInfoList() {
-		for (i in listOriginal.indices) {
-			val packageName = listOriginal[i].packageName
-			try {
-				listOriginal[i] = packageManager.getPackageInfo(packageName, 0)
-			} catch (e: PackageManager.NameNotFoundException) {
-				e.printStackTrace()
-				Log.e(TAG, "The package " + packageName + "was not found when refreshing")
-			}
-
+	internal fun refresh() {
+		for (app in listOriginal) {
+			app.refresh()
 		}
 	}
 
@@ -259,4 +234,80 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		private const val TAG = "AppsListAdapter"
 	}
 
+	override fun getItemViewType(position: Int): Int {
+		return 0
+	}
+
+	abstract class AbstractListItem {
+		abstract fun loadNameAndIcon(viewHolder: AppsListAdapter.ViewHolder)
+		abstract fun freeze(context: Context)
+		abstract fun refresh()
+
+		abstract val applicationInfo: ApplicationInfo?
+		abstract val packageName: String?
+	}
+
+	inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
+		override fun refresh() {
+			_applicationInfo = null
+		}
+
+		override val applicationInfo: ApplicationInfo
+			get() {
+				//TODO test if 0 instead of GET_META_DATA is sufficient
+				if (_applicationInfo == null)
+					_applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+				return _applicationInfo!!
+			}
+		private var _applicationInfo: ApplicationInfo? = null
+
+		override fun loadNameAndIcon(viewHolder: ViewHolder) {
+			var first = true
+			do {
+				try {
+					val appName = cacheAppName[packageName]
+							?: applicationInfo.loadLabel(packageManager) as String
+
+					val icon = applicationInfo.loadIcon(packageManager)
+					cacheAppName[packageName] = appName
+					cacheAppIcon[packageName] = icon
+					handler.post {
+						viewHolder.setAppName(appName, searchPattern)
+						viewHolder.imgIcon.setImageDrawable(icon)
+					}
+
+
+				} catch (ex: OutOfMemoryError) {
+					cacheAppIcon.clear()
+					cacheAppName.clear()
+					if (first) {
+						first = false
+						continue
+					}
+				}
+
+				break
+			} while (true)
+		}
+
+		override fun freeze(context: Context) {
+			freezeApp(packageName, context)
+		}
+
+	}
+
+	class ListItemSectionHeader(val text: String) : AbstractListItem() {
+
+		//These functions here do nothing:
+		override fun refresh() {
+		}
+		override fun loadNameAndIcon(viewHolder: ViewHolder) {
+		}
+		override fun freeze(context: Context) {
+		}
+
+		override val packageName: String? get() = null
+		override val applicationInfo: ApplicationInfo? get() = null
+
+	}
 }

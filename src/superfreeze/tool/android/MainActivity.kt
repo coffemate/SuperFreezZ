@@ -25,6 +25,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.AppOpsManager
 import android.app.SearchManager
+import android.app.usage.UsageStats
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -51,6 +52,11 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var appsListAdapter: AppsListAdapter
 
 	private lateinit var progressBar: ProgressBar
+
+
+	private val usageStatsMap: Map<String, UsageStats>? by lazy {
+		getAggregatedUsageStats(this)
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -84,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 	 * @param item The item to add, as a PackageInfo.
 	 */
 	fun addItem(item: PackageInfo) {
-		appsListAdapter.addItem(item)
+		appsListAdapter.addItem(item, usageStatsMap?.get(item.packageName))
 	}
 
 	/**
@@ -129,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 		toBeDoneOnResume.retainAll { it() }
 
 		if (!FreezerService.busy()) {
-			appsListAdapter.refreshPackageInfoList()
+			appsListAdapter.refresh()
 			appsListAdapter.filterList()
 		}
 	}

@@ -111,8 +111,8 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
 
-internal fun isRunning(packageInfo: PackageInfo): Boolean {
-	return ! packageInfo.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
+internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
+	return ! applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
 private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {
