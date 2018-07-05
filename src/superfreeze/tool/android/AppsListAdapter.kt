@@ -49,6 +49,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 
+
 /**
  * This class is responsible for viewing the list of installed apps.
  */
@@ -60,18 +61,16 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	/**
-	 * This list contains all user apps.
+	 * This list contains all user apps and the section headers.
 	 */
-	private val listOriginal = ArrayList<ListItemApp>()
-
-	private val listPendingFreeze = ArrayList<PackageInfo>()
-	private val listNotPendingFreeze = ArrayList<PackageInfo>()
+	private val listOriginal = ArrayList<AbstractListItem>()
 
 	/**
 	 * This list contains the items that are shown to the user, including section headers.
 	 */
 	private val list = ArrayList<AbstractListItem>()
 
+	private var listPendingFreeze = emptyList<PackageInfo>()
 
 	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
@@ -83,7 +82,12 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
 	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
 
-	private var searchPattern: String? = null
+	var searchPattern: String = ""
+		set(value) {
+			field = value.toLowerCase()
+			filterList()
+		}
+
 
 	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {
 
@@ -100,7 +104,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 	}
 
-	internal inner class GuiLoader(private val viewHolder: ViewHolder, private val listItem: AbstractListItem) : Runnable {
+	internal class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
 
 		override fun run() {
 			listItem.loadNameAndIcon(viewHolder)
@@ -108,9 +112,111 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 	}
 
-	inner class ViewHolder(v: View, private val context: Context) : RecyclerView.ViewHolder(v), OnClickListener {
+	override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+		return if (i == 0) {
+			ViewHolderApp(
+					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
+					viewGroup.context)
+		} else {
+			ViewHolderSectionHeader(
+					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false))
+		}
+	}
+
+	override fun onBindViewHolder(holder: ViewHolder, i: Int) {
+		val item = list[i]
+
+		holder.setName(item.text, searchPattern)
+
+		holder.loadImage(item)
+	}
+
+	@Contract(pure = true)
+	private fun getItem(pos: Int): AbstractListItem {
+		return list[pos]
+	}
+
+	override fun getItemCount(): Int {
+		return list.size
+	}
+
+	internal fun filterList() {
+		list.clear()
+		for (item in listOriginal) {
+
+			if (item.isToBeShown()) {
+				list.add(item)
+			}
+		}
+		notifyDataSetChanged()
+	}
+
+	internal fun addItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
+		val (listPendingFreeze, listNotPendingFreeze) = packages.partition {
+			isPendingFreeze(it, usageStatsMap?.get(it.packageName))
+		}
+
+		addSectionHeader("PENDING FREEZE")
+		for (info in listPendingFreeze) {
+			addItem(info, usageStatsMap?.get(info.packageName))
+		}
+
+		addSectionHeader("OTHERS")
+		for (info in listNotPendingFreeze) {
+			addItem(info, usageStatsMap?.get(info.packageName))
+		}
+
+		this.listPendingFreeze = listPendingFreeze
+	}
+
+	private fun addItem(packageInfo: PackageInfo, usageStats: UsageStats?) {
+		if (executorServiceNames == null) {
+			executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
+		}
+		val item = ListItemApp(packageInfo.packageName, usageStats)
+		namesToLoad++
+		executorServiceNames!!.submit(AppNameLoader(item))
+		listOriginal.add(item)
+		if (item.isToBeShown()) {
+			list.add(item)
+		}
+		notifyDataSetChanged()
+	}
+
+	private fun addSectionHeader(title: String) {
+		val sectionHeader = ListItemSectionHeader(title)
+		list.add(sectionHeader)
+		listOriginal.add(sectionHeader)
+	}
+
+
+	internal fun refresh() {
+		for (app in listOriginal) {
+			app.refresh()
+		}
+	}
+
+
+
+	companion object {
+		private const val TAG = "AppsListAdapter"
+	}
+
+	override fun getItemViewType(position: Int): Int {
+		return getItem(position).type
+	}
+
+
+
+
+	abstract class ViewHolder(v: View) : RecyclerView.ViewHolder(v), OnClickListener {
+		abstract fun setName(name: String, highlight: String?)
+		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
+	}
+
+	inner class ViewHolderApp(v: View, private val context: Context) : ViewHolder(v) {
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
-		var imgIcon: ImageView = v.findViewById(R.id.imgIcon)
+		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
 
 		init {
 			v.setOnClickListener(this)
@@ -124,7 +230,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			getItem(adapterPosition).freeze(context)
 		}
 
-		fun setAppName(name: String, highlight: String?) {
+		override fun setName(name: String, highlight: String?) {
 			setAndHighlight(txtAppName, name, highlight)
 		}
 
@@ -143,108 +249,37 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 				index = valueLower.indexOf(pattern, offset)
 			}
 		}
-	}
 
-	override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-		return ViewHolder(
-				LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
-				viewGroup.context)
-	}
-
-	override fun onBindViewHolder(holder: ViewHolder, i: Int) {
-		val item = list[i]
-
-		holder.setAppName(
-				cacheAppName[item.packageName] ?: item.packageName ?: return,
-				searchPattern)
-
-		holder.imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
-		if (cacheAppIcon[item.packageName] == null) {
-			executorServiceIcons.submit(GuiLoader(holder, item))
-		}
-	}
-
-	@Contract(pure = true)
-	private fun getItem(pos: Int): AbstractListItem {
-		return list[pos]
-	}
-
-	override fun getItemCount(): Int {
-		return list.size
-	}
-
-	fun addItem(packageInfo: PackageInfo, usageStats: UsageStats?) {
-		if (executorServiceNames == null) {
-			executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
-		}
-		val item = ListItemApp(packageInfo.packageName, usageStats)
-		namesToLoad++
-		executorServiceNames!!.submit(AppNameLoader(item))
-		listOriginal.add(item)
-		if (isToBeShown(item)) {
-			list.add(item)
-		}
-		notifyDataSetChanged()
-	}
-
-	fun setSearchPattern(pattern: String) {
-		searchPattern = pattern.toLowerCase()
-		filterList()
-	}
-
-
-	internal fun filterList() {
-		list.clear()
-		for (info in listOriginal) {
-
-			if (isToBeShown(info)) {
-				list.add(info)
+		override fun loadImage(item: AbstractListItem) {
+			imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
+			if (cacheAppIcon[item.packageName] == null) {
+				executorServiceIcons.submit(GuiLoader(this, item))
 			}
 		}
-		notifyDataSetChanged()
 	}
 
-	/**
-	 * Returns true if the the app name contains the search pattern.
-	 * @param app The AppsListAdapter.ListItemApp describing the package.
-	 * @return Whether the the app name contains the search pattern.
-	 */
-	private fun isToBeShown(app: ListItemApp): Boolean {
-
-		if (!isRunning(app.applicationInfo)) {
-			return false
+	class ViewHolderSectionHeader(private val v: View): ViewHolder(v) {
+		override fun loadImage(item: AbstractListItem) {
+		}
+		override fun onClick(v: View?) {
 		}
 
-		if (searchPattern.isNullOrEmpty()) {
-			return true// empty search pattern: Show all apps
-		} else if (cacheAppName[app.packageName]?.toLowerCase()?.contains(searchPattern!!) == true) {
-			return true// search in application name
-		}
-
-		return false
-	}
-
-	internal fun refresh() {
-		for (app in listOriginal) {
-			app.refresh()
+		override fun setName(name: String, highlight: String?) {
+			v.findViewById<TextView>(R.id.textView).text = name
 		}
 	}
 
-	companion object {
-		private const val TAG = "AppsListAdapter"
-	}
-
-	override fun getItemViewType(position: Int): Int {
-		return 0
-	}
 
 	abstract class AbstractListItem {
-		abstract fun loadNameAndIcon(viewHolder: AppsListAdapter.ViewHolder)
+		abstract fun loadNameAndIcon(viewHolder: AppsListAdapter.ViewHolderApp)
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
+		abstract fun isToBeShown(): Boolean
 
 		abstract val applicationInfo: ApplicationInfo?
 		abstract val packageName: String?
+		abstract val text: String
+		abstract val type: Int
 	}
 
 	inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
@@ -252,6 +287,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			_applicationInfo = null
 		}
 
+		override val type = 0
 		override val applicationInfo: ApplicationInfo
 			get() {
 				//TODO test if 0 instead of GET_META_DATA is sufficient
@@ -259,9 +295,10 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 					_applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
 				return _applicationInfo!!
 			}
+
 		private var _applicationInfo: ApplicationInfo? = null
 
-		override fun loadNameAndIcon(viewHolder: ViewHolder) {
+		override fun loadNameAndIcon(viewHolder: ViewHolderApp) {
 			var first = true
 			do {
 				try {
@@ -272,7 +309,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 					cacheAppName[packageName] = appName
 					cacheAppIcon[packageName] = icon
 					handler.post {
-						viewHolder.setAppName(appName, searchPattern)
+						viewHolder.setName(appName, searchPattern)
 						viewHolder.imgIcon.setImageDrawable(icon)
 					}
 
@@ -294,17 +331,33 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			freezeApp(packageName, context)
 		}
 
+		override val text: String
+			get() = cacheAppName[packageName] ?: packageName
+
+		override fun isToBeShown(): Boolean {
+			if (searchPattern.isEmpty()) {
+				return true// empty search pattern: Show all apps
+			} else if (cacheAppName[packageName]?.toLowerCase()?.contains(searchPattern) != false) {
+				return true// search in application name
+			}
+
+			return false
+		}
 	}
 
-	class ListItemSectionHeader(val text: String) : AbstractListItem() {
+	class ListItemSectionHeader(override val text: String) : AbstractListItem() {
+
+		override val type = 1
 
 		//These functions here do nothing:
 		override fun refresh() {
 		}
-		override fun loadNameAndIcon(viewHolder: ViewHolder) {
+		override fun loadNameAndIcon(viewHolder: ViewHolderApp) {
 		}
 		override fun freeze(context: Context) {
 		}
+
+		override fun isToBeShown() = true
 
 		override val packageName: String? get() = null
 		override val applicationInfo: ApplicationInfo? get() = null

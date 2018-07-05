@@ -61,33 +61,19 @@ internal fun freezeApp(packageName: String, context: Context) {
  */
 internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
 
-	val loader = object : AsyncTask<Void, UsedPackage, Void>() {
-		private val usageStatsMap: Map<String, UsageStats>? = getAggregatedUsageStats(context)
+	Thread {
+		val packages =
+				context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+						.filter {
+							//Add the package only if it is NOT a system app:
+							! it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
+						}
 
-		override fun doInBackground(vararg params: Void): Void? {
-			val packages =
-					context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-							.filter {
-								//Add the package only if it is NOT a system app:
-								! it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-							}
-							.map{ UsedPackage(it, usageStatsMap?.get(it.packageName)) }
-							.sorted()
-
-			for (usedPackage in packages) {
-				publishProgress(usedPackage)
-			}
-			return null
+		mainActivity.runOnUiThread {
+			mainActivity.addItems(packages)
 		}
+	}.start()
 
-		override fun onProgressUpdate(vararg values: UsedPackage) {
-			mainActivity.addItem(values[0].packageInfo)
-		}
-
-
-	}
-
-	loader.execute()
 }
 
 
@@ -120,17 +106,28 @@ private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?)
 	/**
 	 * The timestamp at which this app was used last or 0 if it was never used/no infos are available
 	 */
-	internal val lastTimeUsed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-		usageStats?.lastTimeUsed
-				?: Long.MIN_VALUE
-	} else {
-		Long.MIN_VALUE
-	}
+	internal val lastTimeUsed = getLastTimeUsed(usageStats)
 
 	override fun compareTo(other: UsedPackage): Int {
 		return this.lastTimeUsed.compareTo(other.lastTimeUsed)
 	}
 
+}
+
+internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?): Boolean {
+	if (!isRunning(packageInfo.applicationInfo)) {
+		return false
+	}
+	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
+}
+
+private fun getLastTimeUsed(usageStats: UsageStats?): Long {
+	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+		usageStats?.lastTimeUsed
+				?: Long.MIN_VALUE
+	} else {
+		Long.MIN_VALUE
+	}
 }
 
 private fun Int.isFlagSet(value: Int): Boolean {

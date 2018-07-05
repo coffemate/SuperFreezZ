@@ -89,8 +89,8 @@ class MainActivity : AppCompatActivity() {
 	 * This will add item to the apps list.
 	 * @param item The item to add, as a PackageInfo.
 	 */
-	fun addItem(item: PackageInfo) {
-		appsListAdapter.addItem(item, usageStatsMap?.get(item.packageName))
+	fun addItems(item: List<PackageInfo>) {
+		appsListAdapter.addItems(item, usageStatsMap)
 	}
 
 	/**
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 			}
 
 			override fun onQueryTextChange(s: String): Boolean {
-				appsListAdapter.setSearchPattern(s)
+				appsListAdapter.searchPattern = s
 				return true
 			}
 		})

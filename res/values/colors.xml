@@ -6,4 +6,5 @@
 	<color name="secondary_text_light">#80d8ff</color>
 	<color name="secondary_text_material_dark">#ffffff</color>
 	<color name="text_color_secondary">#000000</color>
+	<color name="text_color_blue">#0091ea</color>
 </resources>
