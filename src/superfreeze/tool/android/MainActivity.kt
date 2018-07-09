@@ -89,8 +89,8 @@ class MainActivity : AppCompatActivity() {
 	 * This will add item to the apps list.
 	 * @param item The item to add, as a PackageInfo.
 	 */
-	fun addItems(item: List<PackageInfo>) {
-		appsListAdapter.addItems(item, usageStatsMap)
+	fun setItems(items: List<PackageInfo>) {
+		appsListAdapter.setAndLoadItems(items, usageStatsMap)
 	}
 
 	/**
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 		toBeDoneOnResume.retainAll { it() }
 
 		if (!FreezerService.busy()) {
-			appsListAdapter.refresh()
+			appsListAdapter.refresh(getAggregatedUsageStats(this))
 			appsListAdapter.filterList()
 		}
 	}

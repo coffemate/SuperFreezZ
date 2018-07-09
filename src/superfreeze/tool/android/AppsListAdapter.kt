@@ -39,12 +39,8 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import org.jetbrains.annotations.Contract
-
-import java.util.ArrayList
-import java.util.Collections
-import java.util.LinkedHashMap
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
@@ -70,7 +66,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	 */
 	private val list = ArrayList<AbstractListItem>()
 
-	private var listPendingFreeze = emptyList<PackageInfo>()
+	private var listPendingFreeze = emptyList<String>()
 
 	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
@@ -142,58 +138,73 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 	internal fun filterList() {
 		list.clear()
-		for (item in listOriginal) {
+		list.addAll(listOriginal.filter { it.isToBeShown() })
 
-			if (item.isToBeShown()) {
-				list.add(item)
+		notifyDataSetChanged()
+	}
+
+	internal fun setAndLoadItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
+		listOriginal.clear()
+		listOriginal.addAll(packages.map {
+			ListItemApp(it.packageName, usageStatsMap?.get(it.packageName))
+		})
+
+		sortList(usageStatsMap, loadNames = true)
+	}
+
+	@Suppress("UNCHECKED_CAST")
+	private fun sortList(usageStatsMap: Map<String, UsageStats>?, loadNames: Boolean = false) {
+		val (listPendingFreeze, listNotPendingFreeze) = (listOriginal
+				.filter { it is ListItemApp } as List<ListItemApp>)
+				.partition { isPendingFreeze(it.packageName, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
+
+		listOriginal.clear()
+
+		if (!listPendingFreeze.isEmpty()) {
+			addSectionHeader("PENDING FREEZE")
+			for (info in listPendingFreeze) {
+				addItem(info, loadNames)
 			}
 		}
 		notifyDataSetChanged()
-	}
 
-	internal fun addItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
-		val (listPendingFreeze, listNotPendingFreeze) = packages.partition {
-			isPendingFreeze(it, usageStatsMap?.get(it.packageName))
-		}
-
-		addSectionHeader("PENDING FREEZE")
-		for (info in listPendingFreeze) {
-			addItem(info, usageStatsMap?.get(info.packageName))
-		}
-
-		addSectionHeader("OTHERS")
-		for (info in listNotPendingFreeze) {
-			addItem(info, usageStatsMap?.get(info.packageName))
-		}
-
-		this.listPendingFreeze = listPendingFreeze
-	}
-
-	private fun addItem(packageInfo: PackageInfo, usageStats: UsageStats?) {
-		if (executorServiceNames == null) {
-			executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
-		}
-		val item = ListItemApp(packageInfo.packageName, usageStats)
-		namesToLoad++
-		executorServiceNames!!.submit(AppNameLoader(item))
-		listOriginal.add(item)
-		if (item.isToBeShown()) {
-			list.add(item)
+		if (!listNotPendingFreeze.isEmpty()) {
+			addSectionHeader("OTHERS")
+			for (info in listNotPendingFreeze) {
+				addItem(info, loadNames)
+			}
 		}
 		notifyDataSetChanged()
+
+		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
 	}
 
 	private fun addSectionHeader(title: String) {
 		val sectionHeader = ListItemSectionHeader(title)
-		list.add(sectionHeader)
-		listOriginal.add(sectionHeader)
+		addItem(sectionHeader)
+	}
+
+	private fun addItem(item: AbstractListItem, loadName: Boolean = false) {
+		listOriginal.add(item)
+		if (item.isToBeShown()) {
+			list.add(item)
+		}
+
+		if (loadName && item is ListItemApp) {
+			if (executorServiceNames == null) {
+				executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
+			}
+			namesToLoad++
+			executorServiceNames!!.submit(AppNameLoader(item))
+		}
 	}
 
 
-	internal fun refresh() {
+	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
 		for (app in listOriginal) {
 			app.refresh()
 		}
+		sortList(usageStatsMap)
 	}
 
 

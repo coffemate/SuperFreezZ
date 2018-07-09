@@ -27,7 +27,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import org.jetbrains.annotations.Contract
 
@@ -70,7 +69,7 @@ internal fun loadRunningApplications(mainActivity: MainActivity, context: Contex
 						}
 
 		mainActivity.runOnUiThread {
-			mainActivity.addItems(packages)
+			mainActivity.setItems(packages)
 		}
 	}.start()
 
@@ -115,7 +114,11 @@ private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?)
 }
 
 internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?): Boolean {
-	if (!isRunning(packageInfo.applicationInfo)) {
+	return isPendingFreeze(packageInfo.packageName, packageInfo.applicationInfo, usageStats)
+}
+
+internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
+	if (!isRunning(applicationInfo)) {
 		return false
 	}
 	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
