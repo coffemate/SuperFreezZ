@@ -39,7 +39,6 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import org.jetbrains.annotations.Contract
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -49,7 +48,7 @@ import java.util.concurrent.ThreadFactory
 /**
  * This class is responsible for viewing the list of installed apps.
  */
-class AppsListAdapter internal constructor(private val mActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.ViewHolder>() {
+internal class AppsListAdapter internal constructor(private val mActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
 	private val tFactory = ThreadFactory { r ->
 		val t = Thread(r)
 		t.isDaemon = true
@@ -85,30 +84,9 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 
 
-	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {
 
-		override fun run() {
-			cacheAppName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager) as String
-			handler.post {
-				namesToLoad--
-				if (namesToLoad == 0) {
-					mActivity.hideProgressBar()
-					executorServiceNames?.shutdown()
-					executorServiceNames = null
-				}
-			}
-		}
-	}
 
-	internal class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
-
-		override fun run() {
-			listItem.loadNameAndIcon(viewHolder)
-		}
-
-	}
-
-	override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+	override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): AbstractViewHolder {
 		return if (i == 0) {
 			ViewHolderApp(
 					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
@@ -119,7 +97,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 	}
 
-	override fun onBindViewHolder(holder: ViewHolder, i: Int) {
+	override fun onBindViewHolder(holder: AbstractViewHolder, i: Int) {
 		val item = list[i]
 
 		holder.setName(item.text, searchPattern)
@@ -127,14 +105,16 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		holder.loadImage(item)
 	}
 
-	@Contract(pure = true)
-	private fun getItem(pos: Int): AbstractListItem {
-		return list[pos]
-	}
-
 	override fun getItemCount(): Int {
 		return list.size
 	}
+
+	override fun getItemViewType(position: Int): Int {
+		return list[position].type
+	}
+
+
+
 
 	internal fun filterList() {
 		list.clear()
@@ -151,6 +131,15 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 
 		sortList(usageStatsMap, loadNames = true)
 	}
+
+	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
+		for (app in listOriginal) {
+			app.refresh()
+		}
+		sortList(usageStatsMap)
+	}
+
+
 
 	@Suppress("UNCHECKED_CAST")
 	private fun sortList(usageStatsMap: Map<String, UsageStats>?, loadNames: Boolean = false) {
@@ -180,9 +169,9 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 	private fun addSectionHeader(title: String) {
-		val sectionHeader = ListItemSectionHeader(title)
-		addItem(sectionHeader)
+		addItem(ListItemSectionHeader(title))
 	}
+
 
 	private fun addItem(item: AbstractListItem, loadName: Boolean = false) {
 		listOriginal.add(item)
@@ -200,32 +189,14 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 
-	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
-		for (app in listOriginal) {
-			app.refresh()
-		}
-		sortList(usageStatsMap)
-	}
 
 
-
-	companion object {
-		private const val TAG = "AppsListAdapter"
-	}
-
-	override fun getItemViewType(position: Int): Int {
-		return getItem(position).type
-	}
-
-
-
-
-	abstract class ViewHolder(v: View) : RecyclerView.ViewHolder(v), OnClickListener {
+	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v), OnClickListener {
 		abstract fun setName(name: String, highlight: String?)
 		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
 	}
 
-	inner class ViewHolderApp(v: View, private val context: Context) : ViewHolder(v) {
+	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v) {
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
 
@@ -238,7 +209,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		 * @param v The clicked view.
 		 */
 		override fun onClick(v: View) {
-			getItem(adapterPosition).freeze(context)
+			list[adapterPosition].freeze(context)
 		}
 
 		override fun setName(name: String, highlight: String?) {
@@ -269,7 +240,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 	}
 
-	class ViewHolderSectionHeader(private val v: View): ViewHolder(v) {
+	internal class ViewHolderSectionHeader(private val v: View): AbstractViewHolder(v) {
 		override fun loadImage(item: AbstractListItem) {
 		}
 		override fun onClick(v: View?) {
@@ -281,7 +252,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 	}
 
 
-	abstract class AbstractListItem {
+	internal abstract class AbstractListItem {
 		abstract fun loadNameAndIcon(viewHolder: AppsListAdapter.ViewHolderApp)
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
@@ -293,7 +264,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		abstract val type: Int
 	}
 
-	inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
+	internal inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
 		override fun refresh() {
 			_applicationInfo = null
 		}
@@ -302,9 +273,10 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		override val applicationInfo: ApplicationInfo
 			get() {
 				//TODO test if 0 instead of GET_META_DATA is sufficient
-				if (_applicationInfo == null)
-					_applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-				return _applicationInfo!!
+				val info = _applicationInfo
+					?: packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+				_applicationInfo = info
+				return info
 			}
 
 		private var _applicationInfo: ApplicationInfo? = null
@@ -314,12 +286,13 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 			do {
 				try {
 					val appName = cacheAppName[packageName]
-							?: applicationInfo.loadLabel(packageManager) as String
+							?: applicationInfo.loadLabel(packageManager).toString()
 
 					val icon = applicationInfo.loadIcon(packageManager)
-					cacheAppName[packageName] = appName
-					cacheAppIcon[packageName] = icon
+
 					handler.post {
+						cacheAppName[packageName] = appName
+						cacheAppIcon[packageName] = icon
 						viewHolder.setName(appName, searchPattern)
 						viewHolder.imgIcon.setImageDrawable(icon)
 					}
@@ -356,7 +329,7 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		}
 	}
 
-	class ListItemSectionHeader(override val text: String) : AbstractListItem() {
+	internal class ListItemSectionHeader(override val text: String) : AbstractListItem() {
 
 		override val type = 1
 
@@ -373,5 +346,35 @@ class AppsListAdapter internal constructor(private val mActivity: MainActivity) 
 		override val packageName: String? get() = null
 		override val applicationInfo: ApplicationInfo? get() = null
 
+	}
+
+
+
+
+	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {
+
+		override fun run() {
+			cacheAppName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager).toString()
+			handler.post {
+				namesToLoad--
+				if (namesToLoad == 0) {
+					mActivity.hideProgressBar()
+					executorServiceNames?.shutdown()
+					executorServiceNames = null
+				}
+			}
+		}
+	}
+
+	internal class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
+
+		override fun run() {
+			listItem.loadNameAndIcon(viewHolder)
+		}
+
+	}
+
+	companion object {
+		private const val TAG = "AppsListAdapter"
 	}
 }
