@@ -67,8 +67,12 @@ class FreezerService : AccessibilityService() {
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(node: AccessibilityNodeInfo): Boolean {
 
-		return clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+		val result = clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
 
+		//Execute all tasks and retain only those that returned true.
+		toBeDoneOnFinished.retainAll { it() }
+
+		return result
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -107,6 +111,7 @@ class FreezerService : AccessibilityService() {
 
 	override fun onDestroy() {
 		isEnabled = false
+		toBeDoneOnFinished.clear()
 	}
 
 	internal companion object {
@@ -129,6 +134,16 @@ class FreezerService : AccessibilityService() {
 		fun busy(): Boolean {
 			return (nextAction != NextAction.DO_NOTHING
 					&& isEnabled)
+		}
+
+		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()
+		/**
+		 * Execute this task when finished freezing the current app.
+		 * @param task If it returns true, then it will be executed again at the next onResume.
+		 */
+		internal fun doOnFinished(task: ()->Boolean) {
+			if(isEnabled)
+				toBeDoneOnFinished.add(task)
 		}
 	}
 }

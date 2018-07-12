@@ -130,8 +130,24 @@ internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationIn
 	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
 }
 
-internal fun freezeAll(context: Context) {
+internal fun freezeAll(context: Context, apps: List<String> = getAppsPendingFreeze(context)) {
+	var nextIndex = 0
 
+	FreezerService.doOnFinished {
+		freezeApp(apps[nextIndex], context)
+		nextIndex++
+
+		//only execute again if nextIndex is a valid index
+		nextIndex < apps.size
+	}
+}
+
+private fun getAppsPendingFreeze(context: Context): List<String> {
+
+	val usageStatsMap = getAggregatedUsageStats(context)
+	return getRunningApplications(context)
+			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName)) }
+			.map { it.packageName }
 }
 
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
