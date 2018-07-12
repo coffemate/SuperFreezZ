@@ -1,0 +1,15 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+	<shortcut
+		android:shortcutId="FreezeShortcut"
+		android:enabled="true"
+		android:icon="@drawable/ic_freeze"
+		android:shortcutShortLabel="@string/freeze_shortcut_short_label"
+		android:shortcutLongLabel="@string/freeze_shortcut_long_label">
+		<intent
+			android:action="FREEZE"
+			android:targetPackage="${packageName}"
+			android:targetClass="${packageName}.FreezeShortcutActivity" />
+
+		<categories android:name="android.shortcut." />
+	</shortcut>
+</shortcuts>

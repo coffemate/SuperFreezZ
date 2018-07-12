@@ -61,18 +61,24 @@ internal fun freezeApp(packageName: String, context: Context) {
 internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
 
 	Thread {
-		val packages =
-				context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-						.filter {
-							//Add the package only if it is NOT a system app:
-							! it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-						}
+		val packages = getRunningApplications(context)
 
 		mainActivity.runOnUiThread {
 			mainActivity.setItems(packages)
 		}
 	}.start()
 
+}
+
+/**
+ * Gets the running applications. Do not use from the UI thread.
+ */
+private fun getRunningApplications(context: Context): List<PackageInfo> {
+	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+			.filter {
+				//Add the package only if it is NOT a system app:
+				!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
+			}
 }
 
 
@@ -122,6 +128,10 @@ internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationIn
 		return false
 	}
 	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
+}
+
+internal fun freezeAll(context: Context) {
+
 }
 
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
