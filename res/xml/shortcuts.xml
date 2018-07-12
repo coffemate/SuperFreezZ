@@ -9,7 +9,5 @@
 			android:action="FREEZE"
 			android:targetPackage="${packageName}"
 			android:targetClass="${packageName}.FreezeShortcutActivity" />
-
-		<categories android:name="android.shortcut." />
 	</shortcut>
 </shortcuts>
