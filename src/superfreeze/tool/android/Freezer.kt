@@ -131,15 +131,21 @@ internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationIn
 }
 
 internal fun freezeAll(context: Context, apps: List<String> = getAppsPendingFreeze(context)) {
+
 	var nextIndex = 0
 
-	FreezerService.doOnFinished {
-		freezeApp(apps[nextIndex], context)
-		nextIndex++
-
+	fun freezeNext(): Boolean {
+		if (nextIndex < apps.size) {
+			freezeApp(apps[nextIndex], context)
+			nextIndex++
+		}
 		//only execute again if nextIndex is a valid index
-		nextIndex < apps.size
+		return nextIndex < apps.size
 	}
+
+	FreezerService.doOnFinished(::freezeNext)
+
+	freezeNext()
 }
 
 private fun getAppsPendingFreeze(context: Context): List<String> {

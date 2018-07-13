@@ -6,17 +6,14 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.support.v7.app.AppCompatActivity
-
 
 
 /**
  * This is actually not an activity, it just returns a shortcut some launcher can use.
  */
-class FreezeShortcutActivity : AppCompatActivity() {
-	override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-		super.onCreate(savedInstanceState, persistentState)
+class FreezeShortcutActivity : Activity() {
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
 		val intent = intent
 		val action = intent.action

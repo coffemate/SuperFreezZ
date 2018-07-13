@@ -6,8 +6,8 @@
 		android:shortcutShortLabel="@string/freeze_shortcut_short_label"
 		android:shortcutLongLabel="@string/freeze_shortcut_long_label">
 		<intent
-			android:action="FREEZE"
-			android:targetPackage="${packageName}"
-			android:targetClass="${packageName}.FreezeShortcutActivity" />
+			android:action="android.intent.action.MAIN"
+			android:targetPackage="superfreeze.tool.android"
+			android:targetClass="superfreeze.tool.android.FreezeShortcutActivity" />
 	</shortcut>
 </shortcuts>

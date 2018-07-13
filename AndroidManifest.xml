@@ -37,15 +37,22 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-	        
-	        <meta-data android:name="android.app.shortcuts"
-		        android:resource="@xml/shortcuts" />
+
+		    <meta-data android:name="android.app.shortcuts"
+			    android:resource="@xml/shortcuts" />
+
+		    <intent-filter>
+		        <action android:name="FREEZE" />
+	        </intent-filter>
         </activity>
 
         <activity android:name=".FreezeShortcutActivity">
 	        <intent-filter>
 		        <action android:name="android.intent.action.CREATE_SHORTCUT" />
 		        <category android:name="android.intent.category.DEFAULT" />
+	        </intent-filter>
+	        <intent-filter>
+		        <action android:name="FREEZE" />
 	        </intent-filter>
         </activity>
 
