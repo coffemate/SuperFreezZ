@@ -9,5 +9,6 @@
 	<string name="accessibility_service_unavailable">Accessibility service is not available on your Android version.</string>
 	<string name="freeze_shortcut_short_label">Freeze</string>
 	<string name="freeze_shortcut_long_label">SuperFreeze unused apps</string>
+	<string name="NothingToFreeze">Nothing to freeze</string>
 
 </resources>

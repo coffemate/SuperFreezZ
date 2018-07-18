@@ -130,9 +130,15 @@ internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationIn
 	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
 }
 
-internal fun freezeAll(context: Context, apps: List<String>? = null) {
+/**
+ * Freezes all apps in the "apps" list.
+ * @param context: The context
+ * @param apps: A list of apps to be frozen. If it is null, a list of apps that pend freeze is computed automatically.
+ * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
+ * It returns whether it wants to be executed again.
+ */
+internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
 	val appsNonNull = apps ?: getAppsPendingFreeze(context)
-
 
 	var nextIndex = 0
 
@@ -147,9 +153,10 @@ internal fun freezeAll(context: Context, apps: List<String>? = null) {
 
 	freezeNext()
 	FreezerService.doOnFinished(::freezeNext)
+	return ::freezeNext
 }
 
-private fun getAppsPendingFreeze(context: Context): List<String> {
+internal fun getAppsPendingFreeze(context: Context): List<String> {
 
 	val usageStatsMap = getAggregatedUsageStats(context)
 	return getRunningApplications(context)
