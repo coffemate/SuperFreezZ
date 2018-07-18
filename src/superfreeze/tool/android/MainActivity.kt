@@ -53,12 +53,12 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var progressBar: ProgressBar
 
-
 	private val usageStatsMap: Map<String, UsageStats>? by lazy {
 		getAggregatedUsageStats(this)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
@@ -124,7 +124,9 @@ class MainActivity : AppCompatActivity() {
 				return true
 			}
 		})
-
+		fab.setOnClickListener {
+			freezeAll(applicationContext, apps = appsListAdapter.listPendingFreeze)
+		}
 		return super.onCreateOptionsMenu(menu)
 	}
 

@@ -65,7 +65,8 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 	 */
 	private val list = ArrayList<AbstractListItem>()
 
-	private var listPendingFreeze: List<String>? = null
+	var listPendingFreeze: List<String>? = null
+		private set
 
 	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
