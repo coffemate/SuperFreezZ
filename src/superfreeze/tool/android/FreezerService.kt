@@ -23,34 +23,35 @@ class FreezerService : AccessibilityService() {
 			return
 		}
 
-		if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+		//We are only interested in WINDOW_STATE_CHANGED events
+		if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+			return
+		}
 
-			when(nextAction) {
-				NextAction.DO_NOTHING -> {}
+		when(nextAction) {
+			NextAction.DO_NOTHING -> {}
 
-				NextAction.PRESS_FORCE_STOP -> {
-					if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
-						val success = pressForceStopButton(event.source)
-						nextAction = if (success) NextAction.PRESS_OK else fail()
-					}
-				}
-				NextAction.PRESS_OK -> {
-					if (event.className == "android.app.AlertDialog") {
-						val success = pressOkButton(event.source)
-						nextAction = if (success) NextAction.PRESS_BACK else fail()
-					}
-				}
-				NextAction.PRESS_BACK -> {
-					if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
-						pressBackButton()
-						nextAction = NextAction.DO_NOTHING
-
-						//Execute all tasks and retain only those that returned true.
-						toBeDoneOnFinished.retainAll { it() }
-					}
+			NextAction.PRESS_FORCE_STOP -> {
+				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
+					val success = pressForceStopButton(event.source)
+					nextAction = if (success) NextAction.PRESS_OK else fail()
 				}
 			}
+			NextAction.PRESS_OK -> {
+				if (event.className == "android.app.AlertDialog") {
+					val success = pressOkButton(event.source)
+					nextAction = if (success) NextAction.PRESS_BACK else fail()
+				}
+			}
+			NextAction.PRESS_BACK -> {
+				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
+					pressBackButton()
+					nextAction = NextAction.DO_NOTHING
 
+					//Execute all tasks and retain only those that returned true.
+					toBeDoneOnFinished.retainAll { it() }
+				}
+			}
 		}
 	}
 

@@ -53,27 +53,11 @@ internal fun freezeApp(packageName: String, context: Context) {
 	}
 }
 
-/**
- * Loads all running applications and add them to MainActivity.
- * @param mainActivity The MainActivity
- * @param context The application context.
- */
-internal fun loadRunningApplications(mainActivity: MainActivity, context: Context) {
-
-	Thread {
-		val packages = getRunningApplications(context)
-
-		mainActivity.runOnUiThread {
-			mainActivity.setItems(packages)
-		}
-	}.start()
-
-}
 
 /**
  * Gets the running applications. Do not use from the UI thread.
  */
-private fun getRunningApplications(context: Context): List<PackageInfo> {
+public fun getRunningApplications(context: Context): List<PackageInfo> {
 	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 			.filter {
 				//Add the package only if it is NOT a system app:

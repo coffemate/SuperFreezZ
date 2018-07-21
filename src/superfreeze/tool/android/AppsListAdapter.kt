@@ -273,9 +273,8 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 		override val type = 0
 		override val applicationInfo: ApplicationInfo
 			get() {
-				//TODO test if 0 instead of GET_META_DATA is sufficient
 				val info = _applicationInfo
-					?: packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+					?: packageManager.getApplicationInfo(packageName, 0)
 				_applicationInfo = info
 				return info
 			}

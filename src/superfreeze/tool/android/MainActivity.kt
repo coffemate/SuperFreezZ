@@ -171,15 +171,15 @@ class MainActivity : AppCompatActivity() {
 							if (!usageStatsPermissionGranted()) {
 								toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
 							}
-							loadRunningApplications(this, applicationContext)
+							loadRunningApplications()
 
 							//Do not execute again
 							false
 						}
 					}
-					.setNeutralButton("Now now") { _, _ ->
+					.setNeutralButton("Not now") { _, _ ->
 						//directly load running applications
-						loadRunningApplications(this, applicationContext)
+						loadRunningApplications()
 					}
 					//TODO add negative button "never"
 					.setIcon(R.mipmap.ic_launcher)
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity() {
 					.show()
 		} else {
 			//directly load running applications
-			loadRunningApplications(this, applicationContext)
+			loadRunningApplications()
 		}
 
 	}
@@ -228,5 +228,17 @@ class MainActivity : AppCompatActivity() {
 
 	private fun toast(s: String, duration: Int) {
 		Toast.makeText(this, s, duration).show()
+	}
+
+	private fun loadRunningApplications() {
+
+		Thread {
+			val packages = getRunningApplications(applicationContext)
+
+			runOnUiThread {
+				setItems(packages)
+			}
+		}.start()
+
 	}
 }
