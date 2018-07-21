@@ -53,12 +53,12 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var progressBar: ProgressBar
 
-
 	private val usageStatsMap: Map<String, UsageStats>? by lazy {
 		getAggregatedUsageStats(this)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
 	/**
 	 * This will add item to the apps list.
-	 * @param item The item to add, as a PackageInfo.
+	 * @param items The items to add, as PackageInfo's.
 	 */
 	fun setItems(items: List<PackageInfo>) {
 		appsListAdapter.setAndLoadItems(items, usageStatsMap)
@@ -124,7 +124,10 @@ class MainActivity : AppCompatActivity() {
 				return true
 			}
 		})
-
+		fab.setOnClickListener {
+			val freezeNext = freezeAll(applicationContext, apps = appsListAdapter.listPendingFreeze)
+			doOnResume(freezeNext)
+		}
 		return super.onCreateOptionsMenu(menu)
 	}
 

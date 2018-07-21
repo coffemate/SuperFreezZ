@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
-
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
  */
@@ -30,16 +29,25 @@ class FreezerService : AccessibilityService() {
 				NextAction.DO_NOTHING -> {}
 
 				NextAction.PRESS_FORCE_STOP -> {
-					val success = pressForceStopButton(event.source)
-					nextAction = if (success) NextAction.PRESS_OK else NextAction.DO_NOTHING
+					if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
+						val success = pressForceStopButton(event.source)
+						nextAction = if (success) NextAction.PRESS_OK else fail()
+					}
 				}
 				NextAction.PRESS_OK -> {
-					val success = pressOkButton(event.source)
-					nextAction = if (success) NextAction.PRESS_BACK else NextAction.DO_NOTHING
+					if (event.className == "android.app.AlertDialog") {
+						val success = pressOkButton(event.source)
+						nextAction = if (success) NextAction.PRESS_BACK else fail()
+					}
 				}
 				NextAction.PRESS_BACK -> {
-					pressBackButton()
-					nextAction = NextAction.DO_NOTHING
+					if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
+						pressBackButton()
+						nextAction = NextAction.DO_NOTHING
+
+						//Execute all tasks and retain only those that returned true.
+						toBeDoneOnFinished.retainAll { it() }
+					}
 				}
 			}
 
@@ -66,9 +74,7 @@ class FreezerService : AccessibilityService() {
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(node: AccessibilityNodeInfo): Boolean {
-
 		return clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
-
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -107,6 +113,7 @@ class FreezerService : AccessibilityService() {
 
 	override fun onDestroy() {
 		isEnabled = false
+		toBeDoneOnFinished.clear()
 	}
 
 	internal companion object {
@@ -121,6 +128,8 @@ class FreezerService : AccessibilityService() {
 		internal fun performFreeze() {
 			if (nextAction == NextAction.DO_NOTHING)
 				nextAction = NextAction.PRESS_FORCE_STOP
+			else
+				Log.w(TAG, "Attempted to freeze, but was still busy")
 		}
 
 		/**
@@ -130,6 +139,21 @@ class FreezerService : AccessibilityService() {
 			return (nextAction != NextAction.DO_NOTHING
 					&& isEnabled)
 		}
+
+		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()
+		/**
+		 * Execute this task when finished freezing the current app.
+		 * @param task If it returns true, then it will be executed again at the next onResume.
+		 */
+		internal fun doOnFinished(task: ()->Boolean) {
+			if(isEnabled)
+				toBeDoneOnFinished.add(task)
+		}
+	}
+
+	private fun fail(): NextAction {
+		toBeDoneOnFinished.clear()
+		return NextAction.DO_NOTHING
 	}
 }
 
