@@ -192,17 +192,19 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 
 
 
-	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v), OnClickListener {
+	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 		abstract fun setName(name: String, highlight: String?)
 		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
 	}
 
-	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v) {
+	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
+
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
 
 		init {
 			v.setOnClickListener(this)
+			v.setOnLongClickListener(this)
 		}
 
 		/**
@@ -211,6 +213,10 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 		 */
 		override fun onClick(v: View) {
 			list[adapterPosition].freeze(context)
+		}
+		override fun onLongClick(v: View?): Boolean {
+
+			return true
 		}
 
 		override fun setName(name: String, highlight: String?) {
@@ -243,8 +249,6 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 
 	internal class ViewHolderSectionHeader(private val v: View): AbstractViewHolder(v) {
 		override fun loadImage(item: AbstractListItem) {
-		}
-		override fun onClick(v: View?) {
 		}
 
 		override fun setName(name: String, highlight: String?) {
