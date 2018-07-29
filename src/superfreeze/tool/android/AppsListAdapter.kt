@@ -48,7 +48,7 @@ import java.util.concurrent.ThreadFactory
 /**
  * This class is responsible for viewing the list of installed apps.
  */
-internal class AppsListAdapter internal constructor(private val mActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
+internal class AppsListAdapter internal constructor(private val mainActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
 	private val tFactory = ThreadFactory { r ->
 		val t = Thread(r)
 		t.isDaemon = true
@@ -71,7 +71,7 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
 	private val handler = Handler()
-	private val packageManager: PackageManager = mActivity.packageManager
+	private val packageManager: PackageManager = mainActivity.packageManager
 
 	private var namesToLoad = 0
 
@@ -362,7 +362,7 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 			handler.post {
 				namesToLoad--
 				if (namesToLoad == 0) {
-					mActivity.hideProgressBar()
+					mainActivity.hideProgressBar()
 					executorServiceNames?.shutdown()
 					executorServiceNames = null
 				}

@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 	 * This will add item to the apps list.
 	 * @param items The items to add, as PackageInfo's.
 	 */
-	fun setItems(items: List<PackageInfo>) {
+	private fun setItems(items: List<PackageInfo>) {
 		appsListAdapter.setAndLoadItems(items, usageStatsMap)
 	}
 
