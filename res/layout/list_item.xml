@@ -32,8 +32,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 	android:layout_width="match_parent"
 	android:minHeight="?android:attr/listPreferredItemHeight"
 	android:layout_height="wrap_content"
-	android:paddingLeft="6dp"
-	android:paddingRight="6dp">
+	android:paddingLeft="6dp">
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -72,7 +71,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 				android:layout_width="40dp"
 				android:layout_height="match_parent"
 				android:layout_gravity="end|center_vertical"
-				android:padding="5dp"
+				android:padding="6dp"
 				app:srcCompat="@drawable/symbol_freeze_when_inactive"
 				android:tag="FREEZE_MODE"
 				style="@style/myClickable"/>
@@ -82,7 +81,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 				android:layout_width="40dp"
 				android:layout_height="match_parent"
 				android:layout_gravity="end|center_vertical"
-				android:padding="5dp"
+				android:padding="6dp"
 				app:srcCompat="@drawable/symbol_always_freeze"
 				android:tag="FREEZE_MODE"
 				style="@style/myClickable"/>
@@ -92,7 +91,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 				android:layout_width="40dp"
 				android:layout_height="match_parent"
 				android:layout_gravity="end|center_vertical"
-				android:padding="5dp"
+				android:padding="6dp"
 				app:srcCompat="@drawable/symbol_never_freeze"
 				android:tag="FREEZE_MODE"
 				style="@style/myClickable"/>
