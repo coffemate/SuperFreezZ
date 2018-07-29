@@ -29,6 +29,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableString
@@ -91,7 +92,8 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		return if (i == 0) {
 			ViewHolderApp(
 					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
-					viewGroup.context)
+					viewGroup.context,
+					FreezeMode.FREEZE_WHEN_INACTIVE)
 		} else {
 			ViewHolderSectionHeader(
 					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false))
@@ -197,14 +199,57 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
 	}
 
-	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
+	internal inner class ViewHolderApp(v: View, private val context: Context, freezeMode: FreezeMode) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
 
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
+		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
+		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
+		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
 
 		init {
 			v.setOnClickListener(this)
 			v.setOnLongClickListener(this)
+
+
+			symbolAlwaysFreeze.setOnClickListener {
+				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE)
+			}
+
+			symbolFreezeWhenInactive.setOnClickListener {
+				setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE)
+			}
+
+			symbolNeverFreeze.setOnClickListener {
+				setFreezeModeTo(FreezeMode.NEVER_FREEZE)
+			}
+
+
+			setFreezeModeTo(freezeMode)
+		}
+
+		private fun setFreezeModeTo(freezeMode: FreezeMode) {
+			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
+
+			list.getOrNull(adapterPosition)?.freezeMode = freezeMode
+
+			when(freezeMode) {
+				FreezeMode.ALWAYS_FREEZE ->  {
+					symbolAlwaysFreeze.setColorFilter(null)
+					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
+					symbolNeverFreeze.setColorFilter(colorGreyedOut)
+				}
+				FreezeMode.FREEZE_WHEN_INACTIVE -> {
+					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
+					symbolFreezeWhenInactive.setColorFilter(null)
+					symbolNeverFreeze.setColorFilter(colorGreyedOut)
+				}
+				FreezeMode.NEVER_FREEZE -> {
+					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
+					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
+					symbolNeverFreeze.setColorFilter(null)
+				}
+			}
 		}
 
 		/**
@@ -267,6 +312,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract val packageName: String?
 		abstract val text: String
 		abstract val type: Int
+		var freezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 	}
 
 	internal inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
@@ -352,6 +398,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	}
 
+	enum class FreezeMode {
+		ALWAYS_FREEZE,
+		NEVER_FREEZE,
+		FREEZE_WHEN_INACTIVE
+	}
 
 
 
