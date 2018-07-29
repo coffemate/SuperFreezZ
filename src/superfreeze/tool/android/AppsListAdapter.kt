@@ -197,6 +197,8 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
 	}
 
+	private var itemsSelected: Boolean = false
+
 	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
 
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
@@ -212,10 +214,13 @@ internal class AppsListAdapter internal constructor(private val mActivity: MainA
 		 * @param v The clicked view.
 		 */
 		override fun onClick(v: View) {
-			list[adapterPosition].freeze(context)
+			if (itemsSelected)
+				mainActivity.selectItemsHelper.toggleItemSelect(adapterPosition)
+			else
+				list[adapterPosition].freeze(context)
 		}
 		override fun onLongClick(v: View?): Boolean {
-
+			mainActivity.selectItemsHelper.toggleItemSelect(adapterPosition)
 			return true
 		}
 

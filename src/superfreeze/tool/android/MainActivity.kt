@@ -36,10 +36,12 @@ import android.os.Process
 import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.ActionMode
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -55,6 +57,10 @@ class MainActivity : AppCompatActivity() {
 
 	private val usageStatsMap: Map<String, UsageStats>? by lazy {
 		getAggregatedUsageStats(this)
+	}
+
+	public val selectItemsHelper by lazy {
+		SelectItemsHelper()
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -240,5 +246,34 @@ class MainActivity : AppCompatActivity() {
 			}
 		}.start()
 
+	}
+
+
+    private var ActionModeCallback = object: ActionMode.Callback {
+
+	    override fun onCreateActionMode(mode:ActionMode, menu:Menu):Boolean {
+		    // Inflate a menu resource providing context menu items
+		    val inflater = mode.getMenuInflater()
+		    inflater.inflate(R.menu.items_selected, menu)
+		    return true
+	    }
+	    override fun onPrepareActionMode(mode:ActionMode, menu:Menu):Boolean {
+		    return false // Return false if nothing is done
+	    }
+	    override fun onActionItemClicked(mode:ActionMode, item: MenuItem):Boolean {
+		    when (item.getItemId()) {
+			    R.id.action_delete -> {
+				    alertDialogHelper.showAlertDialog("", "Delete Contact", "DELETE", "CANCEL", 1, false)
+				    return true
+			    }
+			    else -> return false
+		    }
+	    }
+	    override fun onDestroyActionMode(mode:ActionMode) {
+		    mActionMode = null
+		    isMultiSelect = false
+		    multiselect_list = ArrayList<SampleModel>()
+		    refreshAdapter()
+	    }
 	}
 }
