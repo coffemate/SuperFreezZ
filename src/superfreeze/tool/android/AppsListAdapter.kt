@@ -104,8 +104,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		val item = list[i]
 
 		holder.setName(item.text, searchPattern)
-
 		holder.loadImage(item)
+
+		if (holder is ViewHolderApp) {
+			holder.setFreezeModeTo(list[i].freezeMode)
+		}
 	}
 
 	override fun getItemCount(): Int {
@@ -211,7 +214,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			v.setOnClickListener(this)
 			v.setOnLongClickListener(this)
 
-
 			symbolAlwaysFreeze.setOnClickListener {
 				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE)
 			}
@@ -224,11 +226,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				setFreezeModeTo(FreezeMode.NEVER_FREEZE)
 			}
 
-
 			setFreezeModeTo(freezeMode)
 		}
 
-		private fun setFreezeModeTo(freezeMode: FreezeMode) {
+		internal fun setFreezeModeTo(freezeMode: FreezeMode) {
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
 			list.getOrNull(adapterPosition)?.freezeMode = freezeMode
