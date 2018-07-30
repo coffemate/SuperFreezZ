@@ -66,36 +66,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 				android:gravity="center_vertical|center_horizontal"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 
-			<ImageView
-				android:id="@+id/imageFreezeWhenInactive"
-				android:layout_width="40dp"
-				android:layout_height="match_parent"
-				android:layout_gravity="end|center_vertical"
-				android:padding="6dp"
-				app:srcCompat="@drawable/symbol_freeze_when_inactive"
-				android:tag="FREEZE_MODE"
-				style="@style/myClickable"/>
-
-			<ImageView
-				android:id="@+id/imageAlwaysFreeze"
-				android:layout_width="40dp"
-				android:layout_height="match_parent"
-				android:layout_gravity="end|center_vertical"
-				android:padding="6dp"
-				app:srcCompat="@drawable/symbol_always_freeze"
-				android:tag="FREEZE_MODE"
-				style="@style/myClickable"/>
-
-			<ImageView
-				android:id="@+id/imageNeverFreeze"
-				android:layout_width="40dp"
-				android:layout_height="match_parent"
-				android:layout_gravity="end|center_vertical"
-				android:padding="6dp"
-				app:srcCompat="@drawable/symbol_never_freeze"
-				android:tag="FREEZE_MODE"
-				style="@style/myClickable"/>
-
+			<include layout="@layout/freeze_mode_buttons" />
 
 		</LinearLayout>
 	</LinearLayout>
