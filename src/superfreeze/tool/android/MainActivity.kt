@@ -150,12 +150,14 @@ class MainActivity : AppCompatActivity() {
 
 		//This is necessary so that the list items change their look when the screen is rotated.
 		val listView = list
+		val position = (listView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 		listView.adapter = null
 		listView.layoutManager = null
 		listView.recycledViewPool.clear()
 		listView.adapter = appsListAdapter
 		listView.layoutManager = LinearLayoutManager(this)
 		appsListAdapter.notifyDataSetChanged()
+		listView.layoutManager.scrollToPosition(position)
 	}
 
 	companion object {
