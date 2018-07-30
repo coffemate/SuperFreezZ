@@ -30,6 +30,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
@@ -141,6 +142,20 @@ class MainActivity : AppCompatActivity() {
 			appsListAdapter.refresh(getAggregatedUsageStats(this))
 			appsListAdapter.filterList()
 		}
+	}
+
+
+	override fun onConfigurationChanged(newConfig: Configuration?) {
+		super.onConfigurationChanged(newConfig)
+
+		//This is necessary so that the list items change their look when the screen is rotated.
+		val listView = list
+		listView.adapter = null
+		listView.layoutManager = null
+		listView.recycledViewPool.clear()
+		listView.adapter = appsListAdapter
+		listView.layoutManager = LinearLayoutManager(this)
+		appsListAdapter.notifyDataSetChanged()
 	}
 
 	companion object {
