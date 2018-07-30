@@ -114,6 +114,10 @@ internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, 
 
 internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
 
+	if (!isRunning(applicationInfo)) {
+		return false
+	}
+
 	return when(freezeMode) {
 
 		FreezeMode.ALWAYS_FREEZE -> true
@@ -121,10 +125,7 @@ internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: Applicatio
 		FreezeMode.NEVER_FREEZE -> false
 
 		FreezeMode.FREEZE_WHEN_INACTIVE -> {
-			if (!isRunning(applicationInfo)) {
-				return false
-			}
-			return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
+			System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
 		}
 	}
 }
