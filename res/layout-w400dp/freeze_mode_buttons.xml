@@ -10,7 +10,7 @@
 		android:layout_width="72dp"
 		android:layout_height="match_parent"
 		android:layout_gravity="end|center_vertical"
-		android:padding="12dp"
+		android:padding="15dp"
 		app:srcCompat="@drawable/symbol_freeze_when_inactive"
 		style="@style/myClickable" />
 
@@ -19,7 +19,7 @@
 		android:layout_width="72dp"
 		android:layout_height="match_parent"
 		android:layout_gravity="end|center_vertical"
-		android:padding="12dp"
+		android:padding="15dp"
 		app:srcCompat="@drawable/symbol_always_freeze"
 		style="@style/myClickable" />
 
@@ -28,7 +28,7 @@
 		android:layout_width="72dp"
 		android:layout_height="match_parent"
 		android:layout_gravity="end|center_vertical"
-		android:padding="12dp"
+		android:padding="15dp"
 		app:srcCompat="@drawable/symbol_never_freeze"
 		style="@style/myClickable" />
 
