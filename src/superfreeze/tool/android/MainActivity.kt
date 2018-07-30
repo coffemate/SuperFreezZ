@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 			}
 		})
 		fab.setOnClickListener {
-			val freezeNext = freezeAll(applicationContext, apps = appsListAdapter.listPendingFreeze)
+			val freezeNext = freezeAll(applicationContext, appsListAdapter.listPendingFreeze, this)
 			doOnResume(freezeNext)
 		}
 		return super.onCreateOptionsMenu(menu)

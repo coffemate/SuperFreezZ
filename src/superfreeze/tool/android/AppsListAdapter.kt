@@ -107,7 +107,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		holder.loadImage(item)
 
 		if (holder is ViewHolderApp) {
-			holder.setFreezeModeTo(list[i].freezeMode)
+			holder.setFreezeModeTo((list[i] as ListItemApp).freezeMode, changeSettings = false)
 		}
 	}
 
@@ -151,7 +151,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	private fun sortList(usageStatsMap: Map<String, UsageStats>?, loadNames: Boolean = false) {
 		val (listPendingFreeze, listNotPendingFreeze) = (listOriginal
 				.filter { it is ListItemApp } as List<ListItemApp>)
-				.partition { isPendingFreeze(it.packageName, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
+				.partition { isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
 
 		listOriginal.clear()
 
@@ -229,10 +229,13 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			setFreezeModeTo(freezeMode)
 		}
 
-		internal fun setFreezeModeTo(freezeMode: FreezeMode) {
+		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean = true) {
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
-			list.getOrNull(adapterPosition)?.freezeMode = freezeMode
+			if (changeSettings){
+				val listItem = list.getOrNull(adapterPosition) as ListItemApp?
+				listItem?.freezeMode = freezeMode
+			}
 
 			when(freezeMode) {
 				FreezeMode.ALWAYS_FREEZE ->  {
@@ -313,7 +316,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract val packageName: String?
 		abstract val text: String
 		abstract val type: Int
-		var freezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 	}
 
 	internal inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
@@ -369,6 +371,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		override val text: String
 			get() = cacheAppName[packageName] ?: packageName
 
+		var freezeMode: FreezeMode
+			get() = getFreezeMode(mainActivity, packageName)
+			set(value) = setFreezeMode(mainActivity, packageName, value)
+
 		override fun isToBeShown(): Boolean {
 			if (searchPattern.isEmpty()) {
 				return true// empty search pattern: Show all apps
@@ -398,13 +404,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		override val applicationInfo: ApplicationInfo? get() = null
 
 	}
-
-	enum class FreezeMode {
-		ALWAYS_FREEZE,
-		NEVER_FREEZE,
-		FREEZE_WHEN_INACTIVE
-	}
-
 
 
 	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {

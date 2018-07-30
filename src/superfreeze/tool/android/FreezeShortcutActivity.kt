@@ -48,13 +48,13 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private fun performFreeze() {
-		val appsPendingFreeze = getAppsPendingFreeze(applicationContext)
+		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
 			finish()
 		}
 
-		val freezeNext = freezeAll(applicationContext)
+		val freezeNext = freezeAll(applicationContext, activity = this)
 		doOnResume {
 			val appsLeft = freezeNext()
 			if (!appsLeft) {

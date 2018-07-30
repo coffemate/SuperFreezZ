@@ -19,6 +19,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android
 
+import android.app.Activity
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
@@ -103,36 +104,60 @@ private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?)
 
 }
 
-internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?): Boolean {
-	return isPendingFreeze(packageInfo.packageName, packageInfo.applicationInfo, usageStats)
+internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, activity: Activity): Boolean {
+	return isPendingFreeze(
+			getFreezeMode(activity, packageInfo.packageName),
+			packageInfo.applicationInfo,
+			usageStats)
 }
 
-internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
-	if (!isRunning(applicationInfo)) {
-		return false
+
+internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
+
+	return when(freezeMode) {
+
+		FreezeMode.ALWAYS_FREEZE -> true
+
+		FreezeMode.NEVER_FREEZE -> false
+
+		FreezeMode.FREEZE_WHEN_INACTIVE -> {
+			if (!isRunning(applicationInfo)) {
+				return false
+			}
+			return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
+		}
 	}
-	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
+}
+
+/**
+ * Freezes all apps in the "apps" list or all apps that are pending freeze.
+ * @param context: The context
+ * @param apps: A list of apps to be frozen. If it is null or not given, a list of apps that pend freeze is computed automatically.
+ * @param activity The current activity, needed to access the SharedPreferences to read which apps are pending freeze.
+ * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
+ * It returns whether it wants to be executed again.
+ */
+internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
+	return freezeAll(context, apps ?: getAppsPendingFreeze(context, activity))
 }
 
 /**
  * Freezes all apps in the "apps" list.
  * @param context: The context
- * @param apps: A list of apps to be frozen. If it is null, a list of apps that pend freeze is computed automatically.
+ * @param apps: A list of apps to be frozen.
  * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
  * It returns whether it wants to be executed again.
  */
-internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
-	val appsNonNull = apps ?: getAppsPendingFreeze(context)
-
+internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	var nextIndex = 0
 
 	fun freezeNext(): Boolean {
-		if (nextIndex < appsNonNull.size) {
-			freezeApp(appsNonNull[nextIndex], context)
+		if (nextIndex < apps.size) {
+			freezeApp(apps[nextIndex], context)
 			nextIndex++
 		}
 		//only execute again if nextIndex is a valid index
-		return nextIndex < appsNonNull.size
+		return nextIndex < apps.size
 	}
 
 	freezeNext()
@@ -140,11 +165,11 @@ internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Bool
 	return ::freezeNext
 }
 
-internal fun getAppsPendingFreeze(context: Context): List<String> {
+internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
 
 	val usageStatsMap = getAggregatedUsageStats(context)
 	return getRunningApplications(context)
-			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName)) }
+			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
 			.map { it.packageName }
 }
 
