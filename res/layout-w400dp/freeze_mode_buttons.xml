@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	tools:showIn="@layout/list_item">
+
+
+	<ImageView
+		android:id="@+id/imageFreezeWhenInactive"
+		android:layout_width="72dp"
+		android:layout_height="match_parent"
+		android:layout_gravity="end|center_vertical"
+		android:padding="12dp"
+		app:srcCompat="@drawable/symbol_freeze_when_inactive"
+		style="@style/myClickable" />
+
+	<ImageView
+		android:id="@+id/imageAlwaysFreeze"
+		android:layout_width="72dp"
+		android:layout_height="match_parent"
+		android:layout_gravity="end|center_vertical"
+		android:padding="12dp"
+		app:srcCompat="@drawable/symbol_always_freeze"
+		style="@style/myClickable" />
+
+	<ImageView
+		android:id="@+id/imageNeverFreeze"
+		android:layout_width="72dp"
+		android:layout_height="match_parent"
+		android:layout_gravity="end|center_vertical"
+		android:padding="12dp"
+		app:srcCompat="@drawable/symbol_never_freeze"
+		style="@style/myClickable" />
+
+
+</merge>
