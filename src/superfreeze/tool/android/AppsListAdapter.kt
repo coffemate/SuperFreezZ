@@ -28,12 +28,12 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -41,9 +41,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import java.util.*
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -69,12 +69,8 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	var listPendingFreeze: List<String>? = null
 		private set
 
-	private var executorServiceNames: ExecutorService? = null
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
-	private val handler = Handler()
 	private val packageManager: PackageManager = mainActivity.packageManager
-
-	private var namesToLoad = 0
 
 	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
 	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
@@ -135,7 +131,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			ListItemApp(it.packageName, usageStatsMap?.get(it.packageName))
 		})
 
-		sortList(usageStatsMap, loadNames = true)
+		sortList(usageStatsMap)
+
+		loadAllNames(listOriginal.filter { it is ListItemApp } as List<ListItemApp>) {
+			mainActivity.runOnUiThread() {
+				notifyDataSetChanged()
+				mainActivity.hideProgressBar()
+			}
+		}
 	}
 
 	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
@@ -148,7 +151,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 	@Suppress("UNCHECKED_CAST")
-	private fun sortList(usageStatsMap: Map<String, UsageStats>?, loadNames: Boolean = false) {
+	private fun sortList(usageStatsMap: Map<String, UsageStats>?) {
 		val (listPendingFreeze, listNotPendingFreeze) = (listOriginal
 				.filter { it is ListItemApp } as List<ListItemApp>)
 				.partition { isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
@@ -158,15 +161,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		if (!listPendingFreeze.isEmpty()) {
 			addSectionHeader("PENDING FREEZE")
 			for (info in listPendingFreeze) {
-				addItem(info, loadNames)
+				addItem(info)
 			}
 		}
-		notifyDataSetChanged()
 
 		if (!listNotPendingFreeze.isEmpty()) {
 			addSectionHeader("OTHERS")
 			for (info in listNotPendingFreeze) {
-				addItem(info, loadNames)
+				addItem(info)
 			}
 		}
 		notifyDataSetChanged()
@@ -178,22 +180,28 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		addItem(ListItemSectionHeader(title))
 	}
 
-
-	private fun addItem(item: AbstractListItem, loadName: Boolean = false) {
+	private fun addItem(item: AbstractListItem) {
 		listOriginal.add(item)
 		if (item.isToBeShown()) {
 			list.add(item)
 		}
-
-		if (loadName && item is ListItemApp) {
-			if (executorServiceNames == null) {
-				executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
-			}
-			namesToLoad++
-			executorServiceNames!!.submit(AppNameLoader(item))
-		}
 	}
 
+	private fun loadAllNames(items: List<ListItemApp>, onAllNamesLoaded: () -> Unit) {
+		val executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
+		for (item in items) {
+			executorServiceNames.submit {
+				cacheAppName[item.packageName] = item.applicationInfo.loadLabel(packageManager).toString()
+			}
+		}
+		executorServiceNames.shutdown()
+		Thread {
+			val finished = executorServiceNames.awaitTermination(2, TimeUnit.MINUTES)
+			if (!finished)
+				Log.e(TAG, "After 2 minutes, some app names were still not loaded")
+			onAllNamesLoaded()
+		}
+	}
 
 
 
@@ -343,7 +351,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 					val icon = applicationInfo.loadIcon(packageManager)
 
-					handler.post {
+					mainActivity.runOnUiThread {
 						cacheAppName[packageName] = appName
 						cacheAppIcon[packageName] = icon
 						viewHolder.setName(appName, searchPattern)
@@ -406,22 +414,8 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	}
 
 
-	internal inner class AppNameLoader(private val package_info: ListItemApp) : Runnable {
 
-		override fun run() {
-			cacheAppName[package_info.packageName] = package_info.applicationInfo.loadLabel(packageManager).toString()
-			handler.post {
-				namesToLoad--
-				if (namesToLoad == 0) {
-					mainActivity.hideProgressBar()
-					executorServiceNames?.shutdown()
-					executorServiceNames = null
-				}
-			}
-		}
-	}
-
-	internal class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
+	private class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
 
 		override fun run() {
 			listItem.loadNameAndIcon(viewHolder)
