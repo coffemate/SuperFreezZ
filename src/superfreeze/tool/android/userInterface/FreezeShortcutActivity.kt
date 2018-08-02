@@ -20,7 +20,6 @@ class FreezeShortcutActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val intent = intent
 		val action = intent.action
 
 		if (Intent.ACTION_CREATE_SHORTCUT == action) {

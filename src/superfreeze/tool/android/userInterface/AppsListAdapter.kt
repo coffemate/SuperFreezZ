@@ -116,14 +116,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 
-
-	internal fun filterList() {
-		list.clear()
-		list.addAll(listOriginal.filter { it.isToBeShown() })
-
-		notifyDataSetChanged()
-	}
-
 	internal fun setAndLoadItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
 		listOriginal.clear()
 		listOriginal.addAll(packages.map {
@@ -132,12 +124,15 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		sortList(usageStatsMap)
 
+		@Suppress("UNCHECKED_CAST")
 		loadAllNames(listOriginal.filter { it is ListItemApp } as List<ListItemApp>) {
 			mainActivity.runOnUiThread {
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 			}
 		}
+
+		filterList()
 	}
 
 	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
@@ -145,45 +140,38 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			app.refresh()
 		}
 		sortList(usageStatsMap)
+		filterList()
 	}
 
 
 
+	private fun filterList() {
+		list.clear()
+		list.addAll(listOriginal.filter { it.isToBeShown() })
+
+		notifyDataSetChanged()
+	}
+
 	@Suppress("UNCHECKED_CAST")
 	private fun sortList(usageStatsMap: Map<String, UsageStats>?) {
-		val (listPendingFreeze, listNotPendingFreeze) = (listOriginal
+		val (listPendingFreeze, listNotPendingFreeze) =
+				(listOriginal
 				.filter { it is ListItemApp } as List<ListItemApp>)
 				.partition { isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
 
 		listOriginal.clear()
 
 		if (!listPendingFreeze.isEmpty()) {
-			addSectionHeader("PENDING FREEZE")
-			for (info in listPendingFreeze) {
-				addItem(info)
-			}
+			listOriginal.add(ListItemSectionHeader("PENDING FREEZE"))
+			listOriginal.addAll(listPendingFreeze)
 		}
 
 		if (!listNotPendingFreeze.isEmpty()) {
-			addSectionHeader("OTHERS")
-			for (info in listNotPendingFreeze) {
-				addItem(info)
-			}
+			listOriginal.add(ListItemSectionHeader("OTHERS"))
+			listOriginal.addAll(listNotPendingFreeze)
 		}
-		notifyDataSetChanged()
 
 		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
-	}
-
-	private fun addSectionHeader(title: String) {
-		addItem(ListItemSectionHeader(title))
-	}
-
-	private fun addItem(item: AbstractListItem) {
-		listOriginal.add(item)
-		if (item.isToBeShown()) {
-			list.add(item)
-		}
 	}
 
 	private fun loadAllNames(items: List<ListItemApp>, onAllNamesLoaded: () -> Unit) {

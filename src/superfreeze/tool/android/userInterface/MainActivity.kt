@@ -34,7 +34,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
-import superfreeze.tool.android.*
+import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAggregatedUsageStats
@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity() {
 
 		if (!FreezerService.busy()) {
 			appsListAdapter.refresh(getAggregatedUsageStats(this))
-			appsListAdapter.filterList()
 		}
 	}
 
