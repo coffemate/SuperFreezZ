@@ -97,14 +97,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	}
 
 	override fun onBindViewHolder(holder: AbstractViewHolder, i: Int) {
-		val item = list[i]
-
-		holder.setName(item.text, searchPattern)
-		holder.loadImage(item)
-
-		if (holder is ViewHolderApp) {
-			holder.setFreezeModeTo((list[i] as ListItemApp).freezeMode, changeSettings = false)
-		}
+		list[i].bindViewHolder(holder)
 	}
 
 	override fun getItemCount(): Int {
@@ -207,7 +200,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 		abstract fun setName(name: String, highlight: String?)
-		abstract fun loadImage(item: AppsListAdapter.AbstractListItem)
 	}
 
 	internal inner class ViewHolderApp(v: View, private val context: Context, freezeMode: FreezeMode) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
@@ -296,17 +288,17 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
-		override fun loadImage(item: AbstractListItem) {
+		fun loadImage(item: AbstractListItem) {
 			imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
 			if (cacheAppIcon[item.packageName] == null) {
-				executorServiceIcons.submit(GuiLoader(this, item))
+				executorServiceIcons.submit {
+					item.loadNameAndIcon(this)
+				}
 			}
 		}
 	}
 
 	internal class ViewHolderSectionHeader(private val v: View): AbstractViewHolder(v) {
-		override fun loadImage(item: AbstractListItem) {
-		}
 
 		override fun setName(name: String, highlight: String?) {
 			v.findViewById<TextView>(R.id.textView).text = name
@@ -319,6 +311,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
 		abstract fun isToBeShown(): Boolean
+		abstract fun bindViewHolder(holder: AppsListAdapter.AbstractViewHolder)
 
 		abstract val applicationInfo: ApplicationInfo?
 		abstract val packageName: String?
@@ -392,6 +385,19 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 			return false
 		}
+
+		override fun bindViewHolder(holder: AbstractViewHolder) {
+			holder.setName(text, searchPattern)
+
+			if (holder is ViewHolderApp) {
+				holder.loadImage(this)
+
+				holder.setFreezeModeTo(freezeMode, changeSettings = false)
+			} else {
+				Log.e(TAG, "Holder of $text is not ViewHolderApp while the item at this position is ListItemApp")
+				RuntimeException().printStackTrace()
+			}
+		}
 	}
 
 	internal class ListItemSectionHeader(override val text: String) : AbstractListItem() {
@@ -408,20 +414,15 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		override fun isToBeShown() = true
 
+		override fun bindViewHolder(holder: AbstractViewHolder) {
+			holder.setName(text, "")
+		}
+
 		override val packageName: String? get() = null
 		override val applicationInfo: ApplicationInfo? get() = null
 
 	}
 
-
-
-	private class GuiLoader(private val viewHolder: ViewHolderApp, private val listItem: AbstractListItem) : Runnable {
-
-		override fun run() {
-			listItem.loadNameAndIcon(viewHolder)
-		}
-
-	}
 
 	companion object {
 		private const val TAG = "AppsListAdapter"
