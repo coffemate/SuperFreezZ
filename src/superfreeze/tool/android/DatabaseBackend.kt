@@ -8,13 +8,13 @@ val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 val values = FreezeMode.values()
 private const val TAG = "DatabaseBackend"
 
-fun getFreezeMode(activity: Activity, packageName: String): FreezeMode {
+internal fun getFreezeMode(activity: Activity, packageName: String): FreezeMode {
 	val sharedPreferences = getFreezeModesPreferences(activity) ?: return standardFreezeMode
 	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode.ordinal)
 	return values[ordinal]
 }
 
-fun setFreezeMode(activity: Activity, packageName: String, freezeMode: FreezeMode) {
+internal fun setFreezeMode(activity: Activity, packageName: String, freezeMode: FreezeMode) {
 	val sharedPreferences = getFreezeModesPreferences(activity) ?: return
 	with (sharedPreferences.edit()) {
 		putInt(packageName, freezeMode.ordinal)
