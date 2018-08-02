@@ -58,7 +58,7 @@ internal fun freezeApp(packageName: String, context: Context) {
 /**
  * Gets the running applications. Do not use from the UI thread.
  */
-public fun getRunningApplications(context: Context): List<PackageInfo> {
+internal fun getRunningApplications(context: Context): List<PackageInfo> {
 	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 			.filter {
 				//Add the package only if it is NOT a system app:
@@ -89,19 +89,6 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 
 internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
 	return ! applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
-}
-
-private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {
-
-	/**
-	 * The timestamp at which this app was used last or 0 if it was never used/no infos are available
-	 */
-	internal val lastTimeUsed = getLastTimeUsed(usageStats)
-
-	override fun compareTo(other: UsedPackage): Int {
-		return this.lastTimeUsed.compareTo(other.lastTimeUsed)
-	}
-
 }
 
 internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, activity: Activity): Boolean {

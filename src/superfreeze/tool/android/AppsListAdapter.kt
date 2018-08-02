@@ -121,13 +121,13 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	internal fun setAndLoadItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
 		listOriginal.clear()
 		listOriginal.addAll(packages.map {
-			ListItemApp(it.packageName, usageStatsMap?.get(it.packageName))
+			ListItemApp(it.packageName)
 		})
 
 		sortList(usageStatsMap)
 
 		loadAllNames(listOriginal.filter { it is ListItemApp } as List<ListItemApp>) {
-			mainActivity.runOnUiThread() {
+			mainActivity.runOnUiThread {
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 			}
@@ -319,7 +319,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract val type: Int
 	}
 
-	internal inner class ListItemApp(override val packageName: String, val usageStats: UsageStats?) : AbstractListItem() {
+	internal inner class ListItemApp(override val packageName: String) : AbstractListItem() {
 		override fun refresh() {
 			_applicationInfo = null
 		}
