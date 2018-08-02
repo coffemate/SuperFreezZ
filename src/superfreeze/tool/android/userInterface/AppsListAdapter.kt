@@ -40,7 +40,8 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import superfreeze.tool.android.*
+import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.freezeApp
 import superfreeze.tool.android.backend.isPendingFreeze
 import superfreeze.tool.android.database.getFreezeMode
@@ -198,7 +199,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			if (!finished)
 				Log.e(TAG, "After 2 minutes, some app names were still not loaded")
 			onAllNamesLoaded()
-		}
+		}.start()
 	}
 
 
