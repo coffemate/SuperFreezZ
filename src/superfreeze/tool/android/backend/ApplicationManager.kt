@@ -1,4 +1,4 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.backend
 
 import android.app.Activity
 import android.app.usage.UsageStats
@@ -8,6 +8,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.database.getFreezeMode
 
 /**
  * This file contains functions that get necessary information about apps.

@@ -19,7 +19,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface
 
 import android.app.usage.UsageStats
 import android.content.Context
@@ -40,6 +40,11 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import superfreeze.tool.android.*
+import superfreeze.tool.android.backend.freezeApp
+import superfreeze.tool.android.backend.isPendingFreeze
+import superfreeze.tool.android.database.getFreezeMode
+import superfreeze.tool.android.database.setFreezeMode
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
@@ -307,11 +312,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 	internal abstract class AbstractListItem {
-		abstract fun loadNameAndIcon(viewHolder: AppsListAdapter.ViewHolderApp)
+		abstract fun loadNameAndIcon(viewHolder: ViewHolderApp)
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
 		abstract fun isToBeShown(): Boolean
-		abstract fun bindViewHolder(holder: AppsListAdapter.AbstractViewHolder)
+		abstract fun bindViewHolder(holder: AbstractViewHolder)
 
 		abstract val applicationInfo: ApplicationInfo?
 		abstract val packageName: String?

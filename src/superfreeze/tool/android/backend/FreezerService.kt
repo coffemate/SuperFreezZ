@@ -1,4 +1,4 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build

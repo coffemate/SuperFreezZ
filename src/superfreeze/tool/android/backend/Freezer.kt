@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android
+package superfreeze.tool.android.backend
 
 import android.app.Activity
 import android.content.Context
@@ -58,7 +58,8 @@ internal fun freezeApp(packageName: String, context: Context) {
  * It returns whether it wants to be executed again.
  */
 internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
-	return freezeAll(context, apps ?: getAppsPendingFreeze(context, activity))
+	return freezeAll(context, apps
+			?: getAppsPendingFreeze(context, activity))
 }
 
 /**

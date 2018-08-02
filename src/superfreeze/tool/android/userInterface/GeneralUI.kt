@@ -1,4 +1,4 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface
 
 import android.Manifest
 import android.app.AlertDialog
@@ -11,6 +11,7 @@ import android.os.Process
 import android.provider.Settings
 import android.support.annotation.RequiresApi
 import android.widget.Toast
+import superfreeze.tool.android.R
 
 internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> Unit) {
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -27,7 +28,7 @@ internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> U
 					MainActivity.doOnResume {
 
 						if (!usageStatsPermissionGranted(context)) {
-							toast(context,"You did not enable usagestats access.", Toast.LENGTH_SHORT)
+							toast(context, "You did not enable usagestats access.", Toast.LENGTH_SHORT)
 						}
 						doAfterwards()
 

@@ -1,15 +1,17 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.database
 
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import superfreeze.tool.android.FreezeMode
 
 val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 val values = FreezeMode.values()
 private const val TAG = "DatabaseBackend"
 
 internal fun getFreezeMode(activity: Activity, packageName: String): FreezeMode {
-	val sharedPreferences = getFreezeModesPreferences(activity) ?: return standardFreezeMode
+	val sharedPreferences = getFreezeModesPreferences(activity)
+			?: return standardFreezeMode
 	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode.ordinal)
 	return values[ordinal]
 }

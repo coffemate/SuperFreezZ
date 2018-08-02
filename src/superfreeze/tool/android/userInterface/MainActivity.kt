@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface
 
 import android.annotation.SuppressLint
 import android.app.SearchManager
@@ -34,6 +34,11 @@ import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
+import superfreeze.tool.android.*
+import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.backend.freezeAll
+import superfreeze.tool.android.backend.getAggregatedUsageStats
+import superfreeze.tool.android.backend.getRunningApplications
 
 /**
  * The activity that is shown at startup

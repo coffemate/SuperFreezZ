@@ -8,6 +8,6 @@
 		<intent
 			android:action="android.intent.action.MAIN"
 			android:targetPackage="superfreeze.tool.android"
-			android:targetClass="superfreeze.tool.android.FreezeShortcutActivity" />
+			android:targetClass="superfreeze.tool.android.userInterface.FreezeShortcutActivity" />
 	</shortcut>
 </shortcuts>

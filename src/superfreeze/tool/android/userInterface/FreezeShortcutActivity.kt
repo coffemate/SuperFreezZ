@@ -1,4 +1,4 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.freezeAll
+import superfreeze.tool.android.backend.getAppsPendingFreeze
 
 
 /**
