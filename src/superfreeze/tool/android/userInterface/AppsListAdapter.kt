@@ -28,6 +28,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Spannable
@@ -40,6 +41,7 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.FreezeMode
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.freezeApp
@@ -203,50 +205,77 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
 		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
 		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
+		var listItem: ListItemApp? = null
 
 		init {
 			v.setOnClickListener(this)
 			v.setOnLongClickListener(this)
 
 			symbolAlwaysFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE)
+				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE, changeSettings = true)
 			}
 
 			symbolFreezeWhenInactive.setOnClickListener {
-				setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE)
+				setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE, changeSettings = true)
 			}
 
 			symbolNeverFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.NEVER_FREEZE)
+				setFreezeModeTo(FreezeMode.NEVER_FREEZE, changeSettings = true)
 			}
 
-			setFreezeModeTo(freezeMode)
+			setFreezeModeTo(freezeMode, changeSettings = false)
 		}
 
-		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean = true) {
+		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
+		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings) {
+			val oldFreezeMode = listItem?.freezeMode
+			if (freezeMode == oldFreezeMode) {
+				return//Nothing to do, the freeze mode was not changed
+			}
+
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
-			if (changeSettings){
+			if (changeSettings) {
 				val listItem = list.getOrNull(adapterPosition) as ListItemApp?
 				listItem?.freezeMode = freezeMode
 			}
+
+			val snackbarText: String
 
 			when(freezeMode) {
 				FreezeMode.ALWAYS_FREEZE ->  {
 					symbolAlwaysFreeze.setColorFilter(null)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
+					snackbarText = " will always be frozen."
 				}
 				FreezeMode.FREEZE_WHEN_INACTIVE -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(null)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
+					snackbarText = " will be frozen if it hasn't been used for a long time."
 				}
 				FreezeMode.NEVER_FREEZE -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(null)
+					snackbarText = " will never be frozen"
 				}
+			}
+
+			if (showSnackbar) {
+				Snackbar.make(mainActivity.myCoordinatorLayout,
+						txtAppName.text.toString() + snackbarText,
+						Snackbar.LENGTH_LONG)
+						.setAction(R.string.undo) {
+							if (oldFreezeMode != null) {
+								setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false)
+							} else {
+								Log.e(TAG, "oldFreezeMode was null")
+								RuntimeException().printStackTrace()
+							}
+						}
+						.show()
 			}
 		}
 
@@ -384,9 +413,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			holder.setName(text, searchPattern)
 
 			if (holder is ViewHolderApp) {
-				holder.loadImage(this)
 
+				holder.listItem = this
+				holder.loadImage(this)
 				holder.setFreezeModeTo(freezeMode, changeSettings = false)
+
 			} else {
 				Log.e(TAG, "Holder of $text is not ViewHolderApp while the item at this position is ListItemApp")
 				RuntimeException().printStackTrace()
