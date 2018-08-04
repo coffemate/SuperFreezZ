@@ -58,17 +58,19 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 			android:layout_height="match_parent"
 			android:layout_below="@+id/toolbar" />
 
-		<android.support.design.widget.FloatingActionButton
-			android:id="@+id/fab"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
-			android:layout_gravity="bottom|end"
-			android:layout_marginBottom="15dp"
-			android:layout_marginEnd="15dp"
-			android:layout_marginRight="15dp"
-			app:srcCompat="@drawable/ic_freeze" />
 	</RelativeLayout>
+
+
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_gravity="bottom|end"
+		android:layout_marginBottom="15dp"
+		android:layout_marginEnd="15dp"
+		android:layout_marginRight="15dp"
+		app:srcCompat="@drawable/ic_freeze" />
 </android.support.design.widget.CoordinatorLayout>
