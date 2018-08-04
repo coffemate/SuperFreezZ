@@ -229,9 +229,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
 		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings) {
 			val oldFreezeMode = listItem?.freezeMode
-			if (freezeMode == oldFreezeMode) {
-				return//Nothing to do, the freeze mode was not changed
-			}
 
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
@@ -263,7 +260,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				}
 			}
 
-			if (showSnackbar) {
+			if (showSnackbar && freezeMode != oldFreezeMode) {
 				Snackbar.make(mainActivity.myCoordinatorLayout,
 						txtAppName.text.toString() + snackbarText,
 						Snackbar.LENGTH_LONG)
