@@ -35,6 +35,7 @@ If you would like to help, have a look at the issues or think about what could b
 Copying
 -------
 
+```
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
@@ -50,7 +51,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
-
+```
 
 ------------------------------------------------------------------
 
@@ -72,6 +73,7 @@ res/menu/main.xml
 AndroidManifest.xml
 ```
 
+```
 The MIT License (MIT)
 
 Copyright (c) 2015 axxapy
@@ -94,3 +96,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
