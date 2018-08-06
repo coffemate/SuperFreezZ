@@ -17,7 +17,12 @@ If you freeze apps that you use daily, the battery of your device will drain fas
 Features
 --------
 
-* Works without accessibility service as this slows down the device
+* Optionally works without accessibility service as this slows down the device
+
+Build
+-----
+
+The build should succeed out of the box with Android Studio and Gradle. If not, it is probably my fault, please open an issue then. Others will probably also have this problem then.
 
 Contributing to SuperFreeze
 ------------
@@ -49,13 +54,12 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 ------------------------------------------------------------------
 
-SuperFreeze contains files distributed under the MIT license. These are licensed both under GPLv3-or-later (see above) and MIT (see below), that is, you may choose. These files are:
+SuperFreeze contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
 
 ```
 build.gradle
-src/axp/tool/apkextractor/ApkListAdapter.java
-src/axp/tool/apkextractor/MainActivity.kt
-src/axp/tool/apkextractor/PermissionResolver.java
+src/superfreeze/tool/android/AppsListAdapter.kt
+src/superfreeze/tool/android/MainActivity.kt
 res/layout/list_item.xml
 res/layout/activity_main.xml
 res/values/strings.xml
