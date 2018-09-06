@@ -145,6 +145,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		filterList()
 	}
 
+	internal fun trimMemory() {
+		cacheAppIcon.clear()
+	}
+
 
 
 	private fun filterList() {
@@ -203,7 +207,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			onAllNamesLoaded()
 		}.start()
 	}
-
 
 
 	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {

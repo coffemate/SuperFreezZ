@@ -23,6 +23,7 @@ package superfreeze.tool.android.userInterface
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.app.usage.UsageStats
+import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -146,6 +147,28 @@ class MainActivity : AppCompatActivity() {
 		appsListAdapter.notifyDataSetChanged()
 		listView.layoutManager.scrollToPosition(position)
 	}
+
+	override fun onTrimMemory(level: Int) {
+		//See https://developer.android.com/topic/performance/memory#release
+
+		when (level) {
+			ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE -> { }
+
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW,
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL,
+
+			ComponentCallbacks2.TRIM_MEMORY_BACKGROUND,
+			ComponentCallbacks2.TRIM_MEMORY_MODERATE,
+			ComponentCallbacks2.TRIM_MEMORY_COMPLETE -> {
+				appsListAdapter.trimMemory()
+			}
+
+			else -> {}
+		}
+	}
+
 
 	companion object {
 		private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
