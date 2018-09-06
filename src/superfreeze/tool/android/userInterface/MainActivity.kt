@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 		toBeDoneOnResume.retainAll { it() }
 
 		if (!FreezerService.busy()) {
-			appsListAdapter.refresh(getAggregatedUsageStats(this))
+			appsListAdapter.refresh(usageStatsMap)
 		}
 	}
 
@@ -156,6 +156,7 @@ class MainActivity : AppCompatActivity() {
 		internal fun doOnResume(task: ()->Boolean) {
 			toBeDoneOnResume.add(task)
 		}
+
 	}
 
 
