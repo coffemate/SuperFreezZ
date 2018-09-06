@@ -89,7 +89,7 @@ internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: Applicatio
 		FreezeMode.NEVER_FREEZE -> false
 
 		FreezeMode.FREEZE_WHEN_INACTIVE -> {
-			System.currentTimeMillis() - getLastTimeUsed(usageStats) >  1000L*60*60*24*1 //TODO replace 1 with 7
+			System.currentTimeMillis() - getLastTimeUsed(usageStats) >  1000L*60*60*24*7
 		}
 	}
 }
