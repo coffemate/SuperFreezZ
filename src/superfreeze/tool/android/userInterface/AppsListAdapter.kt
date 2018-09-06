@@ -156,6 +156,18 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	@Suppress("UNCHECKED_CAST")
 	private fun sortList(usageStatsMap: Map<String, UsageStats>?) {
+
+		//We need to test whether the applications are still installed and remove those that are not.
+		//Apparently, there is no better way for this than trying to access the applicationInfo.
+		listOriginal.removeAll{
+			try {
+				it.applicationInfo
+				false
+			} catch (e: PackageManager.NameNotFoundException) {
+				true
+			}
+		}
+
 		val (listPendingFreeze, listNotPendingFreeze) =
 				(listOriginal
 				.filter { it is ListItemApp } as List<ListItemApp>)
@@ -352,7 +364,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				_applicationInfo = info
 				return info
 			}
-
 		private var _applicationInfo: ApplicationInfo? = null
 
 		override fun loadNameAndIcon(viewHolder: ViewHolderApp) {
