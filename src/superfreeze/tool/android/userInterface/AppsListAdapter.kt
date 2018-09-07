@@ -52,6 +52,7 @@ import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 /**
@@ -65,14 +66,20 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	}
 
 	/**
-	 * This list contains all user apps and the section headers.
+	 * This list contains all apps in the list exactly once. That is, apps that appear twice in the list are contained only once.
 	 */
-	private val listOriginal = ArrayList<AbstractListItem>()
+	private val appsList = ArrayList<ListItemApp>()
 
 	/**
-	 * This list contains the items that are shown to the user, including section headers.
+	 * This list contains all apps and the section headers, as shown to the user when not searching.
 	 */
-	private val list = ArrayList<AbstractListItem>()
+	private var originalList = emptyList<AbstractListItem>()
+
+	/**
+	 * This list contains the items as shown to the user, including section headers. While the user is searching, this is a clone of originalList.
+	 */
+	private var list = emptyList<AbstractListItem>()
+
 
 	var listPendingFreeze: List<String>? = null
 		private set
@@ -83,10 +90,12 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
 	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
 
+	private val comparator = kotlin.Comparator<ListItemApp> { o1, o2 ->  o1.text.compareTo(o2.text) }
+
 	var searchPattern: String = ""
 		set(value) {
 			field = value.toLowerCase()
-			filterList()
+			refreshList()
 		}
 
 
@@ -119,30 +128,33 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 	internal fun setAndLoadItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
-		listOriginal.clear()
-		listOriginal.addAll(packages.map {
+		appsList.clear()
+		appsList.addAll(packages.map {
 			ListItemApp(it.packageName)
 		})
 
-		sortList(usageStatsMap)
+		refreshOriginalList(usageStatsMap)
+		refreshList()
 
 		@Suppress("UNCHECKED_CAST")
-		loadAllNames(listOriginal.filter { it is ListItemApp } as List<ListItemApp>) {
+		loadAllNames(appsList) {
 			mainActivity.runOnUiThread {
+				Collections.sort(appsList, comparator)
+				refreshOriginalList(usageStatsMap)
+				refreshList()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 			}
 		}
-
-		filterList()
 	}
 
+
 	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
-		for (app in listOriginal) {
+		for (app in appsList) {
 			app.refresh()
 		}
-		sortList(usageStatsMap)
-		filterList()
+		refreshOriginalList(usageStatsMap)
+		refreshList()
 	}
 
 	internal fun trimMemory() {
@@ -151,19 +163,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 
-	private fun filterList() {
-		list.clear()
-		list.addAll(listOriginal.filter { it.isToBeShown() })
 
-		notifyDataSetChanged()
-	}
 
 	@Suppress("UNCHECKED_CAST")
-	private fun sortList(usageStatsMap: Map<String, UsageStats>?) {
+	private fun refreshOriginalList(usageStatsMap: Map<String, UsageStats>?) {
 
 		//We need to test whether the applications are still installed and remove those that are not.
 		//Apparently, there is no better way for this than trying to access the applicationInfo.
-		listOriginal.removeAll{
+		appsList.removeAll{
 			try {
 				it.applicationInfo
 				false
@@ -172,24 +179,45 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
-		val (listPendingFreeze, listNotPendingFreeze) =
-				(listOriginal
-				.filter { it is ListItemApp } as List<ListItemApp>)
-				.partition { isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName)) }
+		val listPendingFreeze =
+				appsList.filter {
+					isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName))
+				}
 
-		listOriginal.clear()
 
-		if (!listPendingFreeze.isEmpty()) {
-			listOriginal.add(ListItemSectionHeader("PENDING FREEZE"))
-			listOriginal.addAll(listPendingFreeze)
-		}
-
-		if (!listNotPendingFreeze.isEmpty()) {
-			listOriginal.add(ListItemSectionHeader("OTHERS"))
-			listOriginal.addAll(listNotPendingFreeze)
-		}
+		originalList =
+				if (listPendingFreeze.isEmpty()) {
+					listOf(ListItemSectionHeader("ALL APPS")) +
+							appsList
+				} else {
+					listOf(ListItemSectionHeader("PENDING FREEZE")) +
+							listPendingFreeze +
+							ListItemSectionHeader("ALL APPS") +
+							appsList
+				}
 
 		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
+	}
+
+	private fun refreshList() {
+		list =
+				if (searchPattern.isEmpty()) {
+					originalList
+				} else {
+
+					// When the user is searching, the more relevant apps (that is, those
+					// that start with the search pattern) are shown at the top:
+					val (importantApps, otherApps) =
+							appsList
+									.filter { it.isMatchingSearchPattern() }
+									.partition {
+										cacheAppName[it.packageName]?.toLowerCase()?.startsWith(searchPattern) != false
+									}
+					importantApps + otherApps
+
+				}
+
+		notifyDataSetChanged()
 	}
 
 	private fun loadAllNames(items: List<ListItemApp>, onAllNamesLoaded: () -> Unit) {
@@ -345,7 +373,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract fun loadNameAndIcon(viewHolder: ViewHolderApp)
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
-		abstract fun isToBeShown(): Boolean
+		abstract fun isMatchingSearchPattern(): Boolean
 		abstract fun bindViewHolder(holder: AbstractViewHolder)
 
 		abstract val applicationInfo: ApplicationInfo?
@@ -410,7 +438,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			get() = getFreezeMode(mainActivity, packageName)
 			set(value) = setFreezeMode(mainActivity, packageName, value)
 
-		override fun isToBeShown(): Boolean {
+		override fun isMatchingSearchPattern(): Boolean {
 			if (searchPattern.isEmpty()) {
 				return true// empty search pattern: Show all apps
 			} else if (cacheAppName[packageName]?.toLowerCase()?.contains(searchPattern) != false) {
@@ -448,7 +476,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		override fun freeze(context: Context) {
 		}
 
-		override fun isToBeShown() = true
+		override fun isMatchingSearchPattern() = true
 
 		override fun bindViewHolder(holder: AbstractViewHolder) {
 			holder.setName(text, "")
@@ -463,4 +491,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	companion object {
 		private const val TAG = "AppsListAdapter"
 	}
+
 }
+
