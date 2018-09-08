@@ -53,12 +53,12 @@ class MainActivity : AppCompatActivity() {
 		getAggregatedUsageStats(this)
 	}
 
+
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-
-		setSupportActionBar(toolbar)
 
 		val listView = list
 
@@ -70,8 +70,11 @@ class MainActivity : AppCompatActivity() {
 		progressBar.visibility = View.VISIBLE
 
 		requestUsageStatsPermission(this) {
-			loadRunningApplications()
+			val packages = getRunningApplications(applicationContext)
+			appsListAdapter.setAndLoadItems(packages, usageStatsMap)
 		}
+
+		setSupportActionBar(toolbar)
 	}
 
 
@@ -100,20 +103,21 @@ class MainActivity : AppCompatActivity() {
 				if(supportActionBar != null) {
 					supportActionBar.collapseActionView()
 				} else {
-					Log.e("SuperFreezeUI", "There is no action bar")
+					Log.e(TAG, "There is no action bar")
 				}
 			}
 		}
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-			override fun onQueryTextSubmit(s: String): Boolean {
-				return false
-			}
+			override fun onQueryTextSubmit(s: String) = false
 
 			override fun onQueryTextChange(s: String): Boolean {
 				appsListAdapter.searchPattern = s
 				return true
 			}
 		})
+
+
+		//Listen on clicks on the floating action button:
 		fab.setOnClickListener {
 			val freezeNext = freezeAll(applicationContext, appsListAdapter.listPendingFreeze, this)
 			doOnResume(freezeNext)
@@ -183,16 +187,6 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-
-	private fun loadRunningApplications() {
-
-		Thread {
-			val packages = getRunningApplications(applicationContext)
-
-			runOnUiThread {
-				appsListAdapter.setAndLoadItems(packages, usageStatsMap)
-			}
-		}.start()
-
-	}
 }
+
+private const val TAG = "MainActivity"

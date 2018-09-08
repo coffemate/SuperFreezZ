@@ -60,9 +60,7 @@ import kotlin.collections.ArrayList
  */
 internal class AppsListAdapter internal constructor(private val mainActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
 	private val tFactory = ThreadFactory { r ->
-		val t = Thread(r)
-		t.isDaemon = true
-		t
+		Thread(r).apply { isDaemon = true }
 	}
 
 	/**
@@ -133,8 +131,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			ListItemApp(it.packageName)
 		})
 
-		refreshOriginalList(usageStatsMap)
-		refreshList()
 
 		@Suppress("UNCHECKED_CAST")
 		loadAllNames(appsList) {
@@ -144,8 +140,12 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				refreshList()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
+				mainActivity.reportFullyDrawn()
 			}
 		}
+
+		refreshOriginalList(usageStatsMap)
+		refreshList()
 	}
 
 
