@@ -17,54 +17,33 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android
+package superfreeze.tool.android.backend
 
+import android.app.Activity
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
-import org.jetbrains.annotations.Contract
+import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.database.getFreezeMode
 
 /**
- * This file is responsible for freezing apps and connected things, like loading the list of apps
- * that were not freezed yet.
+ * This file contains functions that get necessary information about apps.
  */
-
-
-/**
- * Freeze a package.
- * @param packageName The name of the package to freeze
- * @param context The context of the calling application
- */
-@Contract(pure = true)
-internal fun freezeApp(packageName: String, context: Context) {
-	val intent = Intent()
-	intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-	intent.data = Uri.fromParts("package", packageName, null)
-	context.startActivity(intent)
-
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-		FreezerService.performFreeze()
-	}
-}
-
 
 /**
  * Gets the running applications. Do not use from the UI thread.
  */
-public fun getRunningApplications(context: Context): List<PackageInfo> {
+internal fun getRunningApplications(context: Context): List<PackageInfo> {
 	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 			.filter {
 				//Add the package only if it is NOT a system app:
 				!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
 			}
 }
-
 
 /**
  * Queries usage stats for the last two years by calling usageStatsManager.queryAndAggregateUsageStats().
@@ -90,61 +69,36 @@ internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
 	return ! applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
-private class UsedPackage(val packageInfo: PackageInfo, usageStats: UsageStats?): Comparable<UsedPackage> {
-
-	/**
-	 * The timestamp at which this app was used last or 0 if it was never used/no infos are available
-	 */
-	internal val lastTimeUsed = getLastTimeUsed(usageStats)
-
-	override fun compareTo(other: UsedPackage): Int {
-		return this.lastTimeUsed.compareTo(other.lastTimeUsed)
-	}
-
+internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, activity: Activity): Boolean {
+	return isPendingFreeze(
+			getFreezeMode(activity, packageInfo.packageName),
+			packageInfo.applicationInfo,
+			usageStats)
 }
 
-internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?): Boolean {
-	return isPendingFreeze(packageInfo.packageName, packageInfo.applicationInfo, usageStats)
-}
+internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
 
-internal fun isPendingFreeze(packageName: String, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
 	if (!isRunning(applicationInfo)) {
 		return false
 	}
-	return System.currentTimeMillis() - getLastTimeUsed(usageStats)  >  1000L*60*60*24*1 //TODO replace 1 with 7
-}
 
-/**
- * Freezes all apps in the "apps" list.
- * @param context: The context
- * @param apps: A list of apps to be frozen. If it is null, a list of apps that pend freeze is computed automatically.
- * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
- * It returns whether it wants to be executed again.
- */
-internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
-	val appsNonNull = apps ?: getAppsPendingFreeze(context)
+	return when(freezeMode) {
 
-	var nextIndex = 0
+		FreezeMode.ALWAYS_FREEZE -> true
 
-	fun freezeNext(): Boolean {
-		if (nextIndex < appsNonNull.size) {
-			freezeApp(appsNonNull[nextIndex], context)
-			nextIndex++
+		FreezeMode.NEVER_FREEZE -> false
+
+		FreezeMode.FREEZE_WHEN_INACTIVE -> {
+			System.currentTimeMillis() - getLastTimeUsed(usageStats) >  1000L*60*60*24*7
 		}
-		//only execute again if nextIndex is a valid index
-		return nextIndex < appsNonNull.size
 	}
-
-	freezeNext()
-	FreezerService.doOnFinished(::freezeNext)
-	return ::freezeNext
 }
 
-internal fun getAppsPendingFreeze(context: Context): List<String> {
+internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
 
 	val usageStatsMap = getAggregatedUsageStats(context)
 	return getRunningApplications(context)
-			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName)) }
+			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
 			.map { it.packageName }
 }
 

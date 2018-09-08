@@ -1,4 +1,23 @@
-package superfreeze.tool.android
+/*
+Copyright (c) 2018 Hocceruser
+
+This file is part of SuperFreeze.
+
+SuperFreeze is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SuperFreeze is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+package superfreeze.tool.android.userInterface
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +26,9 @@ import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.freezeAll
+import superfreeze.tool.android.backend.getAppsPendingFreeze
 
 
 /**
@@ -17,7 +39,6 @@ class FreezeShortcutActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val intent = intent
 		val action = intent.action
 
 		if (Intent.ACTION_CREATE_SHORTCUT == action) {
@@ -48,13 +69,13 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private fun performFreeze() {
-		val appsPendingFreeze = getAppsPendingFreeze(applicationContext)
+		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
 			finish()
 		}
 
-		val freezeNext = freezeAll(applicationContext)
+		val freezeNext = freezeAll(applicationContext, activity = this)
 		doOnResume {
 			val appsLeft = freezeNext()
 			if (!appsLeft) {

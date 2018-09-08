@@ -18,23 +18,15 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.AppOpsManager
 import android.app.SearchManager
 import android.app.usage.UsageStats
+import android.content.ComponentCallbacks2
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.os.Build
+import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Process
-import android.provider.Settings
-import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -42,8 +34,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.backend.freezeAll
+import superfreeze.tool.android.backend.getAggregatedUsageStats
+import superfreeze.tool.android.backend.getRunningApplications
 
 /**
  * The activity that is shown at startup
@@ -73,7 +69,9 @@ class MainActivity : AppCompatActivity() {
 		progressBar = progress
 		progressBar.visibility = View.VISIBLE
 
-		requestUsageStatsPermissionAndLoadApps()
+		requestUsageStatsPermission(this) {
+			loadRunningApplications()
+		}
 	}
 
 
@@ -83,14 +81,6 @@ class MainActivity : AppCompatActivity() {
 	 */
 	fun hideProgressBar() {
 		progressBar.visibility = View.GONE
-	}
-
-	/**
-	 * This will add item to the apps list.
-	 * @param items The items to add, as PackageInfo's.
-	 */
-	fun setItems(items: List<PackageInfo>) {
-		appsListAdapter.setAndLoadItems(items, usageStatsMap)
 	}
 
 	/**
@@ -125,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 			}
 		})
 		fab.setOnClickListener {
-			val freezeNext = freezeAll(applicationContext, apps = appsListAdapter.listPendingFreeze)
+			val freezeNext = freezeAll(applicationContext, appsListAdapter.listPendingFreeze, this)
 			doOnResume(freezeNext)
 		}
 		return super.onCreateOptionsMenu(menu)
@@ -138,10 +128,47 @@ class MainActivity : AppCompatActivity() {
 		toBeDoneOnResume.retainAll { it() }
 
 		if (!FreezerService.busy()) {
-			appsListAdapter.refresh(getAggregatedUsageStats(this))
-			appsListAdapter.filterList()
+			appsListAdapter.refresh(usageStatsMap)
 		}
 	}
+
+
+	override fun onConfigurationChanged(newConfig: Configuration?) {
+		super.onConfigurationChanged(newConfig)
+
+		//This is necessary so that the list items change their look when the screen is rotated.
+		val listView = list
+		val position = (listView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+		listView.adapter = null
+		listView.layoutManager = null
+		listView.recycledViewPool.clear()
+		listView.adapter = appsListAdapter
+		listView.layoutManager = LinearLayoutManager(this)
+		appsListAdapter.notifyDataSetChanged()
+		listView.layoutManager.scrollToPosition(position)
+	}
+
+	override fun onTrimMemory(level: Int) {
+		//See https://developer.android.com/topic/performance/memory#release
+
+		when (level) {
+			ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE -> { }
+
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW,
+			ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL,
+
+			ComponentCallbacks2.TRIM_MEMORY_BACKGROUND,
+			ComponentCallbacks2.TRIM_MEMORY_MODERATE,
+			ComponentCallbacks2.TRIM_MEMORY_COMPLETE -> {
+				appsListAdapter.trimMemory()
+			}
+
+			else -> {}
+		}
+	}
+
 
 	companion object {
 		private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
@@ -152,83 +179,10 @@ class MainActivity : AppCompatActivity() {
 		internal fun doOnResume(task: ()->Boolean) {
 			toBeDoneOnResume.add(task)
 		}
-	}
-
-	private fun requestUsageStatsPermissionAndLoadApps() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			return
-		}
-
-		if (!usageStatsPermissionGranted()) {
-
-			AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog)
-					.setTitle("UsageStats access")
-					.setMessage("If you enable UsageStats access, SuperFreeze can:\n - see which apps have been awoken since last freeze\n - freeze only apps you did not use for some time.")
-					.setPositiveButton("Enable") { _, _ ->
-						showUsageStatsSettings()
-						doOnResume {
-
-							if (!usageStatsPermissionGranted()) {
-								toast("You did not enable usagestats access.", Toast.LENGTH_SHORT)
-							}
-							loadRunningApplications()
-
-							//Do not execute again
-							false
-						}
-					}
-					.setNeutralButton("Not now") { _, _ ->
-						//directly load running applications
-						loadRunningApplications()
-					}
-					//TODO add negative button "never"
-					.setIcon(R.mipmap.ic_launcher)
-					.setCancelable(false)
-					.show()
-		} else {
-			//directly load running applications
-			loadRunningApplications()
-		}
 
 	}
 
-	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-	private fun showUsageStatsSettings() {
-		val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-		startActivity(intent)
-		toast("Please select SuperFreeze, then enable access", Toast.LENGTH_LONG)
-	}
 
-	private fun usageStatsPermissionGranted(): Boolean {
-
-		//On earlier versions there are no usage stats
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-			return false
-		}
-
-		val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-
-			val mode = appOpsManager.checkOpNoThrow(
-					AppOpsManager.OPSTR_GET_USAGE_STATS,
-					Process.myUid(),
-					packageName)
-
-			return if (mode == AppOpsManager.MODE_DEFAULT) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-					checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
-				} else {
-					false//TODO check if this assumption is right: At Lollipop, mode will be AppOpsManager.MODE_ALLOWED if it was allowed
-				}
-			} else {
-				mode == AppOpsManager.MODE_ALLOWED
-			}
-
-
-	}
-
-	private fun toast(s: String, duration: Int) {
-		Toast.makeText(this, s, duration).show()
-	}
 
 	private fun loadRunningApplications() {
 
@@ -236,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 			val packages = getRunningApplications(applicationContext)
 
 			runOnUiThread {
-				setItems(packages)
+				appsListAdapter.setAndLoadItems(packages, usageStatsMap)
 			}
 		}.start()
 
