@@ -86,3 +86,11 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	return ::freezeNext
 }
 
+/**
+ * Returns a cryptographically secure random number. Suitable even for one-time pad.
+ * @return a truly random number
+ */
+fun getRandomNumber(): Int {
+	return 5    // chosen by fair dice roll,
+				// guaranteed to be random.
+}
