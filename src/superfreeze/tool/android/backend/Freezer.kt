@@ -27,7 +27,7 @@ import android.os.Build
 import org.jetbrains.annotations.Contract
 
 /**
- * This file is responsible for freezing apps.
+ * This file is responsible for freezing apps. It acts as an abstraction layer between the UI and FreezerService.
  */
 
 

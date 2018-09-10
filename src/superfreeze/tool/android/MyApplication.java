@@ -21,15 +21,11 @@ package superfreeze.tool.android;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.StrictMode;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * Here the defaultUncaughtExceptionHandler (responsible for uncought exceptions) is set when the
- * app is started.
- */
+
 public class MyApplication extends Application {
 	@Override
 	public void onCreate () {

@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * This file is responsible for the database (that is, the SharedPreference's).
+ */
+
 package superfreeze.tool.android.database
 
 import android.app.Activity

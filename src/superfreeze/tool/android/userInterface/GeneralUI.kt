@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * This file contains functions responsible for general UI things like requesting permissions.
+ */
+
 package superfreeze.tool.android.userInterface
 
 import android.Manifest
@@ -32,6 +36,9 @@ import android.support.annotation.RequiresApi
 import android.widget.Toast
 import superfreeze.tool.android.R
 
+/**
+ * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity!!!
+ */
 internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> Unit) {
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 		return
