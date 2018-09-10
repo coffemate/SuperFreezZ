@@ -8,4 +8,5 @@
 	<color name="text_color_secondary">#000000</color>
 	<color name="text_color_blue">#0091ea</color>
 	<color name="button_greyed_out">#a0a0a0</color>
+	<color name="transparent">#00000000</color>
 </resources>

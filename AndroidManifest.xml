@@ -46,7 +46,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".userInterface.FreezeShortcutActivity">
+		<activity android:name=".userInterface.FreezeShortcutActivity" android:theme="@style/Theme.Invisible">
 			<intent-filter>
 				<action android:name="android.intent.action.CREATE_SHORTCUT" />
 				<category android:name="android.intent.category.DEFAULT" />
