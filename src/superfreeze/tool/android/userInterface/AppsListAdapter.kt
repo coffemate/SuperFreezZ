@@ -153,20 +153,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		for (app in appsList) {
 			app.refresh()
 		}
-		refreshOriginalList(usageStatsMap)
-		refreshList()
-	}
-
-	internal fun trimMemory() {
-		cacheAppIcon.clear()
-	}
-
-
-
-
-
-	@Suppress("UNCHECKED_CAST")
-	private fun refreshOriginalList(usageStatsMap: Map<String, UsageStats>?) {
 
 		//We need to test whether the applications are still installed and remove those that are not.
 		//Apparently, there is no better way for this than trying to access the applicationInfo.
@@ -179,11 +165,24 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
+		refreshOriginalList(usageStatsMap)
+		refreshList()
+	}
+
+	internal fun trimMemory() {
+		cacheAppIcon.clear()
+	}
+
+
+
+
+	@Suppress("UNCHECKED_CAST")
+	private fun refreshOriginalList(usageStatsMap: Map<String, UsageStats>?) {
+
 		val listPendingFreeze =
 				appsList.filter {
 					isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName))
 				}
-
 
 		originalList =
 				if (listPendingFreeze.isEmpty()) {
@@ -316,7 +315,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 						}
 						.show()
 			}
-			
+
 			refreshOriginalList(mainActivity.usageStatsMap)
 			// We do not need to call refreshList() here as either the user is searching, then the list will not change
 			// or he/she is not searching, then originalList and list are pointing to the same object.

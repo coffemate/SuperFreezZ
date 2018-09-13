@@ -47,7 +47,8 @@ internal fun getRunningApplications(context: Context): List<PackageInfo> {
 
 /**
  * Queries usage stats for the last two years by calling usageStatsManager.queryAndAggregateUsageStats().
-
+ * TAKING VERY LONG, CALL ONLY ONCE DUE TO PERFORMANCE REASONS!
+ *
  * @return A map with the package names of running apps or null if it could not be determined (on older versions of Android)
  * @see android.app.usage.UsageStatsManager.queryAndAggregateUsageStats
  */
@@ -94,6 +95,10 @@ internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: Applicatio
 	}
 }
 
+/**
+ * Queries the usage stats and returns those apps that are pending freeze.
+ * Do not use if you have already called getAggregatedUsageStats().
+ */
 internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
 
 	val usageStatsMap = getAggregatedUsageStats(context)

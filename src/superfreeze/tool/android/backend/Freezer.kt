@@ -58,8 +58,9 @@ internal fun freezeApp(packageName: String, context: Context) {
  * It returns whether it wants to be executed again.
  */
 internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
-	return freezeAll(context, apps
-			?: getAppsPendingFreeze(context, activity))
+	return freezeAll(
+			context,
+			apps ?: getAppsPendingFreeze(context, activity))
 }
 
 /**
