@@ -241,7 +241,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract fun setName(name: String, highlight: String?)
 	}
 
-	internal inner class ViewHolderApp(v: View, private val context: Context, freezeMode: FreezeMode) : AbstractViewHolder(v), OnClickListener, View.OnLongClickListener {
+	internal inner class ViewHolderApp(v: View, private val context: Context, freezeMode: FreezeMode) : AbstractViewHolder(v), OnClickListener {
 
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
@@ -252,7 +252,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		init {
 			v.setOnClickListener(this)
-			v.setOnLongClickListener(this)
 
 			symbolAlwaysFreeze.setOnClickListener {
 				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE, changeSettings = true)
@@ -325,10 +324,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		 */
 		override fun onClick(v: View) {
 			list[adapterPosition].freeze(context)
-		}
-		override fun onLongClick(v: View?): Boolean {
-
-			return true
 		}
 
 		override fun setName(name: String, highlight: String?) {
