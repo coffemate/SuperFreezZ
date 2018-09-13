@@ -136,16 +136,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		loadAllNames(appsList) {
 			mainActivity.runOnUiThread {
 				Collections.sort(appsList, comparator)
-				refreshOriginalList(usageStatsMap)
-				refreshList()
+				refreshBothLists(usageStatsMap)
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 				mainActivity.reportFullyDrawn()
 			}
 		}
 
-		refreshOriginalList(usageStatsMap)
-		refreshList()
+		refreshBothLists(usageStatsMap)
 	}
 
 
@@ -165,8 +163,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
-		refreshOriginalList(usageStatsMap)
-		refreshList()
+		refreshBothLists(usageStatsMap)
 	}
 
 	internal fun trimMemory() {
@@ -175,9 +172,9 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 
-
+	// "Both lists" means originalList and list:
 	@Suppress("UNCHECKED_CAST")
-	private fun refreshOriginalList(usageStatsMap: Map<String, UsageStats>?) {
+	private fun refreshBothLists(usageStatsMap: Map<String, UsageStats>?) {
 
 		val listPendingFreeze =
 				appsList.filter {
@@ -196,6 +193,8 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				}
 
 		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
+
+		refreshList()
 	}
 
 	private fun refreshList() {
@@ -316,9 +315,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 						.show()
 			}
 
-			refreshOriginalList(mainActivity.usageStatsMap)
-			// We do not need to call refreshList() here as either the user is searching, then the list will not change
-			// or he/she is not searching, then originalList and list are pointing to the same object.
+
+			if (changeSettings) {
+				refreshBothLists(mainActivity.usageStatsMap)
+			}
 		}
 
 		/**
