@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var progressBar: ProgressBar
 
-	private val usageStatsMap: Map<String, UsageStats>? by lazy {
+	internal val usageStatsMap: Map<String, UsageStats>? by lazy {
 		getAggregatedUsageStats(this)
 	}
 

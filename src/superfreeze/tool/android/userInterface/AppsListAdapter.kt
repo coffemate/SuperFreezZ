@@ -316,6 +316,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 						}
 						.show()
 			}
+			
+			refreshOriginalList(mainActivity.usageStatsMap)
+			// We do not need to call refreshList() here as either the user is searching, then the list will not change
+			// or he/she is not searching, then originalList and list are pointing to the same object.
 		}
 
 		/**
