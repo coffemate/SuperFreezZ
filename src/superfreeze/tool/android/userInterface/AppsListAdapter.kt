@@ -288,25 +288,22 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 					symbolAlwaysFreeze.setColorFilter(null)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
-					snackbarText = " will always be frozen."
 				}
 				FreezeMode.FREEZE_WHEN_INACTIVE -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(null)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
-					snackbarText = " will be frozen if it hasn't been used for a long time."
 				}
 				FreezeMode.NEVER_FREEZE -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(null)
-					snackbarText = " will never be frozen"
 				}
 			}
 
 			if (showSnackbar && freezeMode != oldFreezeMode) {
 				Snackbar.make(mainActivity.myCoordinatorLayout,
-						txtAppName.text.toString() + snackbarText,
+						"Changed freeze mode",
 						Snackbar.LENGTH_LONG)
 						.setAction(R.string.undo) {
 							if (oldFreezeMode != null) {
