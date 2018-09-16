@@ -74,6 +74,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
-		android:background="?attr/dividerVertical" />
+		android:background="?attr/dividerVertical"
+		android:layout_marginRight="6dp"/>
 
 </LinearLayout>

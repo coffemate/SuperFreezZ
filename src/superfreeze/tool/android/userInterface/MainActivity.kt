@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
 		requestUsageStatsPermission(this) {
 			val packages = getRunningApplications(applicationContext)
-			appsListAdapter.setAndLoadItems(packages, usageStatsMap)
+			appsListAdapter.setAndLoadItems(packages)
 		}
 
 		setSupportActionBar(toolbar)
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 		toBeDoneOnResume.retainAll { it() }
 
 		if (!FreezerService.busy()) {
-			appsListAdapter.refresh(usageStatsMap)
+			appsListAdapter.refresh()
 		}
 	}
 

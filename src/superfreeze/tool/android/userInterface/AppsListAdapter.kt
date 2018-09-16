@@ -21,7 +21,6 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.userInterface
 
-import android.app.usage.UsageStats
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -44,6 +43,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.FreezeMode
 import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.allIndexesOf
 import superfreeze.tool.android.backend.freezeApp
 import superfreeze.tool.android.backend.isPendingFreeze
 import superfreeze.tool.android.database.getFreezeMode
@@ -94,6 +94,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		set(value) {
 			field = value.toLowerCase()
 			refreshList()
+			notifyDataSetChanged()
 		}
 
 
@@ -103,8 +104,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		return if (i == 0) {
 			ViewHolderApp(
 					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
-					viewGroup.context,
-					FreezeMode.FREEZE_WHEN_INACTIVE)
+					viewGroup.context)
 		} else {
 			ViewHolderSectionHeader(
 					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false))
@@ -125,7 +125,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 
 
-	internal fun setAndLoadItems(packages: List<PackageInfo>, usageStatsMap: Map<String, UsageStats>?) {
+	internal fun setAndLoadItems(packages: List<PackageInfo>) {
 		appsList.clear()
 		appsList.addAll(packages.map {
 			ListItemApp(it.packageName)
@@ -136,18 +136,19 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		loadAllNames(appsList) {
 			mainActivity.runOnUiThread {
 				Collections.sort(appsList, comparator)
-				refreshBothLists(usageStatsMap)
+				refreshBothLists()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 				mainActivity.reportFullyDrawn()
 			}
 		}
 
-		refreshBothLists(usageStatsMap)
+		refreshBothLists()
+		notifyDataSetChanged()
 	}
 
 
-	internal fun refresh(usageStatsMap: Map<String, UsageStats>?) {
+	internal fun refresh() {
 		for (app in appsList) {
 			app.refresh()
 		}
@@ -163,7 +164,8 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
-		refreshBothLists(usageStatsMap)
+		refreshBothLists()
+		notifyDataSetChanged()
 	}
 
 	internal fun trimMemory() {
@@ -174,23 +176,23 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	// "Both lists" means originalList and list:
 	@Suppress("UNCHECKED_CAST")
-	private fun refreshBothLists(usageStatsMap: Map<String, UsageStats>?) {
+	private fun refreshBothLists() {
 
 		val listPendingFreeze =
 				appsList.filter {
-					isPendingFreeze(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName))
+					it.isPendingFreeze()
 				}
 
 		originalList =
-				if (listPendingFreeze.isEmpty()) {
-					listOf(ListItemSectionHeader("ALL APPS")) +
-							appsList
-				} else {
+				(if (listPendingFreeze.isEmpty())
+					listOf(ListItemSectionHeader("[NO APPS PENDING FREEZE]"))
+				else
 					listOf(ListItemSectionHeader("PENDING FREEZE")) +
-							listPendingFreeze +
-							ListItemSectionHeader("ALL APPS") +
-							appsList
-				}
+					listPendingFreeze) +
+
+				ListItemSectionHeader("ALL APPS") +
+				appsList
+
 
 		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
 
@@ -207,6 +209,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 					// that start with the search pattern) are shown at the top:
 					val (importantApps, otherApps) =
 							appsList
+									.asSequence()
 									.filter { it.isMatchingSearchPattern() }
 									.partition {
 										cacheAppName[it.packageName]?.toLowerCase()?.startsWith(searchPattern) != false
@@ -214,8 +217,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 					importantApps + otherApps
 
 				}
-
-		notifyDataSetChanged()
 	}
 
 	private fun loadAllNames(items: List<ListItemApp>, onAllNamesLoaded: () -> Unit) {
@@ -239,7 +240,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		abstract fun setName(name: String, highlight: String?)
 	}
 
-	internal inner class ViewHolderApp(v: View, private val context: Context, freezeMode: FreezeMode) : AbstractViewHolder(v), OnClickListener {
+	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener {
 
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
@@ -262,13 +263,16 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			symbolNeverFreeze.setOnClickListener {
 				setFreezeModeTo(FreezeMode.NEVER_FREEZE, changeSettings = true)
 			}
-
-			setFreezeModeTo(freezeMode, changeSettings = false)
 		}
 
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
 		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings) {
+			if (listItem == null) {
+				Log.e(TAG, "listItem in setFreezeModeTo was null")
+				RuntimeException().printStackTrace()
+			}
 			val oldFreezeMode = listItem?.freezeMode
+			val wasPendingFreeze = listItem?.isPendingFreeze()
 
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
@@ -316,8 +320,42 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 
 
-			if (changeSettings) {
-				refreshBothLists(mainActivity.usageStatsMap)
+			if (changeSettings && searchPattern == "") {
+				//Refresh the lists and notify the system that this item was potentially removed or added somewhere
+				/*val itemsBefore = list.allIndexesOf(listItem)
+				refreshBothLists()
+				val itemsAfterwards = list.allIndexesOf(listItem)
+				for (pos in itemsBefore - itemsAfterwards) {
+					notifyItemRemoved(pos)
+				}
+				for (pos in itemsAfterwards - itemsBefore) {
+					notifyItemInserted(pos)
+				}*/
+				val isPendingFreeze = listItem?.isPendingFreeze()
+
+				if (wasPendingFreeze == null || isPendingFreeze == null) {
+					notifyDataSetChanged()//Something bad happened, just notify that everything might have changed ;-)
+				}
+				else if ((!wasPendingFreeze) && isPendingFreeze) {
+					refreshBothLists()
+					// The first index of the listItem is the "PENDING FREEZE" entry
+					notifyItemInserted(list.indexOf(listItem as AbstractListItem))
+					Log.v(TAG, "${list.indexOf(listItem as AbstractListItem)} was inserted")
+				}
+				else if (wasPendingFreeze && (!isPendingFreeze)) {
+					val oldIndex = list.indexOf(listItem as AbstractListItem)
+					refreshBothLists()
+					notifyItemRemoved(oldIndex)
+					Log.v(TAG, "$oldIndex was removed")
+				}
+
+				// Also refresh other list entries by getting all indexes of the current item, filtering
+				// out this holder's own index (=adapterPosition) and notifying it changed.
+				list.allIndexesOf(listItem as AbstractListItem).filter { it != adapterPosition }.forEach {
+					Log.v(TAG, "$it was changed")
+					notifyItemChanged(it) }
+
+				notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
 			}
 		}
 
@@ -459,6 +497,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				Log.e(TAG, "Holder of $text is not ViewHolderApp while the item at this position is ListItemApp")
 				RuntimeException().printStackTrace()
 			}
+		}
+
+		fun isPendingFreeze(): Boolean {
+			return isPendingFreeze(freezeMode, applicationInfo, mainActivity.usageStatsMap?.get(packageName))
 		}
 	}
 
