@@ -247,7 +247,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
 		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
 		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
-		var listItem: ListItemApp? = null
+		lateinit var listItem: ListItemApp
 
 		init {
 			v.setOnClickListener(this)
@@ -267,12 +267,13 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
 		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings) {
-			if (listItem == null) {
-				Log.e(TAG, "listItem in setFreezeModeTo was null")
+			if (!this::listItem.isInitialized) {
+				Log.e(TAG, "listItem in setFreezeModeTo was uninitialized, aborted setting freeze mode")
 				RuntimeException().printStackTrace()
+				return
 			}
-			val oldFreezeMode = listItem?.freezeMode
-			val wasPendingFreeze = listItem?.isPendingFreeze()
+			val oldFreezeMode = listItem.freezeMode
+			val wasPendingFreeze = listItem.isPendingFreeze()
 
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
@@ -280,8 +281,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				val listItem = list.getOrNull(adapterPosition) as ListItemApp?
 				listItem?.freezeMode = freezeMode
 			}
-
-			val snackbarText: String
 
 			when(freezeMode) {
 				FreezeMode.ALWAYS_FREEZE ->  {
@@ -306,12 +305,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 						"Changed freeze mode",
 						Snackbar.LENGTH_LONG)
 						.setAction(R.string.undo) {
-							if (oldFreezeMode != null) {
-								setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false)
-							} else {
-								Log.e(TAG, "oldFreezeMode was null")
-								RuntimeException().printStackTrace()
-							}
+							setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false)
 						}
 						.show()
 			}
@@ -328,31 +322,29 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				for (pos in itemsAfterwards - itemsBefore) {
 					notifyItemInserted(pos)
 				}*/
-				val isPendingFreeze = listItem?.isPendingFreeze()
 
-				if (wasPendingFreeze == null || isPendingFreeze == null) {
-					notifyDataSetChanged()//Something bad happened, just notify that everything might have changed ;-)
-				}
-				else if ((!wasPendingFreeze) && isPendingFreeze) {
+				val isPendingFreeze = listItem.isPendingFreeze()
+
+				if ((!wasPendingFreeze) && isPendingFreeze) {
 					refreshBothLists()
 					// The first index of the listItem is the "PENDING FREEZE" entry
-					notifyItemInserted(list.indexOf(listItem as AbstractListItem))
-					Log.v(TAG, "${list.indexOf(listItem as AbstractListItem)} was inserted")
+					notifyItemInserted(list.indexOf(listItem))
 				}
 				else if (wasPendingFreeze && (!isPendingFreeze)) {
-					val oldIndex = list.indexOf(listItem as AbstractListItem)
+					val oldIndex = list.indexOf(listItem)
 					refreshBothLists()
 					notifyItemRemoved(oldIndex)
-					Log.v(TAG, "$oldIndex was removed")
 				}
 
 				// Also refresh other list entries by getting all indexes of the current item, filtering
 				// out this holder's own index (=adapterPosition) and notifying it changed.
 				list.allIndexesOf(listItem as AbstractListItem).filter { it != adapterPosition }.forEach {
-					Log.v(TAG, "$it was changed")
 					notifyItemChanged(it) }
 
 				notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
+
+			} else if (searchPattern != "") {
+				refreshBothLists() // The user is searching, so we do not need to change anything in the list
 			}
 		}
 
