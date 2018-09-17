@@ -22,8 +22,7 @@ package superfreeze.tool.android;
 import android.app.Application;
 import android.content.Intent;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import static superfreeze.tool.android.backend.HelperFunctionsKt.getStackTrace;
 
 
 public class MyApplication extends Application {
@@ -81,9 +80,5 @@ public class MyApplication extends Application {
 		*/
 	}
 
-	private String getStackTrace(Throwable throwable) {
-		StringWriter stringWriter = new StringWriter();
-		throwable.printStackTrace(new PrintWriter(stringWriter, true));
-		return stringWriter.getBuffer().toString();
-	}
+
 }

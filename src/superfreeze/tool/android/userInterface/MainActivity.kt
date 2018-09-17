@@ -30,16 +30,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.backend.freezeAll
-import superfreeze.tool.android.backend.getAggregatedUsageStats
-import superfreeze.tool.android.backend.getRunningApplications
+import superfreeze.tool.android.backend.*
 
 /**
  * The activity that is shown at startup
@@ -100,11 +96,7 @@ class MainActivity : AppCompatActivity() {
 		searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
 			if (!queryTextFocused && searchView.query.isEmpty()) {
 				val supportActionBar = supportActionBar
-				if(supportActionBar != null) {
-					supportActionBar.collapseActionView()
-				} else {
-					Log.e(TAG, "There is no action bar")
-				}
+				supportActionBar?.expectNonNull(TAG)?.collapseActionView()
 			}
 		}
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
