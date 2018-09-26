@@ -41,9 +41,6 @@
 			<meta-data android:name="android.app.shortcuts"
 				android:resource="@xml/shortcuts" />
 
-			<intent-filter>
-				<action android:name="FREEZE" />
-			</intent-filter>
 		</activity>
 
 		<activity android:name=".userInterface.FreezeShortcutActivity" android:theme="@style/Theme.Invisible">
@@ -52,7 +49,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 			<intent-filter>
-				<action android:name="FREEZE" />
+				<action android:name="superfreeze.tool.android.FREEZE" />
 			</intent-filter>
 		</activity>
 

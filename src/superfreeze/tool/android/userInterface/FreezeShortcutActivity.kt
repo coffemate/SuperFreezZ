@@ -30,6 +30,7 @@ import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
 
+const val FREEZE_ACTION = "superfreeze.tool.android.FREEZE"
 
 /**
  * This activity
@@ -52,13 +53,16 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private fun setupShortcut() {
-		val shortcutIntent = Intent("FREEZE")
-		shortcutIntent.setClassName(this, this.javaClass.name)
 		val intent: Intent
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			// There is a nice new api for shortcuts from Android O on, which we use here:
 			val shortcutManager = getSystemService(ShortcutManager::class.java)
 			intent = shortcutManager.createShortcutResultIntent(ShortcutInfo.Builder(applicationContext, "FreezeShortcut").build())
 		} else {
+			// ...but for older versions we need to do everything manually :-(,
+			// so actually using the new api does not have any benefits:
+			val shortcutIntent = Intent(FREEZE_ACTION)
+			shortcutIntent.setClassName(this, this.javaClass.name)
 			intent = Intent()
 			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
 			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.freeze_shortcut_short_label))
