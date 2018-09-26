@@ -32,7 +32,7 @@ import superfreeze.tool.android.backend.getAppsPendingFreeze
 
 
 /**
- * This class
+ * This activity
  *  - creates a shortcut some launcher can use
  *  - performs the freeze when the "Freeze" shortcut (or Floating Action Button) is clicked.
  */

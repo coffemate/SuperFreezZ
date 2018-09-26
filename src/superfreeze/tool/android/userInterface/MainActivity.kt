@@ -25,6 +25,7 @@ import android.app.SearchManager
 import android.app.usage.UsageStats
 import android.content.ComponentCallbacks2
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -35,7 +36,9 @@ import android.view.View
 import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.*
+import superfreeze.tool.android.backend.expectNonNull
+import superfreeze.tool.android.backend.getAggregatedUsageStats
+import superfreeze.tool.android.backend.getRunningApplications
 
 /**
  * The activity that is shown at startup
@@ -111,8 +114,7 @@ class MainActivity : AppCompatActivity() {
 
 		//Listen on clicks on the floating action button:
 		fab.setOnClickListener {
-			val freezeNext = freezeAll(applicationContext, appsListAdapter.listPendingFreeze, this)
-			doOnResume(freezeNext)
+			startActivity(Intent(this, FreezeShortcutActivity::class.java))
 		}
 		return super.onCreateOptionsMenu(menu)
 	}
@@ -123,9 +125,7 @@ class MainActivity : AppCompatActivity() {
 		//Execute all tasks and retain only those that returned true.
 		toBeDoneOnResume.retainAll { it() }
 
-		if (!FreezerService.busy()) {
-			appsListAdapter.refresh()
-		}
+		appsListAdapter.refresh()
 	}
 
 
@@ -177,7 +177,6 @@ class MainActivity : AppCompatActivity() {
 		}
 
 	}
-
 
 }
 
