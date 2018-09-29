@@ -22,7 +22,6 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 <LinearLayout
 
-	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/card_view"
 	style="@style/myClickable"
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +48,8 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 			android:layout_height="50dp"
 			android:adjustViewBounds="true"
 			android:layout_gravity="center"
-			android:scaleType="fitCenter" />
+			android:scaleType="fitCenter"
+			android:contentDescription="@string/icon" />
 
 		<LinearLayout
 			android:layout_width="match_parent"

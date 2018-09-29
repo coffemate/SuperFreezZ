@@ -21,10 +21,10 @@ package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
-import androidx.annotation.RequiresApi
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import androidx.annotation.RequiresApi
 
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
@@ -150,14 +150,6 @@ class FreezerService : AccessibilityService() {
 				nextAction = NextAction.PRESS_FORCE_STOP
 			else
 				Log.w(TAG, "Attempted to freeze, but was still busy")
-		}
-
-		/**
-		 * Returns whether this service is busy (i. e. freezing an app)
-		 */
-		fun busy(): Boolean {
-			return (nextAction != NextAction.DO_NOTHING
-					&& isEnabled)
 		}
 
 		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()

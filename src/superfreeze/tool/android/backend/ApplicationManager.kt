@@ -103,8 +103,10 @@ internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<St
 
 	val usageStatsMap = getAggregatedUsageStats(context)
 	return getRunningApplications(context)
+			.asSequence()
 			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
 			.map { it.packageName }
+			.toList()
 }
 
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {

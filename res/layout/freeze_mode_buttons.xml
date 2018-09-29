@@ -12,7 +12,8 @@
 		android:layout_gravity="end|center_vertical"
 		android:padding="6dp"
 		app:srcCompat="@drawable/symbol_freeze_when_inactive"
-		style="@style/myClickable" />
+		style="@style/myClickable"
+		android:contentDescription="@string/freeze_this_app_if_it_has_not_been_used_for_a_longer_time" />
 
 	<ImageView
 		android:id="@+id/imageAlwaysFreeze"
@@ -21,7 +22,8 @@
 		android:layout_gravity="end|center_vertical"
 		android:padding="6dp"
 		app:srcCompat="@drawable/symbol_always_freeze"
-		style="@style/myClickable" />
+		style="@style/myClickable"
+		android:contentDescription="@string/always_freeze_this_app" />
 
 	<ImageView
 		android:id="@+id/imageNeverFreeze"
@@ -30,7 +32,8 @@
 		android:layout_gravity="end|center_vertical"
 		android:padding="6dp"
 		app:srcCompat="@drawable/symbol_never_freeze"
-		style="@style/myClickable" />
+		style="@style/myClickable"
+		android:contentDescription="@string/do_never_freeze_this_app" />
 
 
 </merge>

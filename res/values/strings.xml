@@ -11,5 +11,9 @@
 	<string name="freeze_shortcut_long_label">SuperFreeze unused apps</string>
 	<string name="NothingToFreeze">Nothing to freeze</string>
 	<string name="undo">Undo</string>
+	<string name="icon">Icon</string>
+	<string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Freeze this app if it has not been used for a longer time.</string>
+	<string name="always_freeze_this_app">Always freeze this app</string>
+	<string name="do_never_freeze_this_app">Do never freeze this app</string>
 
 </resources>

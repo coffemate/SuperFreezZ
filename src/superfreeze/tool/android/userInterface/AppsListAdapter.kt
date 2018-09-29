@@ -80,8 +80,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	private var list = emptyList<AbstractListItem>()
 
 
-	var listPendingFreeze: List<String>? = null
-		private set
 
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
 	private val packageManager: PackageManager = mainActivity.packageManager
@@ -193,10 +191,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 				ListItemSectionHeader("ALL APPS") +
 				appsList
-
-
-		this.listPendingFreeze = listPendingFreeze.map{ it.packageName }
-
+		
 		refreshList()
 	}
 
