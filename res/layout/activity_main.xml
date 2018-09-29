@@ -65,12 +65,13 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 		android:id="@+id/fab"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"
 		android:layout_gravity="bottom|end"
-		android:layout_marginBottom="15dp"
 		android:layout_marginEnd="15dp"
 		android:layout_marginRight="15dp"
+		android:layout_marginBottom="15dp"
+		app:backgroundTint="@android:color/white"
 		app:srcCompat="@drawable/ic_freeze" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
