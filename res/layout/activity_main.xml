@@ -73,5 +73,6 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 		android:layout_marginRight="15dp"
 		android:layout_marginBottom="15dp"
 		app:backgroundTint="@android:color/white"
+		app:maxImageSize="35dp"
 		app:srcCompat="@drawable/ic_freeze" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
