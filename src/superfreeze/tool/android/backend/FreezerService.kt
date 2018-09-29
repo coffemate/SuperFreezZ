@@ -21,7 +21,7 @@ package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo

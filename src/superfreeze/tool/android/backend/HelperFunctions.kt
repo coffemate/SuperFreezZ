@@ -23,6 +23,7 @@ fun <E> List<E>.allIndexesOf(item: E): List<Int> {
  * If yes, it logs an error.
  * In any case, it returns the receiver.
  * @receiver The object to test for being null
+ * @param tag The current file's/class' name. Used to for the message that is being logged in case the receiver is null.
  * @return the receiver
  */
 fun <T> T?.expectNonNull(tag: String): T? {

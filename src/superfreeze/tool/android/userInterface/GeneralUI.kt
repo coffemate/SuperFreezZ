@@ -32,7 +32,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.widget.Toast
 import superfreeze.tool.android.R
 

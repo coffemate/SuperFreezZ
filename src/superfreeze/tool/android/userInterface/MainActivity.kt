@@ -28,12 +28,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.expectNonNull
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onConfigurationChanged(newConfig: Configuration?) {
 		super.onConfigurationChanged(newConfig)
 
-		//This is necessary so that the list items change their look when the screen is rotated.
+		//This is necessary so that the list items change their look when the screen is rotated:
 		val listView = list
 		val position = (listView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 		listView.adapter = null
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 		listView.adapter = appsListAdapter
 		listView.layoutManager = LinearLayoutManager(this)
 		appsListAdapter.notifyDataSetChanged()
-		listView.layoutManager.scrollToPosition(position)
+		(listView.layoutManager as LinearLayoutManager).scrollToPosition(position)
 	}
 
 	override fun onTrimMemory(level: Int) {

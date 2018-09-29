@@ -26,11 +26,12 @@ import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
 
-const val FREEZE_ACTION = "superfreeze.tool.android.FREEZE"
+const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
 
 /**
  * This activity
