@@ -180,13 +180,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				}
 
 		originalList =
-				(if (listPendingFreeze.isEmpty())
-					listOf(ListItemSectionHeader("[NO APPS PENDING FREEZE]"))
-				else
-					listOf(ListItemSectionHeader("PENDING FREEZE")) +
-					listPendingFreeze) +
+				if (listPendingFreeze.isEmpty()) {
+					listOf(ListItemSectionHeader(mainActivity.getString(R.string.no_apps_pending_freeze)))
+				} else {
+					listOf(ListItemSectionHeader(mainActivity.getString(R.string.pending_freeze))) +
+					listPendingFreeze
+				} +
 
-				ListItemSectionHeader("ALL APPS") +
+				ListItemSectionHeader(mainActivity.getString(R.string.all_apps)) +
 				appsList
 		
 		refreshList()
@@ -520,7 +521,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		override fun isMatchingSearchPattern() = true
 
 		override fun bindViewHolder(holder: AbstractViewHolder) {
-			holder.setName(text, "")
+			holder.setName(text.toUpperCase(), "")
 		}
 
 		override val packageName: String? get() = null

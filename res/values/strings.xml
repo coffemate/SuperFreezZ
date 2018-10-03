@@ -20,5 +20,7 @@
 	<string name="freeze_off">Freeze off</string>
 	<string name="used_recently">Used recently</string>
 	<string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
+	<string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
+	<string name="all_apps">ALL APPS</string>
 
 </resources>
