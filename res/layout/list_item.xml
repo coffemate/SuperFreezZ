@@ -58,13 +58,32 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 			android:orientation="horizontal">
 
 
-			<TextView
-				android:id="@+id/txtAppName"
+			<LinearLayout
 				android:layout_width="0dp"
 				android:layout_weight="1"
 				android:layout_height="match_parent"
 				android:gravity="center_vertical|center_horizontal"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+				android:orientation="vertical"
+				android:layout_marginLeft="6dp">
+
+				<TextView
+					android:id="@+id/txtAppName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="left|bottom"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:singleLine="true" />
+
+				<TextView
+					android:id="@+id/txtExplanation"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="left|top"
+					android:text="Hallo"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:textSize="12sp" />
+
+			</LinearLayout>
 
 			<include layout="@layout/freeze_mode_buttons" />
 

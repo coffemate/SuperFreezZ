@@ -28,6 +28,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
 
 /**
@@ -90,10 +91,40 @@ internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: Applicatio
 		FreezeMode.NEVER_FREEZE -> false
 
 		FreezeMode.FREEZE_WHEN_INACTIVE -> {
-			System.currentTimeMillis() - getLastTimeUsed(usageStats) >  1000L*60*60*24*7
+			notUsedRecently(usageStats)
 		}
 	}
 }
+
+internal fun getPendingFreezeExplanation(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?, context: Context) : String {
+
+	fun string(stringID: Int) = context.getString(stringID)
+
+	val isRunning = isRunning(applicationInfo)
+
+	return when(freezeMode) {
+
+		FreezeMode.ALWAYS_FREEZE ->
+			if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
+
+		FreezeMode.NEVER_FREEZE ->
+			string(R.string.freeze_off)
+
+		FreezeMode.FREEZE_WHEN_INACTIVE -> {
+			if (notUsedRecently(usageStats)) {
+				if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
+			} else {
+				if (isRunning)
+					string(R.string.used_recently)
+				else
+					string(R.string.used_recently) + string(R.string.space_AND_space) + string(R.string.frozen)
+			}
+		}
+	}
+}
+
+private fun notUsedRecently(usageStats: UsageStats?) =
+		System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
 
 /**
  * Queries the usage stats and returns those apps that are pending freeze.

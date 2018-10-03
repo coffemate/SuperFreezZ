@@ -43,10 +43,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.FreezeMode
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.allIndexesOf
-import superfreeze.tool.android.backend.expectNonNull
-import superfreeze.tool.android.backend.freezeApp
-import superfreeze.tool.android.backend.isPendingFreeze
+import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import java.util.*
@@ -238,8 +235,9 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener {
 
-		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
+		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
+		private val txtExplanation: TextView = v.findViewById(R.id.txtExplanation)
 		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
 		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
 		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
@@ -278,6 +276,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 
 			setButtonColours(freezeMode)
+			refreshExplanation(freezeMode)
 
 			if (showSnackbar && freezeMode != oldFreezeMode) {
 				Snackbar.make(mainActivity.myCoordinatorLayout,
@@ -356,6 +355,14 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			}
 		}
 
+		private fun refreshExplanation(freezeMode: FreezeMode) {
+			txtExplanation.text = getPendingFreezeExplanation(
+					freezeMode,
+					listItem.applicationInfo,
+					mainActivity.usageStatsMap?.get(listItem.packageName),
+					context)
+		}
+
 		/**
 		 * This method defines what is done when a list item (that is, an app) is clicked.
 		 * @param v The clicked view.
@@ -365,22 +372,19 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 
 		override fun setName(name: String, highlight: String?) {
-			setAndHighlight(txtAppName, name, highlight)
-		}
+			txtAppName.text = name
 
-		private fun setAndHighlight(view: TextView, value: String, pattern: String?) {
-			view.text = value
-			if (pattern == null || pattern.isEmpty()) return // nothing to highlight
+			if (highlight == null || highlight.isEmpty()) return // nothing to highlight
 
-			val valueLower = value.toLowerCase()
+			val valueLower = name.toLowerCase()
 			var offset = 0
-			var index = valueLower.indexOf(pattern, offset)
+			var index = valueLower.indexOf(highlight, offset)
 			while (index >= 0 && offset < valueLower.length) {
-				val span = SpannableString(view.text)
-				span.setSpan(ForegroundColorSpan(Color.BLUE), index, index + pattern.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-				view.text = span
-				offset += index + pattern.length
-				index = valueLower.indexOf(pattern, offset)
+				val span = SpannableString(txtAppName.text)
+				span.setSpan(ForegroundColorSpan(Color.BLUE), index, index + highlight.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+				txtAppName.text = span
+				offset += index + highlight.length
+				index = valueLower.indexOf(highlight, offset)
 			}
 		}
 
