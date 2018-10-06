@@ -26,6 +26,7 @@ package superfreeze.tool.android.database
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.backend.FreezeMode
 
 val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
@@ -49,5 +50,5 @@ internal fun setFreezeMode(activity: Activity, packageName: String, freezeMode: 
 
 
 private fun getFreezeModesPreferences(activity: Activity): SharedPreferences? {
-	return activity.getSharedPreferences("superfreeze.tool.android.FREEZE_MODES", Context.MODE_PRIVATE)
+	return activity.getSharedPreferences("${BuildConfig.APPLICATION_ID}.FREEZE_MODES", Context.MODE_PRIVATE)
 }
