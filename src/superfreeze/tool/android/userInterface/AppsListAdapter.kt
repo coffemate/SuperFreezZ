@@ -41,7 +41,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.backend.FreezeMode
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.getFreezeMode

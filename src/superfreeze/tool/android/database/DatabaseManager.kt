@@ -26,7 +26,7 @@ package superfreeze.tool.android.database
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import superfreeze.tool.android.FreezeMode
+import superfreeze.tool.android.backend.FreezeMode
 
 val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 val values = FreezeMode.values()

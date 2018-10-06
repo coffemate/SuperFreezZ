@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * This file contains functions that get necessary information about apps.
+ */
+
 package superfreeze.tool.android.backend
 
 import android.app.Activity
@@ -27,13 +31,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
-import superfreeze.tool.android.FreezeMode
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
-
-/**
- * This file contains functions that get necessary information about apps.
- */
 
 /**
  * Gets the running applications. Do not use from the UI thread.
@@ -151,4 +150,25 @@ private fun getLastTimeUsed(usageStats: UsageStats?): Long {
 
 private fun Int.isFlagSet(value: Int): Boolean {
 	return (this and value) == value
+}
+
+/**
+ * The freeze mode of an app: ALWAYS_FREEZE, NEVER_FREEZE or FREEZE_WHEN_INACTIVE
+ */
+enum class FreezeMode {
+
+	/**
+	 * This app will always be frozen if it is running, regardless of when it was used last.
+	 */
+	ALWAYS_FREEZE,
+
+	/**
+	 * This app will never be frozen, even if it has been running in background for whatever time.
+	 */
+	NEVER_FREEZE,
+
+	/**
+	 * This app will be frozen if it was not used for a specific time but is running in background.
+	 */
+	FREEZE_WHEN_INACTIVE
 }
