@@ -32,8 +32,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import superfreeze.tool.android.R
 
 /**
@@ -47,14 +47,14 @@ internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> U
 	if (!usageStatsPermissionGranted(context)) {
 
 		AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
-				.setTitle("UsageStats access")
-				.setMessage("If you enable UsageStats access, SuperFreeze can:\n - see which apps have been awoken since last freeze\n - freeze only apps you did not use for some time.")
-				.setPositiveButton("Enable") { _, _ ->
+				.setTitle(context.getString(R.string.usagestats_access))
+				.setMessage(context.getString(R.string.usatestats_explanation))
+				.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
 					showUsageStatsSettings(context)
 					MainActivity.doOnResume {
 
 						if (!usageStatsPermissionGranted(context)) {
-							toast(context, "You did not enable usagestats access.", Toast.LENGTH_SHORT)
+							toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
 						}
 						doAfterwards()
 
@@ -62,7 +62,7 @@ internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> U
 						false
 					}
 				}
-				.setNeutralButton("Not now") { _, _ ->
+				.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
 					//directly load running applications
 					doAfterwards()
 				}
