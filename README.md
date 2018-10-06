@@ -59,8 +59,8 @@ SuperFreeze contains files additionally distributed under the MIT license. For t
 
 ```
 build.gradle
-src/superfreeze/tool/android/AppsListAdapter.kt
-src/superfreeze/tool/android/MainActivity.kt
+src/superfreeze/tool/android/userInterface/AppsListAdapter.kt
+src/superfreeze/tool/android/userInterface/MainActivity.kt
 res/layout/list_item.xml
 res/layout/activity_main.xml
 res/values/strings.xml
