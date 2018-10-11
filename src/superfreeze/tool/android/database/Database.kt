@@ -48,7 +48,18 @@ internal fun setFreezeMode(activity: Activity, packageName: String, freezeMode: 
 	}
 }
 
-
 private fun getFreezeModesPreferences(activity: Activity): SharedPreferences? {
 	return activity.getSharedPreferences("${BuildConfig.APPLICATION_ID}.FREEZE_MODES", Context.MODE_PRIVATE)
+}
+
+internal fun neverCalled(id: String, activity: Activity): Boolean {
+	val sharedPreferences = activity.getSharedPreferences(id, Context.MODE_PRIVATE)
+	val first = sharedPreferences.getBoolean(id, true)
+	if (first) {
+		with(sharedPreferences.edit()) {
+			putBoolean(id, false)
+			apply()
+		}
+	}
+	return first
 }

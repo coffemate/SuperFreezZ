@@ -53,6 +53,9 @@
 			</intent-filter>
 		</activity>
 
+		<activity android:name=".userInterface.IntroActivity"
+			android:label="Intro activity" />
+
 		<service
 			android:name=".backend.FreezerService"
 			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

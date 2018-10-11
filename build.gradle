@@ -18,6 +18,7 @@ apply plugin: 'kotlin-android-extensions'
 repositories {
 	jcenter()
 	google()
+	maven { url 'https://jitpack.io' }
 }
 
 android {
@@ -63,4 +64,5 @@ dependencies {
 	implementation 'androidx.recyclerview:recyclerview:1.0.0'
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 	implementation 'com.google.android.material:material:1.0.0'
+	implementation 'com.github.paolorotolo:appintro:v5.0.0'
 }

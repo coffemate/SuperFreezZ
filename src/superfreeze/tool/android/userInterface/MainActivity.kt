@@ -55,8 +55,10 @@ class MainActivity : AppCompatActivity() {
 
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-
 		super.onCreate(savedInstanceState)
+
+		startIntroOnFirstLaunch()
+
 		setContentView(R.layout.activity_main)
 
 		val listView = list
@@ -165,6 +167,15 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun startIntroOnFirstLaunch() {
+		//TODO: Uncomment
+//		Thread {
+//			if (neverCalled("FirstLaunch", this@MainActivity)) {
+				val i = Intent(this@MainActivity, IntroActivity::class.java)
+				runOnUiThread { startActivity(i) }
+//			}
+//		}.start()
+	}
 
 	companion object {
 		private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
