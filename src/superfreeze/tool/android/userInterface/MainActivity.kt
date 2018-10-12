@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
+		startIntroOnFirstLaunch()
+
 		setContentView(R.layout.activity_main)
 
 		val listView = list
