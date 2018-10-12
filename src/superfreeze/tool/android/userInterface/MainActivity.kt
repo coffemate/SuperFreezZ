@@ -39,6 +39,7 @@ import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.expectNonNull
 import superfreeze.tool.android.backend.getAggregatedUsageStats
 import superfreeze.tool.android.backend.getRunningApplications
+import superfreeze.tool.android.database.isFirstLaunch
 
 /**
  * The activity that is shown at startup
@@ -56,8 +57,6 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-
-		startIntroOnFirstLaunch()
 
 		setContentView(R.layout.activity_main)
 
@@ -124,6 +123,8 @@ class MainActivity : AppCompatActivity() {
 	override fun onResume() {
 		super.onResume()
 
+		startIntroOnFirstLaunch()
+
 		//Execute all tasks and retain only those that returned true.
 		toBeDoneOnResume.retainAll { it() }
 
@@ -168,13 +169,12 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun startIntroOnFirstLaunch() {
-		//TODO: Uncomment
-//		Thread {
-//			if (neverCalled("FirstLaunch", this@MainActivity)) {
+		Thread {
+			if (isFirstLaunch(applicationContext)) {
 				val i = Intent(this@MainActivity, IntroActivity::class.java)
 				runOnUiThread { startActivity(i) }
-//			}
-//		}.start()
+			}
+		}.start()
 	}
 
 	companion object {

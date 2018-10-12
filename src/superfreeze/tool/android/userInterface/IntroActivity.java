@@ -6,7 +6,9 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
+import androidx.fragment.app.Fragment;
 import superfreeze.tool.android.R;
+import superfreeze.tool.android.database.DatabaseKt;
 
 public final class IntroActivity extends AppIntro {
 
@@ -42,6 +44,14 @@ public final class IntroActivity extends AppIntro {
 		page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
 		addSlide(AppIntroFragment.newInstance(page4));
 
-		setFadeAnimation();
+		setDepthAnimation();
+		showSkipButton(false);
+	}
+
+	@Override
+	public void onDonePressed(Fragment currentFragment) {
+		super.onDonePressed(currentFragment);
+		DatabaseKt.firstLaunchCompleted(getApplicationContext());
+		finish();
 	}
 }

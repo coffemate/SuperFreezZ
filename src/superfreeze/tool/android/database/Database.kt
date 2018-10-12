@@ -23,7 +23,6 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.database
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import superfreeze.tool.android.BuildConfig
@@ -33,25 +32,21 @@ val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 val values = FreezeMode.values()
 private const val TAG = "DatabaseBackend"
 
-internal fun getFreezeMode(activity: Activity, packageName: String): FreezeMode {
-	val sharedPreferences = getFreezeModesPreferences(activity)
-			?: return standardFreezeMode
+internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
+	val sharedPreferences = getFreezeModesPreferences(context)
 	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode.ordinal)
 	return values[ordinal]
 }
 
-internal fun setFreezeMode(activity: Activity, packageName: String, freezeMode: FreezeMode) {
-	val sharedPreferences = getFreezeModesPreferences(activity) ?: return
+internal fun setFreezeMode(context: Context, packageName: String, freezeMode: FreezeMode) {
+	val sharedPreferences = getFreezeModesPreferences(context)
 	with (sharedPreferences.edit()) {
 		putInt(packageName, freezeMode.ordinal)
 		apply()
 	}
 }
 
-private fun getFreezeModesPreferences(activity: Activity): SharedPreferences? {
-	return activity.getSharedPreferences("${BuildConfig.APPLICATION_ID}.FREEZE_MODES", Context.MODE_PRIVATE)
-}
-
+/*Currently not needed, I'll delete it at some time:
 internal fun neverCalled(id: String, activity: Activity): Boolean {
 	val sharedPreferences = activity.getSharedPreferences(id, Context.MODE_PRIVATE)
 	val first = sharedPreferences.getBoolean(id, true)
@@ -62,4 +57,25 @@ internal fun neverCalled(id: String, activity: Activity): Boolean {
 		}
 	}
 	return first
+}*/
+
+internal fun isFirstLaunch(context: Context): Boolean {
+	val sharedPreferences = getMainPreferences(context)
+	return sharedPreferences.getBoolean("FirstLaunch", true)
+}
+
+internal fun firstLaunchCompleted(context: Context) {
+	val sharedPreferences = getMainPreferences(context)
+	with(sharedPreferences.edit()) {
+		putBoolean("FirstLaunch", false)
+		apply()
+	}
+}
+
+private fun getFreezeModesPreferences(context: Context): SharedPreferences {
+	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.FREEZE_MODES", Context.MODE_PRIVATE)
+}
+
+private fun getMainPreferences(context: Context): SharedPreferences {
+	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.MAIN", Context.MODE_PRIVATE)
 }
