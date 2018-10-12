@@ -41,7 +41,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import superfreeze.tool.android.backend.FreezeMode
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.getFreezeMode
@@ -261,7 +260,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
-		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings) {
+		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings, listItem: ListItemApp = this.listItem) {
 
 			if (!this::listItem.isInitialized) {
 				Log.e(TAG, "listItem in setFreezeModeTo was uninitialized, aborted setting freeze mode")
@@ -273,18 +272,20 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			val wasPendingFreeze = listItem.isPendingFreeze()
 
 			if (changeSettings) {
-				(list.getOrNull(adapterPosition) as? ListItemApp?).expectNonNull(TAG)?.freezeMode = freezeMode
+				listItem.freezeMode = freezeMode
 			}
 
-			setButtonColours(freezeMode)
-			refreshExplanation(freezeMode)
+			// Here we need to take _this_ holder's list item as it might be that this holder was bound to another item in the meantime
+			// and in this case _this_ holder's appearance shall stay in sync with the item.
+			setButtonColours(this.listItem.freezeMode)
+			refreshExplanation(this.listItem.freezeMode)
 
 			if (showSnackbar && freezeMode != oldFreezeMode) {
 				Snackbar.make(mainActivity.myCoordinatorLayout,
 						"Changed freeze mode",
 						Snackbar.LENGTH_LONG)
 						.setAction(R.string.undo) {
-							setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false)
+							setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false, listItem = listItem)
 						}
 						.show()
 			}
@@ -325,7 +326,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 					notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
 
-				} else if (searchPattern != "") {
+				} else if (changeSettings) {
 					refreshBothLists()
 					// The user is searching, so nothing in the current list changes => we do not need to call notifyItemChanged-or-whatever()
 				}
