@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		startIntroOnFirstLaunch()
-
 		setContentView(R.layout.activity_main)
 
 		val listView = list
@@ -77,6 +75,21 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		setSupportActionBar(toolbar)
+	}
+
+	override fun onResume() {
+		super.onResume()
+
+		// Show the app intro at the first launch:
+		if (isFirstLaunch(applicationContext)) {
+			startActivity(Intent(this, IntroActivity::class.java))
+			return
+		}
+
+		//Execute all tasks and retain only those that returned true.
+		toBeDoneOnResume.retainAll { it() }
+
+		appsListAdapter.refresh()
 	}
 
 
@@ -122,18 +135,6 @@ class MainActivity : AppCompatActivity() {
 		return super.onCreateOptionsMenu(menu)
 	}
 
-	override fun onResume() {
-		super.onResume()
-
-		startIntroOnFirstLaunch()
-
-		//Execute all tasks and retain only those that returned true.
-		toBeDoneOnResume.retainAll { it() }
-
-		appsListAdapter.refresh()
-	}
-
-
 	override fun onConfigurationChanged(newConfig: Configuration?) {
 		super.onConfigurationChanged(newConfig)
 
@@ -168,15 +169,6 @@ class MainActivity : AppCompatActivity() {
 
 			else -> {}
 		}
-	}
-
-	private fun startIntroOnFirstLaunch() {
-		Thread {
-			if (isFirstLaunch(applicationContext)) {
-				val i = Intent(this@MainActivity, IntroActivity::class.java)
-				runOnUiThread { startActivity(i) }
-			}
-		}.start()
 	}
 
 	companion object {

@@ -37,39 +37,45 @@ import androidx.annotation.RequiresApi
 import superfreeze.tool.android.R
 
 /**
- * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity!!!
+ * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity.onCreate!!!
  */
-internal fun requestUsageStatsPermission(context: Context, doAfterwards: () -> Unit) {
+internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: () -> Unit) {
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 		return
 	}
 
 	if (!usageStatsPermissionGranted(context)) {
 
-		AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
-				.setTitle(context.getString(R.string.usagestats_access))
-				.setMessage(context.getString(R.string.usatestats_explanation))
-				.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
-					showUsageStatsSettings(context)
-					MainActivity.doOnResume {
+		// Actually we want the dialog to be only shown in onResume, not in onCreate as the app intro is supposed to be shown before this dialog:
+		MainActivity.doOnResume {
 
-						if (!usageStatsPermissionGranted(context)) {
-							toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
+			AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
+					.setTitle(context.getString(R.string.usagestats_access))
+					.setMessage(context.getString(R.string.usatestats_explanation))
+					.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
+						showUsageStatsSettings(context)
+						MainActivity.doOnResume {
+
+							if (!usageStatsPermissionGranted(context)) {
+								toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
+							}
+							doAfterwards()
+
+							//Do not execute again
+							false
 						}
-						doAfterwards()
-
-						//Do not execute again
-						false
 					}
-				}
-				.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
-					//directly load running applications
-					doAfterwards()
-				}
-				//TODO add negative button "never"
-				.setIcon(R.mipmap.ic_launcher)
-				.setCancelable(false)
-				.show()
+					.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
+						//directly load running applications
+						doAfterwards()
+					}
+					//TODO add negative button "never"
+					.setIcon(R.mipmap.ic_launcher)
+					.setCancelable(false)
+					.show()
+
+			false // do not execute again
+		}
 	} else {
 		//directly load running applications
 		doAfterwards()
