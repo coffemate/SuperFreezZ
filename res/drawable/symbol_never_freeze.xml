@@ -2,8 +2,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="485.8335"
     android:viewportHeight="485.8335"
-    android:width="518.22241dp"
-    android:height="518.22241dp">
+    android:width="100dp"
+    android:height="100dp">
     <group
         android:translateX="-309.0986"
         android:translateY="-277.1573">
