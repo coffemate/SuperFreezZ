@@ -1,14 +1,14 @@
-SuperFreeze
+SuperFreezZ
 ===========
 
 An android app that makes it possible to entirely freeze all background activities of an app.
-Currently, the user has to force stop apps by hand, SuperFreeze only shows the app settings page.
+Currently, the user has to force stop apps by hand, SuperFreezZ only shows the app settings page.
 
 Greenify is another app that can do this, but it is not Open Source.
 
 Any contributions are welcome.
 
-SuperFreeze is not yet another task manager promising to delete 10GB of data per month or making your device 2x as fast. This is impossible. You should freeze only
+SuperFreezZ is not yet another task manager promising to delete 10GB of data per month or making your device 2x as fast. This is impossible. You should freeze only
 * apps that you do not trust (and do not want to run in background) and 
 * apps that you use very few.
 
@@ -24,7 +24,7 @@ Build
 
 The build should succeed out of the box with Android Studio and Gradle. If not, it is probably my fault, please open an issue then. Others will probably also have this problem then.
 
-Contributing to SuperFreeze
+Contributing to SuperFreezZ
 ------------
 
 If you have a problem or a question or an idea or whatever, just open an issue!
@@ -39,23 +39,23 @@ Copying
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
-SuperFreeze is free software: you can redistribute it and/or modify
+SuperFreezZ is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-SuperFreeze is distributed in the hope that it will be useful,
+SuperFreezZ is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 ```
 
 ------------------------------------------------------------------
 
-SuperFreeze contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
+SuperFreezZ contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
 
 ```
 build.gradle
