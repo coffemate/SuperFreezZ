@@ -19,7 +19,6 @@ public final class IntroActivity extends AppIntro {
 		SliderPage page1 = new SliderPage();
 		page1.setTitle("Welcome to SuperFreezZ!");
 		page1.setDescription("SuperFreezZ makes it easy to entirely freeze all background activities of apps.");
-		page1.setImageDrawable(R.mipmap.ic_launcher);
 		page1.setBgColor(getResources().getColor(R.color.ic_launcher_background));
 		addSlide(AppIntroFragment.newInstance(page1));
 
@@ -44,14 +43,23 @@ public final class IntroActivity extends AppIntro {
 		page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
 		addSlide(AppIntroFragment.newInstance(page4));
 
+		addSlide(new AccessibilityServiceChooserFragment());
+
 		setDepthAnimation();
 		showSkipButton(false);
+		instance = this;
 	}
 
 	@Override
 	public void onDonePressed(Fragment currentFragment) {
 		super.onDonePressed(currentFragment);
+		done();
+	}
+
+	public void done() {
 		DatabaseKt.firstLaunchCompleted(getApplicationContext());
 		finish();
 	}
+
+	static IntroActivity instance = null;
 }

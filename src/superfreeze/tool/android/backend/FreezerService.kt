@@ -139,7 +139,8 @@ class FreezerService : AccessibilityService() {
 	internal companion object {
 
 		private var nextAction = NextAction.DO_NOTHING
-		private var isEnabled = false
+		var isEnabled = false
+			private set
 
 		/**
 		 * Clicks the "Force Stop", the "OK" and the "Back" button.
