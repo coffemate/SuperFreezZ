@@ -95,7 +95,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="left"
-				android:text="For users who: \n\u2022 have a slow phone\n\u2022 care a lot about security\n\u2022 do not want to register SuperFreeze as an accsssibility service"
+				android:text="For users who: \n\u2022 have a slow phone\n\u2022 care a lot about security\n\u2022 do not want to register SuperFreezZ as an accsssibility service"
 				android:textColor="@android:color/white"
 				android:textSize="16sp"
 				android:layout_marginLeft="10dp"/>

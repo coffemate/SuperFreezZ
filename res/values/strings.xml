@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">SuperFreeze</string>
+	<string name="app_name">SuperFreezZ</string>
 	<string name="msg_search">Search</string>
 	<string name="msg_search_help">Search by name&#8230;</string>
 	<string name="share_exception">An exception occurred. Share infos using&#8230;</string>
-	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically. \n\nSuperFreeze just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the result of these interactions.</string>
+	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically. \n\nSuperFreezZ just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the result of these interactions.</string>
 	<string name="accessibility_service_unavailable">Accessibility service is not available on your Android version.</string>
 	<string name="freeze_shortcut_short_label">Freeze</string>
-	<string name="freeze_shortcut_long_label">SuperFreeze unused apps</string>
+	<string name="freeze_shortcut_long_label">SuperFreezZ unused apps</string>
 	<string name="NothingToFreeze">Nothing to freeze</string>
 	<string name="undo">Undo</string>
 	<string name="icon">Icon</string>
@@ -23,7 +23,7 @@
 	<string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
 	<string name="all_apps">ALL APPS</string>
 	<string name="usagestats_access">UsageStats access</string>
-	<string name="usatestats_explanation">UsageStats access makes it possible for SuperFreeze to freeze apps only if you did not use for some time.</string>
+	<string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you did not use for some time.</string>
 	<string name="enable">Enable</string>
 	<string name="usagestats_not_enabled">You did not enable usagestats access.</string>
 	<string name="not_now">Not now</string>
