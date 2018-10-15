@@ -2,7 +2,7 @@ SuperFreezZ
 ===========
 
 An android app that makes it possible to entirely freeze all background activities of an app.
-Currently, the user has to force stop apps by hand, SuperFreezZ only shows the app settings page.
+Please note that this is a very early alpha version.
 
 Greenify is another app that can do this, but it is not Open Source.
 
