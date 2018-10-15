@@ -8,37 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [AccessibilityServiceChooserFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [AccessibilityServiceChooserFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
+ * Shows a screen to let the user choose whether to use the accessibility service or not.
  */
-class AccessibilityServiceChooserFragment : Fragment() {
-	//private var listener: OnFragmentInteractionListener? = null
-
+class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 
 		// Inflate the layout for this fragment
 		val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
-		layout.findViewById<LinearLayout>(R.id.accessibilityÝes).setOnClickListener {
+		layout.findViewById<View>(R.id.accessibilityÝes).setOnClickListener {
 			showUsagestatsDialog()
 		}
-		layout.findViewById<LinearLayout>(R.id.accessibilityNo).setOnClickListener {
+		layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
 			IntroActivity.instance.done()
 		}
 
@@ -60,12 +50,18 @@ class AccessibilityServiceChooserFragment : Fragment() {
 					val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
 					startActivity(intent)
 				}
-				.setNegativeButton("Cancel") { _, _->
-					//do nothing
-				}
+
 				.setIcon(R.mipmap.ic_launcher)
 				.setCancelable(false)
 				.show()
+	}
+
+	override fun isPolicyRespected(): Boolean {
+		return false // The user is supposed to select yes or no, not to press "Done"
+	}
+
+	override fun onUserIllegallyRequestedNextPage() {
+		Toast.makeText(context, "Please select 'Yes' or 'No'", Toast.LENGTH_LONG).show()
 	}
 }
 
