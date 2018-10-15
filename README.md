@@ -2,7 +2,7 @@ SuperFreezZ
 ===========
 
 An android app that makes it possible to entirely freeze all background activities of an app.
-Currently, the user has to force stop apps by hand, SuperFreezZ only shows the app settings page.
+Please note that this is a very early alpha version.
 
 Greenify is another app that can do this, but it is not Open Source.
 
@@ -17,7 +17,13 @@ If you freeze apps that you use daily, the battery of your device will drain fas
 Features
 --------
 
-* Works without accessibility service as this slows down the device
+* Optionally works without accessibility service as this slows down the device
+* Option to freeze only apps that you did not use for a week
+
+Build
+-----
+
+The build should succeed out of the box with Android Studio and Gradle. If not, it is probably my fault, please open an issue then. Others will probably also have this problem then.
 
 Contributing to SuperFreezZ
 ------------
@@ -30,6 +36,7 @@ If you would like to help, have a look at the issues or think about what could b
 Copying
 -------
 
+```
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
@@ -45,17 +52,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
-
+```
 
 ------------------------------------------------------------------
 
-SuperFreezZ contains files distributed under the MIT license. These are licensed both under GPLv3-or-later (see above) and MIT (see below), that is, you may choose. These files are:
+SuperFreezZ contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
 
 ```
 build.gradle
-src/axp/tool/apkextractor/ApkListAdapter.java
-src/axp/tool/apkextractor/MainActivity.kt
-src/axp/tool/apkextractor/PermissionResolver.java
+src/superfreeze/tool/android/userInterface/AppsListAdapter.kt
+src/superfreeze/tool/android/userInterface/MainActivity.kt
 res/layout/list_item.xml
 res/layout/activity_main.xml
 res/values/strings.xml
@@ -68,6 +74,7 @@ res/menu/main.xml
 AndroidManifest.xml
 ```
 
+```
 The MIT License (MIT)
 
 Copyright (c) 2015 axxapy
@@ -90,3 +97,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
