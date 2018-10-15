@@ -39,7 +39,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		android:layout_height="wrap_content"
 		android:clickable="false"
 		android:focusable="false"
-		android:minHeight="?android:attr/listPreferredItemHeight"
 		android:orientation="horizontal">
 
 		<!--android:layout_width="?android:attr/listPreferredItemHeight"-->
@@ -80,7 +79,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:gravity="left|top"
-					android:text="Hallo"
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:textSize="12sp" />
 
