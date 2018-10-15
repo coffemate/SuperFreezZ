@@ -1,12 +1,30 @@
-package superfreeze.tool.android
+/*
+Copyright (c) 2018 Hocceruser
+
+This file is part of SuperFreezZ.
+
+SuperFreezZ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SuperFreezZ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-
+import androidx.annotation.RequiresApi
 
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
@@ -24,25 +42,35 @@ class FreezerService : AccessibilityService() {
 			return
 		}
 
-		if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+		//We are only interested in WINDOW_STATE_CHANGED events
+		if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+			return
+		}
 
-			when(nextAction) {
-				NextAction.DO_NOTHING -> {}
+		when(nextAction) {
+			NextAction.DO_NOTHING -> {}
 
-				NextAction.PRESS_FORCE_STOP -> {
+			NextAction.PRESS_FORCE_STOP -> {
+				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
 					val success = pressForceStopButton(event.source)
-					nextAction = if (success) NextAction.PRESS_OK else NextAction.DO_NOTHING
-				}
-				NextAction.PRESS_OK -> {
-					val success = pressOkButton(event.source)
-					nextAction = if (success) NextAction.PRESS_BACK else NextAction.DO_NOTHING
-				}
-				NextAction.PRESS_BACK -> {
-					pressBackButton()
-					nextAction = NextAction.DO_NOTHING
+					nextAction = if (success) NextAction.PRESS_OK else fail()
 				}
 			}
+			NextAction.PRESS_OK -> {
+				if (event.className == "android.app.AlertDialog") {
+					val success = pressOkButton(event.source)
+					nextAction = if (success) NextAction.PRESS_BACK else fail()
+				}
+			}
+			NextAction.PRESS_BACK -> {
+				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
+					pressBackButton()
+					nextAction = NextAction.DO_NOTHING
 
+					//Execute all tasks and retain only those that returned true.
+					toBeDoneOnFinished.retainAll { it() }
+				}
+			}
 		}
 	}
 
@@ -66,9 +94,7 @@ class FreezerService : AccessibilityService() {
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private fun pressOkButton(node: AccessibilityNodeInfo): Boolean {
-
 		return clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
-
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -107,12 +133,14 @@ class FreezerService : AccessibilityService() {
 
 	override fun onDestroy() {
 		isEnabled = false
+		toBeDoneOnFinished.clear()
 	}
 
 	internal companion object {
 
 		private var nextAction = NextAction.DO_NOTHING
-		private var isEnabled = false
+		var isEnabled = false
+			private set
 
 		/**
 		 * Clicks the "Force Stop", the "OK" and the "Back" button.
@@ -121,15 +149,24 @@ class FreezerService : AccessibilityService() {
 		internal fun performFreeze() {
 			if (nextAction == NextAction.DO_NOTHING)
 				nextAction = NextAction.PRESS_FORCE_STOP
+			else
+				Log.w(TAG, "Attempted to freeze, but was still busy")
 		}
 
+		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()
 		/**
-		 * Returns whether this service is busy (i. e. freezing an app)
+		 * Execute this task when finished freezing the current app.
+		 * @param task If it returns true, then it will be executed again at the next onResume.
 		 */
-		fun busy(): Boolean {
-			return (nextAction != NextAction.DO_NOTHING
-					&& isEnabled)
+		internal fun doOnFinished(task: ()->Boolean) {
+			if(isEnabled)
+				toBeDoneOnFinished.add(task)
 		}
+	}
+
+	private fun fail(): NextAction {
+		toBeDoneOnFinished.clear()
+		return NextAction.DO_NOTHING
 	}
 }
 

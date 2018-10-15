@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">SuperFreeze</string>
+	<string name="app_name">SuperFreezZ</string>
 	<string name="msg_search">Suche</string>
 	<string name="msg_search_help">Nach Apps suchen&#8230;</string>
 	<string name="share_exception">Ein Fehler ist aufgetreten. Infos teilen über&#8230;</string>
-	<string name="accessibility_service_description">Die Bedienungshilfe ermöglicht es SuperFreeze, das Freezen zu automatisieren.\n\Dies hat die folgenden Vorteile:\n - Der Benutzer muss es nicht selbst machen: Es ist deutlich schneller und der Benutzer muss sich nicht darum kümmern, wie das geht.\n - Benutzer mit Einschränkungen müssen nur den Shortcut "AutoFreeze" ausführen (zum Beispiel mittels Spracherkennung). So können sie alle Apps automatisch freezen. \n\nSuperFreeze benutzt die Bedienungshilfe nur, um die Buttons "Beenden erzwingen", "OK" und "Zurück" zu drücken und um das Ergebnis dieser Aktionen zu erfahren.</string>
+	<string name="accessibility_service_description">Die Bedienungshilfe ermöglicht es SuperFreezZ, das Freezen zu automatisieren.\n\Dies hat die folgenden Vorteile:\n - Der Benutzer muss es nicht selbst machen: Es ist deutlich schneller und der Benutzer muss sich nicht darum kümmern, wie das geht.\n - Benutzer mit Einschränkungen müssen nur den Shortcut "AutoFreeze" ausführen (zum Beispiel mittels Spracherkennung). So können sie alle Apps automatisch freezen. \n\nSuperFreezZ benutzt die Bedienungshilfe nur, um die Buttons "Beenden erzwingen", "OK" und "Zurück" zu drücken und um das Ergebnis dieser Aktionen zu erfahren.</string>
 	<string name="accessibility_service_unavailable">Die Bedienungshilfe ist in Ihrer Android-Version nicht verfügbar.</string>
 
 </resources>

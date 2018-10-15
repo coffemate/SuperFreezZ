@@ -4,26 +4,26 @@
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
-This file is part of SuperFreeze.
+This file is part of SuperFreezZ.
 
-SuperFreeze is free software: you can redistribute it and/or modify
+SuperFreezZ is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-SuperFreeze is distributed in the hope that it will be useful,
+SuperFreezZ is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <LinearLayout
 
 	android:id="@+id/card_view"
-	style="@style/myCardView"
+	style="@style/myClickable"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 
 	android:orientation="vertical"
@@ -31,38 +31,62 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 	android:layout_width="match_parent"
 	android:minHeight="?attr/listPreferredItemHeight"
 	android:layout_height="wrap_content"
-	>
+	android:paddingLeft="6dp">
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:minHeight="?attr/listPreferredItemHeight"
 		android:layout_height="wrap_content"
-		android:paddingLeft="16dip"
-		android:paddingRight="16dip"
-		android:orientation="horizontal"
 		android:clickable="false"
-		android:focusable="false">
+		android:focusable="false"
+		android:minHeight="?android:attr/listPreferredItemHeight"
+		android:orientation="horizontal">
 
-	<!--android:layout_width="?android:attr/listPreferredItemHeight"-->
+		<!--android:layout_width="?android:attr/listPreferredItemHeight"-->
 		<ImageView
 			android:id="@+id/imgIcon"
-			android:layout_width="72dip"
-			android:paddingRight="16dip"
-			android:scaleType="fitCenter"
+			android:layout_width="50dip"
+			android:layout_height="50dp"
 			android:adjustViewBounds="true"
-			android:layout_height="match_parent" />
+			android:layout_gravity="center"
+			android:scaleType="fitCenter"
+			android:contentDescription="@string/icon" />
 
 		<LinearLayout
-			android:orientation="vertical"
-			android:gravity="center"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="horizontal">
 
-			<TextView
-				android:id="@+id/txtAppName"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center_horizontal|bottom"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<LinearLayout
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="match_parent"
+				android:gravity="center_vertical|center_horizontal"
+				android:orientation="vertical"
+				android:layout_marginLeft="6dp">
+
+				<TextView
+					android:id="@+id/txtAppName"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="left|bottom"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:singleLine="true" />
+
+				<TextView
+					android:id="@+id/txtExplanation"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="left|top"
+					android:text="Hallo"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:textSize="12sp" />
+
+			</LinearLayout>
+
+			<include layout="@layout/freeze_mode_buttons" />
 
 		</LinearLayout>
 	</LinearLayout>
@@ -70,5 +94,7 @@ along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
-		android:background="?attr/dividerVertical" />
+		android:background="?attr/dividerVertical"
+		android:layout_marginRight="6dp"/>
+
 </LinearLayout>

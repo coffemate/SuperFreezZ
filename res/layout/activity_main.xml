@@ -2,55 +2,77 @@
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocceruser
 
-This file is part of SuperFreeze.
+This file is part of SuperFreezZ.
 
-SuperFreeze is free software: you can redistribute it and/or modify
+SuperFreezZ is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-SuperFreeze is distributed in the hope that it will be useful,
+SuperFreezZ is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with SuperFreeze.  If not, see <http://www.gnu.org/licenses/>.
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="${relativePackage}.${activityClass}">
+	android:id="@+id/myCoordinatorLayout"
+	tools:context=".userInterface.MainActivity">
 
-	<android.support.v7.widget.Toolbar
-		android:id="@+id/toolbar"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		android:minHeight="?attr/actionBarSize"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentStart="true"
-		android:theme="@style/AppTheme.PopupOverlay">
+		android:layout_height="match_parent">
 
-		<ProgressBar
-			android:id="@android:id/progress"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="right"
-			android:indeterminate="true"
-			android:visibility="gone" />
-	</android.support.v7.widget.Toolbar>
+		<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="@color/colorPrimary"
+			android:minHeight="?attr/actionBarSize"
+			android:layout_alignParentTop="true"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentStart="true"
+			android:theme="@style/AppTheme.PopupOverlay">
+
+			<ProgressBar
+				android:id="@android:id/progress"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right"
+				android:indeterminate="true"
+				android:visibility="gone" />
+		</androidx.appcompat.widget.Toolbar>
 
 
-	<android.support.v7.widget.RecyclerView
-		android:id="@android:id/list"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_below="@+id/toolbar" />
+		<androidx.recyclerview.widget.RecyclerView
+			android:id="@android:id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@+id/toolbar" />
 
-</RelativeLayout>
+	</RelativeLayout>
+
+
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:id="@+id/fab"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"
+		android:layout_gravity="bottom|end"
+		android:layout_marginEnd="15dp"
+		android:layout_marginRight="15dp"
+		android:layout_marginBottom="15dp"
+		app:backgroundTint="@android:color/white"
+		app:maxImageSize="35dp"
+		app:srcCompat="@drawable/ic_freeze" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

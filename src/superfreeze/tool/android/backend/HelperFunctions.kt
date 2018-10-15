@@ -1,0 +1,48 @@
+package superfreeze.tool.android.backend
+
+import android.util.Log
+import java.io.PrintWriter
+import java.io.StringWriter
+
+/**
+ * This function gets all indexes of item in the receiver list.
+ * @param item the item to search in the list
+ * @receiver The list to search through
+ * @return a list of indexes
+ */
+fun <E> List<E>.allIndexesOf(item: E): List<Int> {
+	val result = mutableListOf<Int>()
+	forEachIndexed { index, currentItem ->
+		if (item === currentItem) result.add(index)
+	}
+	return result
+}
+
+/**
+ * This function test whether the receiver (that is, the thing this function is called on) is null.
+ * If yes, it logs an error.
+ * In any case, it returns the receiver.
+ * @receiver The object to test for being null
+ * @param tag The current file's/class' name. Used to for the message that is being logged in case the receiver is null.
+ * @return the receiver
+ */
+fun <T> T?.expectNonNull(tag: String): T? {
+	if (this == null) {
+		Log.e(tag, "A variable that should not have been null was null, proceeding anyway.")
+		val stackTrace = getStackTrace(NullPointerException())
+		Log.e(tag, stackTrace)
+	}
+
+	return this
+}
+
+/**
+ * This function gets the stack trace as a string from the throwable.
+ * @param throwable The throwable
+ * @return the stack trace of throwable
+ */
+fun getStackTrace(throwable: Throwable): String {
+	val stringWriter = StringWriter()
+	throwable.printStackTrace(PrintWriter(stringWriter, true))
+	return stringWriter.buffer.toString()
+}

@@ -6,4 +6,10 @@
 	<color name="secondary_text_light">#80d8ff</color>
 	<color name="secondary_text_material_dark">#ffffff</color>
 	<color name="text_color_secondary">#000000</color>
+	<color name="text_color_blue">#0091ea</color>
+	<color name="button_greyed_out">#a0a0a0</color>
+	<color name="transparent">#00000000</color>
+	<color name="always_freeeze_background">#be0025</color>
+	<color name="never_freeeze_background">#66CD00</color>
+	<color name="inactive_freeeze_background">#0002C4</color>
 </resources>
