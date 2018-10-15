@@ -18,6 +18,7 @@ Features
 --------
 
 * Optionally works without accessibility service as this slows down the device
+* Option to freeze only apps that you did not use for a week
 
 Build
 -----
