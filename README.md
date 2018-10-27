@@ -12,7 +12,8 @@ SuperFreezZ is not yet another task manager promising to delete 10GB of data per
 * apps that you do not trust (and do not want to run in background) and 
 * apps that you use very few.
 
-If you freeze apps that you use daily, the battery of your device will drain faster and these apps will take longer to load.
+
+If you freeze apps that you use daily, the battery of your device will drain faster and these apps will take longer to load. You should take the name seriously: SuperFreezZ will super freeze your apps, and it is not that easy to defrost them.
 
 Features
 --------
