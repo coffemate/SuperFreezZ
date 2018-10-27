@@ -27,5 +27,6 @@
 	<string name="enable">Enable</string>
 	<string name="usagestats_not_enabled">You did not enable usagestats access.</string>
 	<string name="not_now">Not now</string>
+	<string name="app_name_long">SuperFreezZ App stopper</string>
 
 </resources>
