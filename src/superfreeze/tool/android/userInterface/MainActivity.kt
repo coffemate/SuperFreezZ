@@ -1,6 +1,6 @@
 /*
 Copyright (c) 2015 axxapy
-Copyright (c) 2018 Hocceruser
+Copyright (c) 2018 Hocuri
 
 This file is part of SuperFreezZ.
 

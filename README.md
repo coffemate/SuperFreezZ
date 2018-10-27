@@ -39,7 +39,7 @@ Copying
 
 ```
 Copyright (c) 2015 axxapy
-Copyright (c) 2018 Hocceruser
+Copyright (c) 2018 Hocuri
 
 SuperFreezZ is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ AndroidManifest.xml
 The MIT License (MIT)
 
 Copyright (c) 2015 axxapy
-Copyright (c) 2018 Hocceruser
+Copyright (c) 2018 Hocuri
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
