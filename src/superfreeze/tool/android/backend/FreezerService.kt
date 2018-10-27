@@ -21,11 +21,11 @@ package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
-import java.lang.Exception
 
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
@@ -53,8 +53,7 @@ class FreezerService : AccessibilityService() {
 
 			NextAction.PRESS_FORCE_STOP -> {
 				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
-					val success = pressForceStopButton(event.source)
-					nextAction = if (success) NextAction.PRESS_OK else fail()
+					pressForceStopButton(event.source)
 				} else {
 					Log.w(TAG, "awaited InstalledAppDetailsTop to be the next screen but it was ${event.className}")
 					wrongScreenShown()
@@ -63,8 +62,7 @@ class FreezerService : AccessibilityService() {
 
 			NextAction.PRESS_OK -> {
 				if (event.className == "android.app.AlertDialog") {
-					val success = pressOkButton(event.source)
-					nextAction = if (success) NextAction.PRESS_BACK else fail()
+					pressOkButton(event.source)
 				} else {
 					Log.w(TAG, "awaited AlertDialog to be the next screen but it was ${event.className}")
 					wrongScreenShown()
@@ -72,11 +70,7 @@ class FreezerService : AccessibilityService() {
 			}
 
 			NextAction.PRESS_BACK -> {
-					pressBackButton()
-					nextAction = NextAction.DO_NOTHING
-
-					//Execute all tasks and retain only those that returned true.
-					toBeDoneOnFinished.retainAll { it() }
+				pressBackButton()
 			}
 		}
 	}
@@ -84,8 +78,8 @@ class FreezerService : AccessibilityService() {
 	private fun wrongScreenShown() {
 		// If the last action was more than 8 seconds ago, something went wrong and we should abort not to destroy anything.
 		if (System.currentTimeMillis() - lastActionTimestamp > 8000) {
-			Log.e(TAG, "The wrong screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything")
-			nextAction = fail()
+			Log.e(TAG, "An unexpected screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything")
+			cleanup() // Abort everything, it is to late to do anything :-(
 		}
 		// else do nothing and simply wait for the next screen to show up.
 	}
@@ -94,7 +88,7 @@ class FreezerService : AccessibilityService() {
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressForceStopButton(node: AccessibilityNodeInfo): Boolean {
+	private fun pressForceStopButton(node: AccessibilityNodeInfo) {
 
 		var nodesToClick = node.findAccessibilityNodeInfosByText("FORCE STOP")
 
@@ -104,25 +98,43 @@ class FreezerService : AccessibilityService() {
 		if (nodesToClick.isEmpty())
 			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
 
-		return clickAll(nodesToClick, "force stop")
+		val success = clickAll(nodesToClick, "force stop")
+
+		if (success) nextAction = NextAction.PRESS_OK
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressOkButton(node: AccessibilityNodeInfo): Boolean {
-		return clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+	private fun pressOkButton(node: AccessibilityNodeInfo) {
+		val success = clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+		if (success) nextAction = NextAction.PRESS_BACK
 	}
+
+
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
 	private fun pressBackButton() {
 		performGlobalAction(GLOBAL_ACTION_BACK)
+
+		nextAction = NextAction.DO_NOTHING
+
+		//Execute all tasks and retain only those that returned true.
+		toBeDoneOnFinished.retainAll { it() }
+
+		timeoutHandler.removeCallbacksAndMessages(null)
 	}
 
+	/**
+	 * Clicks all nodes. If it succeeds, it returns true. If it does not succeed, it handles this by
+	 * itself, sets the nextAction to what makes sense and returns true.
+	 */
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
 	private fun clickAll(nodes: List<AccessibilityNodeInfo>, buttonName: String): Boolean {
 
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
+			cleanup()
+			Thread(exceptionHandler).start()
 			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
@@ -132,6 +144,8 @@ class FreezerService : AccessibilityService() {
 
 		if (clickableNodes.isEmpty()) {
 			Log.e(TAG,"The button(s) is/are not clickable, aborting.")
+			// Just do not press the button but immediately press Back and act as if the app was successfully frozen:
+			// A disabled or not clickable button probably means that the app already is frozen.
 			pressBackButton()
 			return false
 		}
@@ -140,18 +154,18 @@ class FreezerService : AccessibilityService() {
 			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 		}
 
-		lastActionTimestamp = System.currentTimeMillis()
+		notifyThereIsStillMovement()
 
 		return true
 	}
 
-	public override fun onServiceConnected() {
+	override fun onServiceConnected() {
 		isEnabled = true
 	}
 
 	override fun onDestroy() {
 		isEnabled = false
-		toBeDoneOnFinished.clear()
+		cleanup()
 	}
 
 	internal companion object {
@@ -164,20 +178,12 @@ class FreezerService : AccessibilityService() {
 		var isEnabled = false
 			private set
 
-		/**
-		 * Clicks the "Force Stop", the "OK" and the "Back" button.
-		 */
-		@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-		internal fun performFreeze() {
-			if (nextAction == NextAction.DO_NOTHING) {
-				nextAction = NextAction.PRESS_FORCE_STOP
-				lastActionTimestamp = System.currentTimeMillis()
-			} else {
-				Log.w(TAG, "Attempted to freeze, but was still busy (nextAction was $nextAction)")
-			}
-		}
-
 		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()
+
+		private var exceptionHandler = { }
+
+		private val timeoutHandler = Handler()
+
 		/**
 		 * Execute this task when finished freezing the current app.
 		 * @param task The task. If it returns true, then it will be executed again at the next onResume.
@@ -186,15 +192,47 @@ class FreezerService : AccessibilityService() {
 			if(isEnabled)
 				toBeDoneOnFinished.add(task)
 		}
+
+		/**
+		 * Clicks the "Force Stop", the "OK" and the "Back" button.
+		 */
+		@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+		internal fun performFreeze() {
+			if (nextAction == NextAction.DO_NOTHING) {
+				nextAction = NextAction.PRESS_FORCE_STOP
+				notifyThereIsStillMovement()
+			} else {
+				Log.w(TAG, "Attempted to freeze, but was still busy (nextAction was $nextAction)")
+			}
+		}
+
+		fun setExceptionHandler(function: () -> Unit) {
+			exceptionHandler = function
+		}
+
+		private fun notifyThereIsStillMovement() {
+			timeoutHandler.removeCallbacksAndMessages(null)
+
+			// After 4 seconds, assume that something went wrong
+			timeoutHandler.postDelayed({
+				cleanup()
+				exceptionHandler()
+			}, 4000)
+
+			lastActionTimestamp = System.currentTimeMillis()
+		}
+
+		/**
+		 * Cleans up when no more apps shall be frozen or before exceptionHandler() is called
+		 * (in the latter case, exceptionHandler() will care about restarting freeze)
+		 */
+		private fun cleanup() {
+			nextAction = NextAction.DO_NOTHING
+			toBeDoneOnFinished.clear()
+			timeoutHandler.removeCallbacksAndMessages(null)
+		}
 	}
 
-	private fun fail(): NextAction {
-		toBeDoneOnFinished.clear()
-		nextAction = NextAction.DO_NOTHING
-		throw FreezeException()
-	}
-
-	class FreezeException : Exception()
 }
 
 private const val TAG = "FreezerService"

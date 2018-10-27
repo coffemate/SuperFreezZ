@@ -30,6 +30,7 @@ import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
+import superfreeze.tool.android.backend.setFreezerExceptionHandler
 
 const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
 
@@ -75,7 +76,7 @@ class FreezeShortcutActivity : Activity() {
 		setResult(Activity.RESULT_OK, intent)
 	}
 
-	private fun performFreeze() {
+	private fun performFreeze(triesLeft: Int = 2) {
 		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
@@ -83,13 +84,20 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-		val freezeNext = freezeAll(applicationContext, activity = this)
+		val resume = freezeAll(applicationContext, activity = this)
 		doOnResume {
-			val appsLeft = freezeNext()
-			if (!appsLeft) {
-				finish()
-			}
+			val appsLeft = resume()
+			if (!appsLeft) finish()
 			appsLeft
+		}
+
+		setFreezerExceptionHandler {
+			toBeDoneOnResume.clear() // Abort the current freeze process
+			if (triesLeft > 0) {
+				runOnUiThread {
+					performFreeze(triesLeft = triesLeft - 1)
+				}
+			}
 		}
 	}
 

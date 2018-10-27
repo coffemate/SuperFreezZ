@@ -89,6 +89,7 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 		// If the Freezer service is enabled, we do not need the calling activity to execute
 		// anything; we can just use FreezerService.doOnFinished:
 		FreezerService.doOnFinished(::freezeNext)
+
 		// However, we still need to tell the calling activity whether there are still apps pending freeze left:
 		return { nextIndex < apps.size }
 
@@ -97,11 +98,14 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	}
 }
 
-/**
- * Returns a cryptographically secure random number. Suitable even for one-time pad.
- * @return a truly random number
- */
+internal fun setFreezerExceptionHandler(function: () -> Unit) {
+	FreezerService.setExceptionHandler(function)
+}
+
+
 fun getRandomNumber(): Int {
 	return 5    // chosen by fair dice roll,
 				// guaranteed to be random.
+
+	// Greetings to anyone reviewing this code!
 }
