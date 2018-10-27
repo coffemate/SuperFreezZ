@@ -80,6 +80,7 @@ class FreezeShortcutActivity : Activity() {
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
 			finish()
+			return
 		}
 
 		val freezeNext = freezeAll(applicationContext, activity = this)

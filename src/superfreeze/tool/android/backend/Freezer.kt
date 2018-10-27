@@ -83,8 +83,18 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	}
 
 	freezeNext()
-	FreezerService.doOnFinished(::freezeNext)
-	return ::freezeNext
+
+	if (FreezerService.isEnabled) {
+
+		// If the Freezer service is enabled, we do not need the calling activity to execute
+		// anything; we can just use FreezerService.doOnFinished:
+		FreezerService.doOnFinished(::freezeNext)
+		// However, we still need to tell the calling activity whether there are still apps pending freeze left:
+		return { nextIndex < apps.size }
+
+	} else {
+		return ::freezeNext
+	}
 }
 
 /**
