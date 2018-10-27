@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package superfreeze.tool.android.userInterface
 
 import android.content.Context
