@@ -27,7 +27,6 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
@@ -45,7 +44,7 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 
 		// Inflate the layout for this fragment
 		val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
-		layout.findViewById<View>(R.id.accessibilityÝes).setOnClickListener {
+		layout.findViewById<View>(R.id.accessibilityYes).setOnClickListener {
 			showUsagestatsDialog()
 		}
 		layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
