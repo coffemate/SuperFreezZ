@@ -39,8 +39,10 @@ import superfreeze.tool.android.backend.FreezerService
  */
 class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-	                          savedInstanceState: Bundle?): View? {
+	override fun onCreateView(
+		inflater: LayoutInflater, container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View? {
 
 		// Inflate the layout for this fragment
 		val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
@@ -63,16 +65,16 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 
 	private fun showUsagestatsDialog() {
 		AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
-				.setTitle("Accessibility Service")
-				.setMessage("SuperFreezZ needs the accessibility service in order to automate freezing.\n\nPlease select SuperFreezZ, then enable accessibility service.")
-				.setPositiveButton(getString(R.string.enable)) { _, _ ->
-					val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-					startActivity(intent)
-				}
+			.setTitle("Accessibility Service")
+			.setMessage("SuperFreezZ needs the accessibility service in order to automate freezing.\n\nPlease select SuperFreezZ, then enable accessibility service.")
+			.setPositiveButton(getString(R.string.enable)) { _, _ ->
+				val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+				startActivity(intent)
+			}
 
-				.setIcon(R.mipmap.ic_launcher)
-				.setCancelable(false)
-				.show()
+			.setIcon(R.mipmap.ic_launcher)
+			.setCancelable(false)
+			.show()
 	}
 
 	override fun isPolicyRespected(): Boolean {

@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -167,7 +166,7 @@ class MainActivity : AppCompatActivity() {
 				appsListAdapter.trimMemory()
 			}
 
-			else -> {}
+			else -> { }
 		}
 	}
 
@@ -177,7 +176,7 @@ class MainActivity : AppCompatActivity() {
 		 * Execute this task on resume.
 		 * @param task If it returns true, then it will be executed again at the next onResume.
 		 */
-		internal fun doOnResume(task: ()->Boolean) {
+		internal fun doOnResume(task: () -> Boolean) {
 			toBeDoneOnResume.add(task)
 		}
 

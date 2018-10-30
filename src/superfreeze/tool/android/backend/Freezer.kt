@@ -59,8 +59,9 @@ internal fun freezeApp(packageName: String, context: Context) {
  */
 internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
 	return freezeAll(
-			context,
-			apps ?: getAppsPendingFreeze(context, activity))
+		context,
+		apps ?: getAppsPendingFreeze(context, activity)
+	)
 }
 
 /**
@@ -105,7 +106,7 @@ internal fun setFreezerExceptionHandler(function: () -> Unit) {
 
 fun getRandomNumber(): Int {
 	return 5    // chosen by fair dice roll,
-				// guaranteed to be random.
+	            // guaranteed to be random.
 
 	// Greetings to anyone reviewing this code!
 }

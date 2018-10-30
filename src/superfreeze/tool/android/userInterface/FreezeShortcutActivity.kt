@@ -59,7 +59,9 @@ class FreezeShortcutActivity : Activity() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			// There is a nice new api for shortcuts from Android O on, which we use here:
 			val shortcutManager = getSystemService(ShortcutManager::class.java)
-			intent = shortcutManager.createShortcutResultIntent(ShortcutInfo.Builder(applicationContext, "FreezeShortcut").build())
+			intent = shortcutManager.createShortcutResultIntent(
+				ShortcutInfo.Builder(applicationContext, "FreezeShortcut").build()
+			)
 		} else {
 			// ...but for older versions we need to do everything manually :-(,
 			// so actually using the new api does not have any benefits:
@@ -69,7 +71,8 @@ class FreezeShortcutActivity : Activity() {
 			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
 			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.freeze_shortcut_short_label))
 			val iconResource = Intent.ShortcutIconResource.fromContext(
-					this, R.drawable.ic_freeze)
+				this, R.drawable.ic_freeze
+			)
 			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
 		}
 		// Now, return the result to the launcher
@@ -110,7 +113,7 @@ class FreezeShortcutActivity : Activity() {
 
 	private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
 
-	private fun doOnResume(task: ()->Boolean) {
+	private fun doOnResume(task: () -> Boolean) {
 		toBeDoneOnResume.add(task)
 	}
 }

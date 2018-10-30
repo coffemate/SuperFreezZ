@@ -50,29 +50,29 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 		MainActivity.doOnResume {
 
 			AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
-					.setTitle(context.getString(R.string.usagestats_access))
-					.setMessage(context.getString(R.string.usatestats_explanation))
-					.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
-						showUsageStatsSettings(context)
-						MainActivity.doOnResume {
+				.setTitle(context.getString(R.string.usagestats_access))
+				.setMessage(context.getString(R.string.usatestats_explanation))
+				.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
+					showUsageStatsSettings(context)
+					MainActivity.doOnResume {
 
-							if (!usageStatsPermissionGranted(context)) {
-								toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
-							}
-							doAfterwards()
-
-							//Do not execute again
-							false
+						if (!usageStatsPermissionGranted(context)) {
+							toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
 						}
-					}
-					.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
-						//directly load running applications
 						doAfterwards()
+
+						//Do not execute again
+						false
 					}
-					//TODO add negative button "never"
-					.setIcon(R.mipmap.ic_launcher)
-					.setCancelable(false)
-					.show()
+				}
+				.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
+					//directly load running applications
+					doAfterwards()
+				}
+				//TODO add negative button "never"
+				.setIcon(R.mipmap.ic_launcher)
+				.setCancelable(false)
+				.show()
 
 			false // do not execute again
 		}
@@ -100,9 +100,10 @@ private fun usageStatsPermissionGranted(context: Context): Boolean {
 	val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
 	val mode = appOpsManager.checkOpNoThrow(
-			AppOpsManager.OPSTR_GET_USAGE_STATS,
-			Process.myUid(),
-			context.packageName)
+		AppOpsManager.OPSTR_GET_USAGE_STATS,
+		Process.myUid(),
+		context.packageName
+	)
 
 	return if (mode == AppOpsManager.MODE_DEFAULT) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -54,7 +54,8 @@ import kotlin.collections.ArrayList
 /**
  * This class is responsible for viewing the list of installed apps.
  */
-internal class AppsListAdapter internal constructor(private val mainActivity: MainActivity) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
+internal class AppsListAdapter internal constructor(private val mainActivity: MainActivity) :
+	RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
 	private val tFactory = ThreadFactory { r ->
 		Thread(r).apply { isDaemon = true }
 	}
@@ -75,14 +76,13 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	private var list = emptyList<AbstractListItem>()
 
 
-
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
 	private val packageManager: PackageManager = mainActivity.packageManager
 
 	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
 	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
 
-	private val comparator = kotlin.Comparator<ListItemApp> { o1, o2 ->  o1.text.compareTo(o2.text) }
+	private val comparator = kotlin.Comparator<ListItemApp> { o1, o2 -> o1.text.compareTo(o2.text) }
 
 	var searchPattern: String = ""
 		set(value) {
@@ -92,16 +92,16 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 
 
-
-
 	override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): AbstractViewHolder {
 		return if (i == 0) {
 			ViewHolderApp(
-					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
-					viewGroup.context)
+				LayoutInflater.from(viewGroup.context).inflate(R.layout.list_item, viewGroup, false),
+				viewGroup.context
+			)
 		} else {
 			ViewHolderSectionHeader(
-					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false))
+				LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false)
+			)
 		}
 	}
 
@@ -116,7 +116,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	override fun getItemViewType(position: Int): Int {
 		return list[position].type
 	}
-
 
 
 	internal fun setAndLoadItems(packages: List<PackageInfo>) {
@@ -149,7 +148,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		//We need to test whether the applications are still installed and remove those that are not.
 		//Apparently, there is no better way for this than trying to access the applicationInfo.
-		appsList.removeAll{
+		appsList.removeAll {
 			try {
 				it.applicationInfo
 				false
@@ -167,27 +166,26 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 	}
 
 
-
 	// "Both lists" means originalList and list:
 	@Suppress("UNCHECKED_CAST")
 	private fun refreshBothLists() {
 
 		val listPendingFreeze =
-				appsList.filter {
-					it.isPendingFreeze()
-				}
+			appsList.filter {
+				it.isPendingFreeze()
+			}
 
 		originalList =
 				if (listPendingFreeze.isEmpty()) {
 					listOf(ListItemSectionHeader(mainActivity.getString(R.string.no_apps_pending_freeze)))
 				} else {
 					listOf(ListItemSectionHeader(mainActivity.getString(R.string.pending_freeze))) +
-					listPendingFreeze
+							listPendingFreeze
 				} +
 
 				ListItemSectionHeader(mainActivity.getString(R.string.all_apps)) +
 				appsList
-		
+
 		refreshList()
 	}
 
@@ -201,11 +199,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 					// that start with the search pattern) are shown at the top:
 					val (importantApps, otherApps) =
 							appsList
-									.asSequence()
-									.filter { it.isMatchingSearchPattern() }
-									.partition {
-										cacheAppName[it.packageName]?.toLowerCase()?.startsWith(searchPattern) != false
-									}
+								.asSequence()
+								.filter { it.isMatchingSearchPattern() }
+								.partition {
+									cacheAppName[it.packageName]?.toLowerCase()?.startsWith(searchPattern) != false
+								}
 					importantApps + otherApps
 
 				}
@@ -259,7 +257,12 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
-		internal fun setFreezeModeTo(freezeMode: FreezeMode, changeSettings: Boolean, showSnackbar: Boolean = changeSettings, listItem: ListItemApp = this.listItem) {
+		internal fun setFreezeModeTo(
+			freezeMode: FreezeMode,
+			changeSettings: Boolean,
+			showSnackbar: Boolean = changeSettings,
+			listItem: ListItemApp = this.listItem
+		) {
 
 			if (!this::listItem.isInitialized) {
 				Log.e(TAG, "listItem in setFreezeModeTo was uninitialized, aborted setting freeze mode")
@@ -280,13 +283,15 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			refreshExplanation(this.listItem.freezeMode)
 
 			if (showSnackbar && freezeMode != oldFreezeMode) {
-				Snackbar.make(mainActivity.myCoordinatorLayout,
-						"Changed freeze mode",
-						Snackbar.LENGTH_LONG)
-						.setAction(R.string.undo) {
-							setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false, listItem = listItem)
-						}
-						.show()
+				Snackbar.make(
+					mainActivity.myCoordinatorLayout,
+					"Changed freeze mode",
+					Snackbar.LENGTH_LONG
+				)
+					.setAction(R.string.undo) {
+						setFreezeModeTo(oldFreezeMode, changeSettings = true, showSnackbar = false, listItem = listItem)
+					}
+					.show()
 			}
 
 			fun refreshListsAfterFreezeModeChange() {
@@ -299,8 +304,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 						refreshBothLists()
 						// The first index of the listItem is the entry in the "PENDING FREEZE" section
 						notifyItemInserted(list.indexOf(listItem))
-					}
-					else if (wasPendingFreeze && (!isPendingFreeze)) {
+					} else if (wasPendingFreeze && (!isPendingFreeze)) {
 						val oldIndex = list.indexOf(listItem)
 						refreshBothLists()
 						notifyItemRemoved(oldIndex)
@@ -358,10 +362,11 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		private fun refreshExplanation(freezeMode: FreezeMode) {
 			txtExplanation.text = getPendingFreezeExplanation(
-					freezeMode,
-					listItem.applicationInfo,
-					mainActivity.usageStatsMap?.get(listItem.packageName),
-					context)
+				freezeMode,
+				listItem.applicationInfo,
+				mainActivity.usageStatsMap?.get(listItem.packageName),
+				context
+			)
 		}
 
 		/**
@@ -382,7 +387,12 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			var index = valueLower.indexOf(highlight, offset)
 			while (index >= 0 && offset < valueLower.length) {
 				val span = SpannableString(txtAppName.text)
-				span.setSpan(ForegroundColorSpan(Color.BLUE), index, index + highlight.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+				span.setSpan(
+					ForegroundColorSpan(Color.BLUE),
+					index,
+					index + highlight.length,
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+				)
 				txtAppName.text = span
 				offset += index + highlight.length
 				index = valueLower.indexOf(highlight, offset)
@@ -399,7 +409,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 	}
 
-	internal class ViewHolderSectionHeader(private val v: View): AbstractViewHolder(v) {
+	internal class ViewHolderSectionHeader(private val v: View) : AbstractViewHolder(v) {
 
 		override fun setName(name: String, highlight: String?) {
 			v.findViewById<TextView>(R.id.textView).text = name
@@ -440,7 +450,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			do {
 				try {
 					val appName = cacheAppName[packageName]
-							?: applicationInfo.loadLabel(packageManager).toString()
+						?: applicationInfo.loadLabel(packageManager).toString()
 
 					val icon = applicationInfo.loadIcon(packageManager)
 
@@ -513,8 +523,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		//These functions here do nothing:
 		override fun refresh() {
 		}
+
 		override fun loadNameAndIcon(viewHolder: ViewHolderApp) {
 		}
+
 		override fun freeze(context: Context) {
 		}
 

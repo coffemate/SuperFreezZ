@@ -39,10 +39,10 @@ import superfreeze.tool.android.database.getFreezeMode
  */
 internal fun getRunningApplications(context: Context): List<PackageInfo> {
 	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-			.filter {
-				//Add the package only if it is NOT a system app:
-				!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-			}
+		.filter {
+			//Add the package only if it is NOT a system app:
+			!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
+		}
 }
 
 /**
@@ -61,29 +61,34 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 
 	//Get all data starting two years ago
 	val now = System.currentTimeMillis()
-	val startDate = now - 1000L*60*60*24*365*2
+	val startDate = now - 1000L * 60 * 60 * 24 * 365 * 2
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
 
 internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
-	return ! applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
+	return !applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
 internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, activity: Activity): Boolean {
 	return isPendingFreeze(
-			getFreezeMode(activity, packageInfo.packageName),
-			packageInfo.applicationInfo,
-			usageStats)
+		getFreezeMode(activity, packageInfo.packageName),
+		packageInfo.applicationInfo,
+		usageStats
+	)
 }
 
-internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?) : Boolean {
+internal fun isPendingFreeze(
+	freezeMode: FreezeMode,
+	applicationInfo: ApplicationInfo,
+	usageStats: UsageStats?
+): Boolean {
 
 	if (!isRunning(applicationInfo)) {
 		return false
 	}
 
-	return when(freezeMode) {
+	return when (freezeMode) {
 
 		FreezeMode.ALWAYS_FREEZE -> true
 
@@ -95,13 +100,18 @@ internal fun isPendingFreeze(freezeMode: FreezeMode, applicationInfo: Applicatio
 	}
 }
 
-internal fun getPendingFreezeExplanation(freezeMode: FreezeMode, applicationInfo: ApplicationInfo, usageStats: UsageStats?, context: Context) : String {
+internal fun getPendingFreezeExplanation(
+	freezeMode: FreezeMode,
+	applicationInfo: ApplicationInfo,
+	usageStats: UsageStats?,
+	context: Context
+): String {
 
 	fun string(stringID: Int) = context.getString(stringID)
 
 	val isRunning = isRunning(applicationInfo)
 
-	return when(freezeMode) {
+	return when (freezeMode) {
 
 		FreezeMode.ALWAYS_FREEZE ->
 			if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
@@ -123,7 +133,7 @@ internal fun getPendingFreezeExplanation(freezeMode: FreezeMode, applicationInfo
 }
 
 private fun notUsedRecently(usageStats: UsageStats?) =
-		System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
+	System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
 
 /**
  * Queries the usage stats and returns those apps that are pending freeze.
@@ -133,16 +143,16 @@ internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<St
 
 	val usageStatsMap = getAggregatedUsageStats(context)
 	return getRunningApplications(context)
-			.asSequence()
-			.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
-			.map { it.packageName }
-			.toList()
+		.asSequence()
+		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
+		.map { it.packageName }
+		.toList()
 }
 
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
 	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 		usageStats?.lastTimeUsed
-				?: Long.MIN_VALUE
+			?: Long.MIN_VALUE
 	} else {
 		Long.MIN_VALUE
 	}

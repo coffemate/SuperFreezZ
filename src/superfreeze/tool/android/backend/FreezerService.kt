@@ -48,8 +48,8 @@ class FreezerService : AccessibilityService() {
 			return
 		}
 
-		when(nextAction) {
-			NextAction.DO_NOTHING -> {}
+		when (nextAction) {
+			NextAction.DO_NOTHING -> { }
 
 			NextAction.PRESS_FORCE_STOP -> {
 				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
@@ -111,7 +111,6 @@ class FreezerService : AccessibilityService() {
 	}
 
 
-
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
 	private fun pressBackButton() {
 		performGlobalAction(GLOBAL_ACTION_BACK)
@@ -143,7 +142,7 @@ class FreezerService : AccessibilityService() {
 		val clickableNodes = nodes.filter { it.isClickable && it.isEnabled }
 
 		if (clickableNodes.isEmpty()) {
-			Log.e(TAG,"The button(s) is/are not clickable, aborting.")
+			Log.e(TAG, "The button(s) is/are not clickable, aborting.")
 			// Just do not press the button but immediately press Back and act as if the app was successfully frozen:
 			// A disabled or not clickable button probably means that the app already is frozen.
 			pressBackButton()
@@ -188,8 +187,8 @@ class FreezerService : AccessibilityService() {
 		 * Execute this task when finished freezing the current app.
 		 * @param task The task. If it returns true, then it will be executed again at the next onResume.
 		 */
-		internal fun doOnFinished(task: ()->Boolean) {
-			if(isEnabled)
+		internal fun doOnFinished(task: () -> Boolean) {
+			if (isEnabled)
 				toBeDoneOnFinished.add(task)
 		}
 

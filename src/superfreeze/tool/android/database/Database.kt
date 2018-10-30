@@ -40,7 +40,7 @@ internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 
 internal fun setFreezeMode(context: Context, packageName: String, freezeMode: FreezeMode) {
 	val sharedPreferences = getFreezeModesPreferences(context)
-	with (sharedPreferences.edit()) {
+	with(sharedPreferences.edit()) {
 		putInt(packageName, freezeMode.ordinal)
 		apply()
 	}
