@@ -67,7 +67,6 @@ public final class IntroActivity extends AppIntro {
 
 		setDepthAnimation();
 		showSkipButton(false);
-		instance = this;
 	}
 
 	@Override
@@ -81,5 +80,4 @@ public final class IntroActivity extends AppIntro {
 		finish();
 	}
 
-	static IntroActivity instance = null;
 }

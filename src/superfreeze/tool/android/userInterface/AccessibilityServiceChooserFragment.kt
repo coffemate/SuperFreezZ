@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.backend.expectNonNull
 
 
 /**
@@ -50,17 +51,25 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 			showUsagestatsDialog()
 		}
 		layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
-			IntroActivity.instance.done()
+			done()
 		}
 
 		return layout
 	}
 
+
 	override fun onResume() {
 		super.onResume()
 		if (FreezerService.isEnabled) {
-			IntroActivity.instance.done()
+			done()
 		}
+	}
+
+
+	private fun done() {
+		(this.activity as? IntroActivity)
+			.expectNonNull(TAG)
+			?.done()
 	}
 
 	private fun showUsagestatsDialog() {
@@ -86,4 +95,4 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 	}
 }
 
-
+private const val TAG = "AccessibilityServiceChooserFragment"
