@@ -79,7 +79,7 @@ class FreezerService : AccessibilityService() {
 		// If the last action was more than 8 seconds ago, something went wrong and we should abort not to destroy anything.
 		if (System.currentTimeMillis() - lastActionTimestamp > 8000) {
 			Log.e(TAG, "An unexpected screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything")
-			cleanup() // Abort everything, it is to late to do anything :-(
+			abort() // Abort everything, it is to late to do anything :-(
 		}
 		// else do nothing and simply wait for the next screen to show up.
 	}
@@ -133,7 +133,7 @@ class FreezerService : AccessibilityService() {
 
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
-			cleanup()
+			abort()
 			Thread(exceptionHandler).start()
 			return false
 		} else if (nodes.size > 1) {
@@ -165,7 +165,7 @@ class FreezerService : AccessibilityService() {
 
 	override fun onDestroy() {
 		isEnabled = false
-		cleanup()
+		abort()
 	}
 
 	internal companion object {
@@ -215,7 +215,7 @@ class FreezerService : AccessibilityService() {
 
 			// After 4 seconds, assume that something went wrong
 			timeoutHandler.postDelayed({
-				cleanup()
+				abort()
 				exceptionHandler()
 			}, 4000)
 
@@ -226,7 +226,7 @@ class FreezerService : AccessibilityService() {
 		 * Cleans up when no more apps shall be frozen or before exceptionHandler() is called
 		 * (in the latter case, exceptionHandler() will care about restarting freeze)
 		 */
-		private fun cleanup() {
+		private fun abort() {
 			nextAction = NextAction.DO_NOTHING
 			toBeDoneOnFinished.clear()
 			timeoutHandler.removeCallbacksAndMessages(null)
