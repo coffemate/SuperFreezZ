@@ -48,7 +48,7 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 		// Inflate the layout for this fragment
 		val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
 		layout.findViewById<View>(R.id.accessibilityYes).setOnClickListener {
-			showUsagestatsDialog()
+			showAccessibilityDialog()
 		}
 		layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
 			done()
@@ -72,7 +72,7 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 			?.done()
 	}
 
-	private fun showUsagestatsDialog() {
+	private fun showAccessibilityDialog() {
 		AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
 			.setTitle("Accessibility Service")
 			.setMessage("SuperFreezZ needs the accessibility service in order to automate freezing.\n\nPlease select SuperFreezZ, then enable accessibility service.")
