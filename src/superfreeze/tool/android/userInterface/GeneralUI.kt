@@ -35,6 +35,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import superfreeze.tool.android.R
+import superfreeze.tool.android.database.usageStatsAvailable
 
 /**
  * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity.onCreate!!!
@@ -90,6 +91,10 @@ private fun showUsageStatsSettings(context: Context) {
 	toast(context, "Please select SuperFreezZ, then enable access", Toast.LENGTH_LONG)
 }
 
+/**
+ * Finds out whether the usage stats permission was granted, updates the usageStatsAvailable Variable accordingly and
+ * returns the result.
+ */
 private fun usageStatsPermissionGranted(context: Context): Boolean {
 
 	//On earlier versions there are no usage stats
@@ -105,7 +110,7 @@ private fun usageStatsPermissionGranted(context: Context): Boolean {
 		context.packageName
 	)
 
-	return if (mode == AppOpsManager.MODE_DEFAULT) {
+	val result = if (mode == AppOpsManager.MODE_DEFAULT) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			context.checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
 		} else {
@@ -115,9 +120,11 @@ private fun usageStatsPermissionGranted(context: Context): Boolean {
 		mode == AppOpsManager.MODE_ALLOWED
 	}
 
-
+	usageStatsAvailable = result
+	return result
 }
 
 private fun toast(context: Context, s: String, duration: Int) {
 	Toast.makeText(context, s, duration).show()
 }
+

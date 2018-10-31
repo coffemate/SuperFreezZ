@@ -44,6 +44,7 @@ import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
+import superfreeze.tool.android.database.usageStatsAvailable
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
@@ -243,12 +244,17 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		init {
 			v.setOnClickListener(this)
 
-			symbolAlwaysFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE, changeSettings = true)
+			if (usageStatsAvailable) {
+				symbolFreezeWhenInactive.setOnClickListener {
+					setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE, changeSettings = true)
+				}
+			} else {
+				symbolFreezeWhenInactive.visibility = View.GONE
+				// Hide symbolFreezeWhenInactive as without usagestats we can not know whether an app is 'inactive'
 			}
 
-			symbolFreezeWhenInactive.setOnClickListener {
-				setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE, changeSettings = true)
+			symbolAlwaysFreeze.setOnClickListener {
+				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE, changeSettings = true)
 			}
 
 			symbolNeverFreeze.setOnClickListener {

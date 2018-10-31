@@ -35,7 +35,15 @@ private const val TAG = "DatabaseBackend"
 internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 	val sharedPreferences = getFreezeModesPreferences(context)
 	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode.ordinal)
-	return values[ordinal]
+	val result = values[ordinal]
+
+	return if (result == FreezeMode.FREEZE_WHEN_INACTIVE && !usageStatsAvailable) {
+		FreezeMode.NEVER_FREEZE
+		// If the usage stats are not available, FREEZE_WHEN_INACTIVE is not available, either. Instead, we use
+		// NEVER_FREEZE here.
+	} else {
+		result
+	}
 }
 
 internal fun setFreezeMode(context: Context, packageName: String, freezeMode: FreezeMode) {
@@ -79,3 +87,5 @@ private fun getFreezeModesPreferences(context: Context): SharedPreferences {
 private fun getMainPreferences(context: Context): SharedPreferences {
 	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.MAIN", Context.MODE_PRIVATE)
 }
+
+internal var usageStatsAvailable: Boolean = false
