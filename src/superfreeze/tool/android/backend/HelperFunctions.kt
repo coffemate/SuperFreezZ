@@ -48,12 +48,16 @@ fun <E> List<E>.allIndexesOf(item: E): List<Int> {
  */
 fun <T> T?.expectNonNull(tag: String): T? {
 	if (this == null) {
-		Log.e(tag, "A variable that should not have been null was null, proceeding anyway.")
-		val stackTrace = getStackTrace(NullPointerException())
-		Log.e(tag, stackTrace)
+		logErrorAndStackTrace(tag, "A variable that should not have been null was null, proceeding anyway.")
 	}
 
 	return this
+}
+
+internal fun logErrorAndStackTrace(tag: String, msg: String) {
+	Log.e(tag, msg)
+	val stackTrace = getStackTrace(NullPointerException())
+	Log.e(tag, stackTrace)
 }
 
 /**

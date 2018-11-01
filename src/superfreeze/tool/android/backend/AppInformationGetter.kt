@@ -132,8 +132,20 @@ internal fun getPendingFreezeExplanation(
 	}
 }
 
-private fun unusedRecently(usageStats: UsageStats?) =
-	System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
+
+private fun unusedRecently(usageStats: UsageStats?): Boolean {
+	// return System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
+	// TODO option in settings to switch between the above and the below approach
+
+	return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+		logErrorAndStackTrace("usageStats", "unusedRecently was called on an older Android version")
+		false
+	} else if (usageStats == null) {
+		true // There are no usagestats of this package -> it was not used recently
+	} else {
+		usageStats.totalTimeInForeground < 1000L * 2
+	}
+}
 
 /**
  * Queries the usage stats and returns those apps that are pending freeze.
