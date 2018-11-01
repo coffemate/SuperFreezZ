@@ -61,7 +61,7 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 
 	//Get all data starting two years ago
 	val now = System.currentTimeMillis()
-	val startDate = now - 1000L * 60 * 60 * 24 * 365 * 2
+	val startDate = now - 1000L * 60 * 60 * 24 * 7
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
@@ -95,7 +95,7 @@ internal fun isPendingFreeze(
 		FreezeMode.NEVER_FREEZE -> false
 
 		FreezeMode.FREEZE_WHEN_INACTIVE -> {
-			notUsedRecently(usageStats)
+			unusedRecently(usageStats)
 		}
 	}
 }
@@ -120,7 +120,7 @@ internal fun getPendingFreezeExplanation(
 			string(R.string.freeze_off)
 
 		FreezeMode.FREEZE_WHEN_INACTIVE -> {
-			if (notUsedRecently(usageStats)) {
+			if (unusedRecently(usageStats)) {
 				if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
 			} else {
 				if (isRunning)
@@ -132,7 +132,7 @@ internal fun getPendingFreezeExplanation(
 	}
 }
 
-private fun notUsedRecently(usageStats: UsageStats?) =
+private fun unusedRecently(usageStats: UsageStats?) =
 	System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
 
 /**
@@ -152,9 +152,9 @@ internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<St
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
 	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 		usageStats?.lastTimeUsed
-			?: Long.MIN_VALUE
+			?: 0
 	} else {
-		Long.MIN_VALUE
+		0
 	}
 }
 
