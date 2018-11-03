@@ -23,6 +23,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.backend
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
@@ -31,6 +32,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
 
@@ -133,17 +135,19 @@ internal fun getPendingFreezeExplanation(
 }
 
 
+@SuppressLint("NewApi")
 private fun unusedRecently(usageStats: UsageStats?): Boolean {
 	// return System.currentTimeMillis() - getLastTimeUsed(usageStats) > 1000L * 60 * 60 * 24 * 7
 	// TODO option in settings to switch between the above and the below approach
 
-	return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-		logErrorAndStackTrace("usageStats", "unusedRecently was called on an older Android version")
-		false
-	} else if (usageStats == null) {
-		true // There are no usagestats of this package -> it was not used recently
-	} else {
-		usageStats.totalTimeInForeground < 1000L * 2
+	return when {
+		Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP -> {
+			logErrorAndStackTrace("usageStats", "unusedRecently was called on an older Android version")
+			false
+		}
+		usageStats == null -> true // There are no usagestats of this package -> it was not used recently
+		usageStats.packageName == BuildConfig.APPLICATION_ID -> false // The user is just using SuperFreezZ :-)
+		else -> usageStats.totalTimeInForeground < 1000L * 2
 	}
 }
 
