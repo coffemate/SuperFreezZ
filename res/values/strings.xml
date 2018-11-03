@@ -6,9 +6,7 @@
 	<string name="msg_search_help">Search by name&#8230;</string>
 	<string name="share_exception">An exception occurred. Share infos using&#8230;</string>
 	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically. \n\nSuperFreezZ just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the result of these interactions.</string>
-	<string name="accessibility_service_unavailable">Accessibility service is not available on your Android version.</string>
-	<string name="freeze_shortcut_short_label">Freeze</string>
-	<string name="freeze_shortcut_long_label">SuperFreezZ unused apps</string>
+	<string name="freeze_shortcut_label">Freeze</string>
 	<string name="NothingToFreeze">Nothing to freeze</string>
 	<string name="undo">Undo</string>
 	<string name="icon">Icon</string>
@@ -28,10 +26,23 @@
 	<string name="usagestats_not_enabled">You did not enable usagestats access.</string>
 	<string name="not_now">Not now</string>
 	<string name="automate_the_freezing_of_apps">Automate the freezing of apps?</string>
-	<string name="accessibility_arguments_yes">For users who: \n\u2022 want to have it as easy as possible\n\u2022 want to freeze a lot of apps</string>
-	<string name="accessibility_arguments_no">For users who: \n\u2022 have a slow phone\n\u2022 care a lot about security\n\u2022 do not want to register SuperFreezZ as
-an accsssibility service</string>
+	<string name="accessibility_arguments_yes">For users who: \n\u2022 want to have it as easy as possible \n\u2022 want to freeze a lot of apps</string>
+	<string name="accessibility_arguments_no">For users who: \n\u2022 have a slow phone \n\u2022 care a lot about security \n\u2022 do not want to register SuperFreezZ as an accessibility service</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
+	<string name="welcome">Welcome to SuperFreezZ!</string>
+	<string name="short_description">SuperFreezZ makes it easy to entirely freeze all background activities of apps.
+	</string>
+	<string name="intro_always_freeze_title">Freeze Mode: ALWAYS FREEZE</string>
+	<string name="intro_always_freeze_explanation">There are 3 freeze modes. You can choose one for every app. ALWAYS
+		FREEZE will freeze an app in any case.
+	</string>
+	<string name="intro_never_freeze_title">Freeze Mode: NEVER FREEZE</string>
+	<string name="intro_never_freeze_explanation">NEVER FREEZE will - turn off freezing and never freeze an app.
+	</string>
+	<string name="intro_auto_freeze_title">Freeze Mode: AUTO FREEZE</string>
+	<string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
+		time (7 days by default)
+	</string>
 
 </resources>

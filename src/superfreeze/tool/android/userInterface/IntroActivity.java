@@ -37,28 +37,28 @@ public final class IntroActivity extends AppIntro {
 		super.onCreate(savedInstanceState);
 
 		SliderPage page1 = new SliderPage();
-		page1.setTitle("Welcome to SuperFreezZ!");
-		page1.setDescription("SuperFreezZ makes it easy to entirely freeze all background activities of apps.");
+		page1.setTitle(getString(R.string.welcome));
+		page1.setDescription(getString(R.string.short_description));
 		page1.setBgColor(getResources().getColor(R.color.ic_launcher_background));
 		addSlide(AppIntroFragment.newInstance(page1));
 
 		SliderPage page2 = new SliderPage();
-		page2.setTitle("Freeze Mode: ALWAYS FREEZE");
-		page2.setDescription("There are 3 freeze modes. You can choose one for every app. ALWAYS FREEZE will freeze an app in any case.");
+		page2.setTitle(getString(R.string.intro_always_freeze_title));
+		page2.setDescription(getString(R.string.intro_always_freeze_explanation));
 		page2.setImageDrawable(R.drawable.symbol_always_freeze);
 		page2.setBgColor(getResources().getColor(R.color.always_freeeze_background));
 		addSlide(AppIntroFragment.newInstance(page2));
 
 		SliderPage page3 = new SliderPage();
-		page3.setTitle("Freeze Mode: NEVER FREEZE");
-		page3.setDescription("NEVER FREEZE will - turn off freezing and never freeze an app.");
+		page3.setTitle(getString(R.string.intro_never_freeze_title));
+		page3.setDescription(getString(R.string.intro_never_freeze_explanation));
 		page3.setImageDrawable(R.drawable.symbol_never_freeze);
 		page3.setBgColor(getResources().getColor(R.color.never_freeeze_background));
 		addSlide(AppIntroFragment.newInstance(page3));
 
 		SliderPage page4 = new SliderPage();
-		page4.setTitle("Freeze Mode: AUTO FREEZE");
-		page4.setDescription("AUTO FREEZE will freeze an app only if it has not been used for some time (7 days by default)");
+		page4.setTitle(getString(R.string.intro_auto_freeze_title));
+		page4.setDescription(getString(R.string.intro_auto_freeze_explanation));
 		page4.setImageDrawable(R.drawable.symbol_freeze_when_inactive);
 		page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
 		addSlide(AppIntroFragment.newInstance(page4));

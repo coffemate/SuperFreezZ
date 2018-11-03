@@ -6,6 +6,52 @@
 	<string name="msg_search_help">Nach Apps suchen&#8230;</string>
 	<string name="share_exception">Ein Fehler ist aufgetreten. Infos teilen über&#8230;</string>
 	<string name="accessibility_service_description">Die Bedienungshilfe ermöglicht es SuperFreezZ, das Freezen zu automatisieren.\n\Dies hat die folgenden Vorteile:\n - Der Benutzer muss es nicht selbst machen: Es ist deutlich schneller und der Benutzer muss sich nicht darum kümmern, wie das geht.\n - Benutzer mit Einschränkungen müssen nur den Shortcut "AutoFreeze" ausführen (zum Beispiel mittels Spracherkennung). So können sie alle Apps automatisch freezen. \n\nSuperFreezZ benutzt die Bedienungshilfe nur, um die Buttons "Beenden erzwingen", "OK" und "Zurück" zu drücken und um das Ergebnis dieser Aktionen zu erfahren.</string>
-	<string name="accessibility_service_unavailable">Die Bedienungshilfe ist in Ihrer Android-Version nicht verfügbar.</string>
+	<string name="freeze_shortcut_label">Freeze</string>
+	<string name="NothingToFreeze">Nichts einzufrieren</string>
+	<string name="undo">Rückgängig</string>
+	<string name="icon">Icon</string>
+	<string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Diese App einfrieren, wenn sie länger nicht
+		benutzt wurde
+	</string>
+	<string name="always_freeze_this_app">Diese App immer einfrieren</string>
+	<string name="do_never_freeze_this_app">Diese App nicht einfrieren</string>
+	<string name="pending_freeze">Freeze ausstehend</string>
+	<string name="frozen">Eingefroren</string>
+	<string name="freeze_off">Einfrieren aus</string>
+	<string name="used_recently">Kürzlich benutzt</string>
+	<string name="space_AND_space">\\u0020<![CDATA[&]]>\\u0020</string>
+	<string name="no_apps_pending_freeze">[KEINE APPS MIT EINFRIEREN AUSSTEHEND]</string>
+	<string name="all_apps">ALLE APPS</string>
+	<string name="usagestats_access">Zugriff auf Nutzungsdaten</string>
+	<string name="usatestats_explanation">Der Zugriff auf Nutzungsdaten ermöglicht es SuperFreezZ, nur die Apps zu
+		benutzen, die Sie länger nicht benutzt haben.
+	</string>
+	<string name="enable">Einschalten</string>
+	<string name="usagestats_not_enabled">Sie haben keinen Zugriff auf die Nutzungsdaten gewährt.</string>
+	<string name="not_now">Nicht jetzt</string>
+	<string name="automate_the_freezing_of_apps">Apps einfrieren automatisieren?</string>
+	<string name="accessibility_arguments_yes">Für Benutzer die: \n\u2022 es so einfach wie möglich haben wollen \n\u2022
+		viele Apps einfrieren wollen
+	</string>
+	<string name="accessibility_arguments_no">Für Benutzer die: \n\u2022 ein langsames Gerät haben \n\u2022 denen
+		Sicherheit wichtig ist \n\u2022 SuperFreezZ nicht als Bedienungshilfe einrichten wollen
+	</string>
+	<string name="yes">Ja</string>
+	<string name="no">Nein</string>
 
+	<string name="welcome">Willkommen bei SuperFreezZ</string>
+	<string name="short_description">SuperFreezZ macht es einfach, alle Hintergrundaktivitäten von Apps zu beenden.
+	</string>
+	<string name="intro_always_freeze_title">Einfriermodus: IMMER EINFRIEREN</string>
+	<string name="intro_always_freeze_explanation">Es gibt 3 Einfriermodi. Sie können diese für jede App einzeln
+		\t\teinstellen. IMMER EINFRIEREN friert eine App in jedem Fall ein. \t
+	</string>
+	<string name="intro_never_freeze_title">Einfriermodus: NIE EINFRIEREN</string>
+	<string name="intro_never_freeze_explanation">Nie einfrieren - stellt das Einfrieren aus und friert eine App nie
+		ein.
+	</string>
+	<string name="intro_auto_freeze_title">Einfriermodus: AUTOMATIK</string>
+	<string name="intro_auto_freeze_explanation">AUTOMATIK friert eine App nur dann ein, wenn sie länger nicht benutzt
+		wurde (standardmäßig 7 Tage).
+	</string>
 </resources>

@@ -69,7 +69,7 @@ class FreezeShortcutActivity : Activity() {
 			shortcutIntent.setClassName(this, this.javaClass.name)
 			intent = Intent()
 			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.freeze_shortcut_short_label))
+			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.freeze_shortcut_label))
 			val iconResource = Intent.ShortcutIconResource.fromContext(
 				this, R.drawable.ic_freeze
 			)

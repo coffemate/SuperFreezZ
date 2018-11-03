@@ -3,8 +3,7 @@
 		android:shortcutId="FreezeShortcut"
 		android:enabled="true"
 		android:icon="@drawable/ic_freeze"
-		android:shortcutShortLabel="@string/freeze_shortcut_short_label"
-		android:shortcutLongLabel="@string/freeze_shortcut_long_label">
+		android:shortcutShortLabel="@string/freeze_shortcut_label">
 		<intent
 			android:action="android.intent.action.MAIN"
 			android:targetPackage="superfreeze.tool.android"
