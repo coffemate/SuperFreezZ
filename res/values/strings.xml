@@ -21,7 +21,7 @@
 	<string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
 	<string name="all_apps">ALL APPS</string>
 	<string name="usagestats_access">UsageStats access</string>
-	<string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you did not use for some time.</string>
+	<string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you did not use them for some time (AUTO FREEZE).</string>
 	<string name="enable">Enable</string>
 	<string name="usagestats_not_enabled">You did not enable usagestats access.</string>
 	<string name="not_now">Not now</string>
