@@ -44,5 +44,8 @@
 	<string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
 		time (7 days by default)
 	</string>
+	<string name="freeze_manually">Freeze manually</string>
+	<string name="Press_forcestop_ok_back">To freeze an app, please press "FORCE STOP", then "OK", then Back</string>
+	<string name="freeze_manually_no">I do not want to have to do this</string>
 
 </resources>

@@ -54,4 +54,9 @@
 	<string name="intro_auto_freeze_explanation">AUTOMATIK friert eine App nur dann ein, wenn sie länger nicht benutzt
 		wurde (standardmäßig 7 Tage).
 	</string>
+	<string name="freeze_manually">Manuelles Einfrieren</string>
+	<string name="Press_forcestop_ok_back">Um eine App einzufrieren, drücken Sie \"BEENDEN ERZWINGEN\", dann \"OK\",
+		dann Zurück
+	</string>
+	<string name="freeze_manually_no">Ich möchte das nicht machen müssen</string>
 </resources>

@@ -38,4 +38,6 @@
 		<item name="android:windowBackground">@color/transparent</item>
 	</style>
 
+	<style name="myAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+	</style>
 </resources>

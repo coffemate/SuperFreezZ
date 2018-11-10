@@ -26,11 +26,14 @@ import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
 import superfreeze.tool.android.backend.setFreezerExceptionHandler
+import superfreeze.tool.android.database.neverCalled
 
 const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
 
@@ -80,6 +83,31 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private fun performFreeze(triesLeft: Int = 2) {
+
+		// Tell the user how to manually freeze if necessary, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/14
+		fun showFreezeManuallyDialog() {
+			AlertDialog.Builder(this, R.style.myAlertDialog)
+				.setTitle(R.string.freeze_manually)
+				.setMessage(R.string.Press_forcestop_ok_back)
+				.setPositiveButton(android.R.string.ok) { _, _ ->
+					performFreeze(triesLeft)
+				}
+				.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
+					showAccessibilityDialog(this)
+					doOnResume {
+						showFreezeManuallyDialog()
+						false
+					}
+				}
+				.show()
+			return
+		}
+		if (!FreezerService.isEnabled && neverCalled("dialog-how-to-freeze-without-accessibility-service", this)) {
+			showFreezeManuallyDialog()
+			return
+		}
+
+
 		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()

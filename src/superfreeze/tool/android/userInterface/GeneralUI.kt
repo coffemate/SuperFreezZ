@@ -24,7 +24,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.userInterface
 
 import android.Manifest
-import android.app.AlertDialog
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -34,6 +33,7 @@ import android.os.Process
 import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.usageStatsAvailable
 
@@ -50,7 +50,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 		// Actually we want the dialog to be only shown in onResume, not in onCreate as the app intro is supposed to be shown before this dialog:
 		MainActivity.doOnResume {
 
-			AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog)
+			AlertDialog.Builder(context, R.style.myAlertDialog)
 				.setTitle(context.getString(R.string.usagestats_access))
 				.setMessage(context.getString(R.string.usatestats_explanation))
 				.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
@@ -71,7 +71,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 					doAfterwards()
 				}
 				//TODO add negative button "never"
-				.setIcon(R.mipmap.ic_launcher)
+				.setIcon(R.drawable.symbol_freeze_when_inactive)
 				.setCancelable(false)
 				.show()
 
@@ -124,7 +124,23 @@ private fun usageStatsPermissionGranted(context: Context): Boolean {
 	return result
 }
 
+
+
+internal fun showAccessibilityDialog(context: Context) {
+	AlertDialog.Builder(context, R.style.myAlertDialog)
+		.setTitle("Accessibility Service")
+		.setMessage("SuperFreezZ needs the accessibility service in order to automate freezing.\n\nPlease select SuperFreezZ, then enable accessibility service.")
+		.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
+			val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+			context.startActivity(intent)
+		}
+		.setIcon(R.mipmap.ic_launcher)
+		.setCancelable(false)
+		.show()
+}
+
 private fun toast(context: Context, s: String, duration: Int) {
 	Toast.makeText(context, s, duration).show()
 }
 
+private const val TAG = "GeneralUI"

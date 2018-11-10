@@ -23,6 +23,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.database
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import superfreeze.tool.android.BuildConfig
@@ -54,7 +55,6 @@ internal fun setFreezeMode(context: Context, packageName: String, freezeMode: Fr
 	}
 }
 
-/*Currently not needed, I'll delete it at some time:
 internal fun neverCalled(id: String, activity: Activity): Boolean {
 	val sharedPreferences = activity.getSharedPreferences(id, Context.MODE_PRIVATE)
 	val first = sharedPreferences.getBoolean(id, true)
@@ -65,7 +65,7 @@ internal fun neverCalled(id: String, activity: Activity): Boolean {
 		}
 	}
 	return first
-}*/
+}
 
 internal fun isFirstLaunch(context: Context): Boolean {
 	val sharedPreferences = getMainPreferences(context)
