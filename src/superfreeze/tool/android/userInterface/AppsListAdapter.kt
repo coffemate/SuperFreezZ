@@ -133,7 +133,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 				refreshBothLists()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
-				mainActivity.reportFullyDrawn()
 			}
 		}
 

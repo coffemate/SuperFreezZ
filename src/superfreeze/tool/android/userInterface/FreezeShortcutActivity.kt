@@ -115,7 +115,7 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-		val resume = freezeAll(applicationContext, activity = this)
+		val resume = freezeAll(this, activity = this)
 		doOnResume {
 			val appsLeft = resume()
 			if (!appsLeft) finish()
