@@ -1,0 +1,10 @@
+Bugfix: Make SF work with older Android versions
+Manual freeze: Tell the user to press "Force stop", "OK" and "Back", fix #14
+Add screenshots
+Translations
+Do not auto freeze SuperFreezZ itself
+Only regard an app as 'used' if it was used at least 2s
+Repair determination whether an app was "used recently"
+Do not show AutoFreeze/Freeze-when-inactive - button (I should really decide for ONE name btw) when usagestats permission is not granted
+Updates
+Improve accessibility service chooser fragment ("Automate the freezing of apps?")
