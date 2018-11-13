@@ -26,6 +26,13 @@ Build
 
 The build should succeed out of the box with Android Studio and Gradle. If not, it is probably my fault, please open an issue then. Others will probably also have this problem then.
 
+Download
+--------
+
+[<img src="https://f-droid.org/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="70">](https://f-droid.org/packages/superfreeze.tool.android/)
+
 Contributing to SuperFreezZ
 ------------
 
