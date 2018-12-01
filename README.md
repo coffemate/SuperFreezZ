@@ -40,6 +40,12 @@ If you have a problem or a question or an idea or whatever, just open an issue!
 
 If you would like to help, have a look at the issues or think about what could be improved and open an issue for it. Please tell me what you are going to do to avoid that I also implement the same thing at the same time :-)
 
+Donate
+------
+
+I do not accept monetary donations currently (I tried to set up a liberapay account but it was too much of an effort so I gave it up for the time being). 
+
+However, to show me your support, you can [donate to WWF or the Christian Blind Mission and post about it here](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18). I would maybe also have put Fairphone to the list as I really like the idea but there seems not to be an option to donate to them, either. So just let me point out here that Fairphone is selling an ethical and modular smartphone.
 
 Copying
 -------
