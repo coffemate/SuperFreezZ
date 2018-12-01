@@ -47,6 +47,11 @@ I do not accept monetary donations currently (I tried to set up a liberapay acco
 
 However, to show me your support, you can [donate to WWF or the Christian Blind Mission and post about it here](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18). I would maybe also have put Fairphone to the list as I really like the idea but there seems not to be an option to donate to them, either. So just let me point out here that Fairphone is selling an ethical and modular smartphone.
 
+Credits
+-------
+
+I took the code to show the apps list from [apkExtractor](https://f-droid.org/wiki/page/axp.tool.apkextractor).
+
 Copying
 -------
 
