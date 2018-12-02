@@ -38,14 +38,15 @@ import org.jetbrains.annotations.Contract
  */
 @Contract(pure = true)
 internal fun freezeApp(packageName: String, context: Context) {
-	val intent = Intent()
-	intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-	intent.data = Uri.fromParts("package", packageName, null)
-	context.startActivity(intent)
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 		FreezerService.performFreeze()
 	}
+
+	val intent = Intent()
+	intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+	intent.data = Uri.fromParts("package", packageName, null)
+	context.startActivity(intent)
 }
 
 
