@@ -33,7 +33,7 @@ import superfreeze.tool.android.backend.expectNonNull
 
 
 /**
- * Shows a screen to let the user choose whether to use the accessibility service or not.
+ * Shows a screen to let the user choose whether to use the accessibility service or not. Used in [IntroActivity].
  */
 class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 

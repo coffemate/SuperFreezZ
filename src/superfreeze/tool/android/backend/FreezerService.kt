@@ -193,7 +193,8 @@ class FreezerService : AccessibilityService() {
 		}
 
 		/**
-		 * Clicks the "Force Stop", the "OK" and the "Back" button.
+		 * Clicks the "Force Stop", the "OK" and the "Back" button when the corresponding screen turns up.
+		 * Call this BEFORE starting the settings about the app you want to freeze!
 		 */
 		@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
 		internal fun performFreeze() {

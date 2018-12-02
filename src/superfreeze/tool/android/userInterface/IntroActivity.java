@@ -30,6 +30,9 @@ import androidx.fragment.app.Fragment;
 import superfreeze.tool.android.R;
 import superfreeze.tool.android.database.DatabaseKt;
 
+/**
+ * Shows the intro slides on the very first startup
+ */
 public final class IntroActivity extends AppIntro {
 
 	@Override

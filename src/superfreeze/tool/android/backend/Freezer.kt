@@ -38,14 +38,15 @@ import org.jetbrains.annotations.Contract
  */
 @Contract(pure = true)
 internal fun freezeApp(packageName: String, context: Context) {
-	val intent = Intent()
-	intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-	intent.data = Uri.fromParts("package", packageName, null)
-	context.startActivity(intent)
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 		FreezerService.performFreeze()
 	}
+
+	val intent = Intent()
+	intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+	intent.data = Uri.fromParts("package", packageName, null)
+	context.startActivity(intent)
 }
 
 
@@ -83,20 +84,11 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 		return nextIndex < apps.size
 	}
 
+	// Immediately freeze first app:
 	freezeNext()
 
-	if (FreezerService.isEnabled) {
-
-		// If the Freezer service is enabled, we do not need the calling activity to execute
-		// anything; we can just use FreezerService.doOnFinished:
-		FreezerService.doOnFinished(::freezeNext)
-
-		// However, we still need to tell the calling activity whether there are still apps pending freeze left:
-		return { nextIndex < apps.size }
-
-	} else {
-		return ::freezeNext
-	}
+	// The returned function will be called in onResume:
+	return ::freezeNext
 }
 
 internal fun setFreezerExceptionHandler(function: () -> Unit) {

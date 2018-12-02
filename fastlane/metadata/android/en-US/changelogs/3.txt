@@ -1,0 +1,3 @@
+Fix bug: Sometimes the app settings were shown but the app was not frozen
+Comments
+Make freezing a bit more stable but slower: Wait for FreezeShortcutActivity.onResume to be called before freezing next app; address #17 ?
