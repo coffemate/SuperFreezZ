@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Contract
 @Contract(pure = true)
 internal fun freezeApp(packageName: String, context: Context) {
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
 		FreezerService.performFreeze()
 	}
 
