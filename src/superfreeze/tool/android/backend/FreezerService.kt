@@ -78,7 +78,10 @@ class FreezerService : AccessibilityService() {
 	private fun wrongScreenShown() {
 		// If the last action was more than 8 seconds ago, something went wrong and we should abort not to destroy anything.
 		if (System.currentTimeMillis() - lastActionTimestamp > 8000) {
-			Log.e(TAG, "An unexpected screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything")
+			Log.e(
+				TAG,
+				"An unexpected screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything"
+			)
 			abort() // Abort everything, it is to late to do anything :-(
 		}
 		// else do nothing and simply wait for the next screen to show up.
@@ -113,14 +116,11 @@ class FreezerService : AccessibilityService() {
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
 	private fun pressBackButton() {
-		performGlobalAction(GLOBAL_ACTION_BACK)
-
 		nextAction = NextAction.DO_NOTHING
 
-		//Execute all tasks and retain only those that returned true.
-		toBeDoneOnFinished.retainAll { it() }
-
 		timeoutHandler.removeCallbacksAndMessages(null)
+
+		performGlobalAction(GLOBAL_ACTION_BACK)
 	}
 
 	/**
@@ -163,6 +163,7 @@ class FreezerService : AccessibilityService() {
 	}
 
 	override fun onDestroy() {
+		Log.w(TAG, "FreezerService was destroyed.")
 		isEnabled = false
 		abort()
 	}
@@ -177,20 +178,9 @@ class FreezerService : AccessibilityService() {
 		var isEnabled = false
 			private set
 
-		private val toBeDoneOnFinished: MutableList<() -> Boolean> = mutableListOf()
-
 		private var exceptionHandler = { }
 
 		private val timeoutHandler = Handler()
-
-		/**
-		 * Execute this task when finished freezing the current app.
-		 * @param task The task. If it returns true, then it will be executed again at the next onResume.
-		 */
-		internal fun doOnFinished(task: () -> Boolean) {
-			if (isEnabled)
-				toBeDoneOnFinished.add(task)
-		}
 
 		/**
 		 * Clicks the "Force Stop", the "OK" and the "Back" button when the corresponding screen turns up.
@@ -215,6 +205,7 @@ class FreezerService : AccessibilityService() {
 
 			// After 4 seconds, assume that something went wrong
 			timeoutHandler.postDelayed({
+				Log.w(TAG, "timeout")
 				abort()
 				exceptionHandler()
 			}, 4000)
@@ -227,8 +218,8 @@ class FreezerService : AccessibilityService() {
 		 * (in the latter case, exceptionHandler() will care about restarting freeze)
 		 */
 		private fun abort() {
+			Log.w(TAG, "aborting")
 			nextAction = NextAction.DO_NOTHING
-			toBeDoneOnFinished.clear()
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}
 	}

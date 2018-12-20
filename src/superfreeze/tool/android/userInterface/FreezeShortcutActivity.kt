@@ -41,6 +41,7 @@ const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
  * This activity
  *  - creates a shortcut some launcher can use
  *  - performs the freeze when the "Freeze" shortcut (or Floating Action Button) is clicked.
+ *  It is invisible to the user but in the background while freezing.
  */
 class FreezeShortcutActivity : Activity() {
 
@@ -82,25 +83,27 @@ class FreezeShortcutActivity : Activity() {
 		setResult(Activity.RESULT_OK, intent)
 	}
 
-	private fun performFreeze(triesLeft: Int = 2) {
+	private fun performFreeze(triesLeft: Int = 1) {
 
 		// Tell the user how to manually freeze if necessary, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/14
 		fun showFreezeManuallyDialog() {
-			AlertDialog.Builder(this, R.style.myAlertDialog)
-				.setTitle(R.string.freeze_manually)
-				.setMessage(R.string.Press_forcestop_ok_back)
-				.setPositiveButton(android.R.string.ok) { _, _ ->
-					performFreeze(triesLeft)
-				}
-				.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
-					showAccessibilityDialog(this)
-					doOnResume {
-						showFreezeManuallyDialog()
-						false
+			if (!FreezerService.isEnabled) {
+				AlertDialog.Builder(this, R.style.myAlertDialog)
+					.setTitle(R.string.freeze_manually)
+					.setMessage(R.string.Press_forcestop_ok_back)
+					.setPositiveButton(android.R.string.ok) { _, _ ->
+						performFreeze(triesLeft)
 					}
-				}
-				.show()
-			return
+					.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
+						showAccessibilityDialog(this)
+						doOnResume {
+							showFreezeManuallyDialog()
+							false
+						}
+					}
+					.show()
+				return
+			}
 		}
 		if (!FreezerService.isEnabled && neverCalled("dialog-how-to-freeze-without-accessibility-service", this)) {
 			showFreezeManuallyDialog()
@@ -115,20 +118,36 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-		val resume = freezeAll(this, activity = this)
-		doOnResume {
-			val appsLeft = resume()
-			if (!appsLeft) finish()
-			appsLeft
-		}
+		var somethingWentWrong = false
 
-		setFreezerExceptionHandler {
-			toBeDoneOnResume.clear() // Abort the current freeze process
-			if (triesLeft > 0) {
-				runOnUiThread {
-					performFreeze(triesLeft = triesLeft - 1)
+		val freezeNextApp = freezeAll(this, activity = this)
+		doOnResume {
+			val appsLeft = freezeNextApp()
+
+			if (!appsLeft) {
+				if (somethingWentWrong && triesLeft > 0) {
+					// Sometimes an app can't be frozen due to a bug I did not find yet.
+					// So simply try again by calling performFreeze again
+					performFreeze(triesLeft - 1)
+				} else {
+					finish()
 				}
 			}
+
+			appsLeft // Only execute again if there are still apps left
+		}
+		// We are still in onCreate. When we finish, onResume will be called and the resume() function will be called
+		// so that the first app can be frozen.
+
+		setFreezerExceptionHandler {
+			runOnUiThread {
+				somethingWentWrong = true
+				val i =
+					Intent(this@FreezeShortcutActivity.applicationContext, this@FreezeShortcutActivity::class.java)
+				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+				startActivity(i)
+			}
+
 		}
 	}
 
