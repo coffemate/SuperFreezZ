@@ -20,6 +20,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.util.Log
@@ -27,10 +28,30 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
 
+
+
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
  */
 class FreezerService : AccessibilityService() {
+
+	private val forceStopButtonName by lazy {
+		try {
+			// Try to find out what it says on the Force Stop button (different in different languages)
+			val resourcesPackageName = "com.android.settings"
+			val resources = applicationContext.packageManager.getResourcesForApplication(resourcesPackageName)
+			val resourceId = resources.getIdentifier("force_stop", "string", resourcesPackageName)
+			if (resourceId > 0) {
+				resources.getString(resourceId)
+			} else {
+				Log.e(TAG, "Label for the force stop button in settings could not be found")
+				null
+			}
+		} catch (e: PackageManager.NameNotFoundException) {
+			Log.e(TAG, "Settings activity's resources not found")
+			null
+		}
+	}
 
 	private enum class NextAction {
 		PRESS_FORCE_STOP, PRESS_OK, PRESS_BACK, DO_NOTHING
@@ -97,6 +118,9 @@ class FreezerService : AccessibilityService() {
 
 		if (nodesToClick.isEmpty())
 			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/force_stop_button")
+
+		if (nodesToClick.isEmpty())
+			nodesToClick = node.findAccessibilityNodeInfosByText(forceStopButtonName)
 
 		if (nodesToClick.isEmpty())
 			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
