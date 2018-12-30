@@ -3,18 +3,18 @@
 	<!-- These settings headers are only used on tablets. -->
 
 	<header
-		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$GeneralPreferenceFragment"
-		android:title="@string/pref_header_general"
+		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$AppsListPreferenceFragment"
+		android:title="@string/pref_header_appslist"
+		android:icon="@drawable/ic_view_list_black_24dp"/>
+
+	<header
+		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$FreezingAppsPreferenceFragment"
+		android:title="@string/pref_header_freezing"
+		android:icon="@drawable/ic_settings_applications_black_24dp"/>
+
+	<header
+		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$AboutPreferenceFragment"
+		android:title="@string/pref_header_about"
 		android:icon="@drawable/ic_info_black_24dp"/>
-
-	<header
-		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$NotificationPreferenceFragment"
-		android:title="@string/pref_header_notifications"
-		android:icon="@drawable/ic_notifications_black_24dp"/>
-
-	<header
-		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$DataSyncPreferenceFragment"
-		android:title="@string/pref_header_data_sync"
-		android:icon="@drawable/ic_sync_black_24dp"/>
 
 </preference-headers>
