@@ -44,7 +44,11 @@ public final class IntroActivity extends AppIntro {
 
 
 		String action = getIntent().getAction();
-		if (!SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
+		if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
+
+			addSlide(new AccessibilityServiceChooserFragment());
+
+		} else {
 
 			SliderPage page1 = new SliderPage();
 			page1.setTitle(getString(R.string.welcome));
@@ -72,9 +76,9 @@ public final class IntroActivity extends AppIntro {
 			page4.setImageDrawable(R.drawable.symbol_freeze_when_inactive);
 			page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
 			addSlide(AppIntroFragment.newInstance(page4));
-		}
 
-		addSlide(new AccessibilityServiceChooserFragment());
+			addSlide(new AccessibilityServiceChooserFragment());
+		}
 
 		setDepthAnimation();
 		showSkipButton(false);

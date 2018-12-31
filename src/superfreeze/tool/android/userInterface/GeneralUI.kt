@@ -92,7 +92,7 @@ private fun showUsageStatsSettings(context: Context) {
  * Finds out whether the usage stats permission was granted, updates the usageStatsAvailable Variable accordingly and
  * returns the result.
  */
-private fun usageStatsPermissionGranted(context: Context): Boolean {
+internal fun usageStatsPermissionGranted(context: Context): Boolean {
 
 	//On earlier versions there are no usage stats
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

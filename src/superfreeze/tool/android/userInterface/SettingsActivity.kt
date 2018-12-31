@@ -9,11 +9,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.preference.*
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.core.app.NavUtils
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.database.usageStatsAvailable
+
+private const val TAG = "SettingsActivity"
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -111,28 +116,48 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	class FreezingAppsPreferenceFragment : PreferenceFragment() {
 		private lateinit var useAccessibilityServicePreference: SwitchPreference
+		private lateinit var useUsagestatsPreference: SwitchPreference
 		override fun onCreate(savedInstanceState: Bundle?) {
 			super.onCreate(savedInstanceState)
 			addPreferencesFromResource(R.xml.pref_freezing)
 			setHasOptionsMenu(true)
 
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"))
+			bindPreferenceSummaryToValue(findPreference("autofreeze_delay"))
 
 			useAccessibilityServicePreference = findPreference("use_accessibility_service") as SwitchPreference
-			updateAccessibilityServicePreference()
 			useAccessibilityServicePreference.setOnPreferenceClickListener {
-				val intent = Intent(IntroActivity.SHOW_ACCESSIBILITY_SERVICE_CHOOSER)
-				intent.setClass(this, IntroActivity::class.java)
+				if (FreezerService.isEnabled) {
+					Toast.makeText(activity, "Please disable accessibility service for SuperFreezZ", Toast.LENGTH_LONG).show()
+					val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+					startActivity(intent)
+				} else {
+					val intent = Intent(IntroActivity.SHOW_ACCESSIBILITY_SERVICE_CHOOSER)
+					intent.setClass(activity, IntroActivity::class.java)
+					startActivity(intent)
+				}
 				false // Do not change the preference yet
+			}
+
+			useUsagestatsPreference = findPreference("use_usagestats") as SwitchPreference
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				useUsagestatsPreference.setOnPreferenceClickListener {
+					val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+					startActivity(intent)
+					false
+				}
+			} else {
+				useUsagestatsPreference.isEnabled = false
 			}
 		}
 
-		private fun updateAccessibilityServicePreference() {
+		override fun onResume() {
+			super.onResume()
+			updatePreferenceStates()
+		}
+
+		private fun updatePreferenceStates() {
 			useAccessibilityServicePreference.isChecked = FreezerService.isEnabled
+			useUsagestatsPreference.isChecked = usageStatsPermissionGranted(activity)
 		}
 
 		override fun onOptionsItemSelected(item: MenuItem): Boolean {

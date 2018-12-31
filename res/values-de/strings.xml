@@ -23,8 +23,7 @@
 	<string name="no_apps_pending_freeze">[KEINE APPS MIT EINFRIEREN AUSSTEHEND]</string>
 	<string name="all_apps">ALLE APPS</string>
 	<string name="usagestats_access">Zugriff auf Nutzungsdaten</string>
-	<string name="usatestats_explanation">Der Zugriff auf Nutzungsdaten ermöglicht es SuperFreezZ, nur die Apps zu
-		benutzen, die Sie länger nicht benutzt haben (Einfriermodus AUTOMATIK).
+	<string name="usatestats_explanation">Der Zugriff auf Nutzungsdaten ermöglicht es SuperFreezZ, nur die Apps einzufrieren, die Sie länger nicht benutzt haben (Einfriermodus AUTOMATIK).
 	</string>
 	<string name="enable">Einschalten</string>
 	<string name="usagestats_not_enabled">Sie haben keinen Zugriff auf die Nutzungsdaten gewährt.</string>
