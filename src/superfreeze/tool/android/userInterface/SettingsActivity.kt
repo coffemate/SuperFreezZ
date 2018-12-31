@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.view.MenuItem
 import androidx.core.app.NavUtils
 import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.FreezerService
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -90,8 +91,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			// to their values. When their values change, their summaries are
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("example_text"))
-			bindPreferenceSummaryToValue(findPreference("example_list"))
+			bindPreferenceSummaryToValue(findPreference("standard_freeze_mode"))
 		}
 
 		override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -110,6 +110,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	class FreezingAppsPreferenceFragment : PreferenceFragment() {
+		private lateinit var useAccessibilityServicePreference: SwitchPreference
 		override fun onCreate(savedInstanceState: Bundle?) {
 			super.onCreate(savedInstanceState)
 			addPreferencesFromResource(R.xml.pref_freezing)
@@ -120,6 +121,18 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			// updated to reflect the new value, per the Android Design
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"))
+
+			useAccessibilityServicePreference = findPreference("use_accessibility_service") as SwitchPreference
+			updateAccessibilityServicePreference()
+			useAccessibilityServicePreference.setOnPreferenceClickListener {
+				val intent = Intent(IntroActivity.SHOW_ACCESSIBILITY_SERVICE_CHOOSER)
+				intent.setClass(this, IntroActivity::class.java)
+				false // Do not change the preference yet
+			}
+		}
+
+		private fun updateAccessibilityServicePreference() {
+			useAccessibilityServicePreference.isChecked = FreezerService.isEnabled
 		}
 
 		override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -3,8 +3,8 @@
 	<!-- A 'parent' preference, which enables/disables child preferences (below)
          when checked/unchecked. -->
 	<SwitchPreference
-		android:key="notifications_new_message"
-		android:title="@string/pref_title_new_message_notifications"
+		android:key="use_accessibility_service"
+		android:title="@string/automate_the_freezing_of_apps"
 		android:defaultValue="true"/>
 
 	<!-- Allows the user to choose a ringtone in the 'notification' category. -->
