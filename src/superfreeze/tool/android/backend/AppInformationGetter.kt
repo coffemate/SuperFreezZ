@@ -35,6 +35,12 @@ import android.os.Build
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
+import superfreeze.tool.android.userInterface.SettingsActivity
+import android.preference.PreferenceManager
+import android.content.SharedPreferences
+import android.widget.Toast
+
+private const val TAG = "AppInformationGetter"
 
 /**
  * Gets the running applications. Do not use from the UI thread.
@@ -61,9 +67,12 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	}
 	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
-	//Get all data starting two years ago
+	//Get all data starting with the whatever time the user specified in the settings ago
+	val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+	val numberOfDays = preferences.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
+	Toast.makeText(context, "$numberOfDays", Toast.LENGTH_LONG).show()
 	val now = System.currentTimeMillis()
-	val startDate = now - 1000L * 60 * 60 * 24 * 7
+	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
