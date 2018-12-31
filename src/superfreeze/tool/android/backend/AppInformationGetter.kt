@@ -28,29 +28,47 @@ import android.app.Activity
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.preference.PreferenceManager
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
-import superfreeze.tool.android.userInterface.SettingsActivity
-import android.preference.PreferenceManager
-import android.content.SharedPreferences
-import android.widget.Toast
+
 
 private const val TAG = "AppInformationGetter"
 
 /**
- * Gets the running applications. Do not use from the UI thread.
+ * Gets the applications to show in SF. Do not use from the UI thread.
  */
-internal fun getRunningApplications(context: Context): List<PackageInfo> {
-	return context.packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-		.filter {
-			//Add the package only if it is NOT a system app:
-			!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-		}
+internal fun getApplications(context: Context): List<PackageInfo> {
+	val preferences = _getDefaultSharedPreferences(context)
+	val shownSpecialApps = preferences?.getStringSet("appslist_show_special", setOf())
+			?: setOf()
+	val packageManager = context.packageManager
+
+	val intent = Intent("android.intent.action.MAIN")
+	intent.addCategory("android.intent.category.HOME")
+	val launcherApplication = packageManager.resolveActivity(intent,
+			PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
+
+	return packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+			.asSequence()
+			.filterIf(!shownSpecialApps.contains("Launcher")) {
+				it.packageName != launcherApplication
+			}
+			.filterIf(!shownSpecialApps.contains("SuperFreezZ")) {
+				it.packageName != BuildConfig.APPLICATION_ID
+			}
+			.filterIf(!shownSpecialApps.contains("Systemapps")) {
+				//Add the package only if it is NOT a system app:
+				!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
+			}
+			.toList()
 }
 
 /**
@@ -68,13 +86,16 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
 	//Get all data starting with the whatever time the user specified in the settings ago
-	val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-	val numberOfDays = preferences.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
-	Toast.makeText(context, "$numberOfDays", Toast.LENGTH_LONG).show()
+	val preferences = _getDefaultSharedPreferences(context)
+	val numberOfDays = preferences?.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
+}
+
+private fun _getDefaultSharedPreferences(context: Context): SharedPreferences? {
+	return PreferenceManager.getDefaultSharedPreferences(context)
 }
 
 internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
@@ -167,13 +188,16 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
 
 	val usageStatsMap = getAggregatedUsageStats(context)
-	return getRunningApplications(context)
+	return getApplications(context)
 		.asSequence()
 		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
 		.map { it.packageName }
 		.toList()
 }
 
+// Currently unused, instead
+// usageStats.totalTimeInForeground < 1000L * 2
+// is used directly currently (an app is only couted as 'used' if it was used at least 2s)
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
 	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 		usageStats?.lastTimeUsed

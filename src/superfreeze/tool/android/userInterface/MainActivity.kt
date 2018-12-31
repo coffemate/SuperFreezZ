@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.expectNonNull
 import superfreeze.tool.android.backend.getAggregatedUsageStats
-import superfreeze.tool.android.backend.getRunningApplications
+import superfreeze.tool.android.backend.getApplications
 import superfreeze.tool.android.database.isFirstLaunch
 
 /**
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 		progressBar.visibility = View.VISIBLE
 
 		requestUsageStatsPermission(this) {
-			val packages = getRunningApplications(applicationContext)
+			val packages = getApplications(applicationContext)
 			appsListAdapter.setAndLoadItems(packages)
 		}
 
