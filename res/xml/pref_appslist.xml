@@ -15,11 +15,4 @@
 		android:negativeButtonText="@null"
 		android:positiveButtonText="@null"/>
 
-
-	<SwitchPreference
-		android:key="example_switch"
-		android:title="@string/pref_title_social_recommendations"
-		android:summary="@string/pref_description_social_recommendations"
-		android:defaultValue="true"/>
-
 </PreferenceScreen>
