@@ -91,14 +91,14 @@
 
 	<string name="pref_title_standard_freeze_mode">Standard freeze mode</string>
 	<string-array name="standard_freeze_mode_titles">
-		<item>Auto freeze</item>
 		<item>Always freeze</item>
 		<item>Never freeze</item>
+		<item>Auto freeze</item>
 	</string-array>
 	<string-array name="standard_freeze_mode_values">
-		<item>Auto</item>
-		<item>Always</item>
-		<item>Never</item>
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
 	</string-array>
 
 	<!-- Example settings for Data & Sync -->
@@ -149,5 +149,6 @@
 	<string name="pref_title_vibrate">Vibrate</string>
 	<string name="appslist_show_special">Show special apps in the list</string>
 	<string name="pref_autofreeze_delay">Freeze mode AUTO: Apps are frozen after… (in days)</string>
+	<string name="pref_summary_standard_freeze_mode">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
 
 </resources>

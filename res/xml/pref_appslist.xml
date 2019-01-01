@@ -9,7 +9,8 @@
 	<ListPreference
 		android:key="standard_freeze_mode"
 		android:title="@string/pref_title_standard_freeze_mode"
-		android:defaultValue="Auto"
+		android:summary="@string/pref_summary_standard_freeze_mode"
+		android:defaultValue="2"
 		android:entries="@array/standard_freeze_mode_titles"
 		android:entryValues="@array/standard_freeze_mode_values"
 		android:negativeButtonText="@null"

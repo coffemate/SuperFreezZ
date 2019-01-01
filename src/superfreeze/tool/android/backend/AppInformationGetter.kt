@@ -29,15 +29,14 @@ import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
-import android.preference.PreferenceManager
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.getFreezeMode
+import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 
 
 private const val TAG = "AppInformationGetter"
@@ -46,7 +45,7 @@ private const val TAG = "AppInformationGetter"
  * Gets the applications to show in SF. Do not use from the UI thread.
  */
 internal fun getApplications(context: Context): List<PackageInfo> {
-	val preferences = _getDefaultSharedPreferences(context)
+	val preferences = mGetDefaultSharedPreferences(context)
 	val shownSpecialApps = preferences?.getStringSet("appslist_show_special", setOf())
 			?: setOf()
 	val packageManager = context.packageManager
@@ -86,16 +85,12 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
 	//Get all data starting with the whatever time the user specified in the settings ago
-	val preferences = _getDefaultSharedPreferences(context)
+	val preferences = mGetDefaultSharedPreferences(context)
 	val numberOfDays = preferences?.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
-}
-
-private fun _getDefaultSharedPreferences(context: Context): SharedPreferences? {
-	return PreferenceManager.getDefaultSharedPreferences(context)
 }
 
 internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
