@@ -379,7 +379,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		 * @param v The clicked view.
 		 */
 		override fun onClick(v: View) {
-			list[adapterPosition].freeze(context)
+			list.getOrNull(adapterPosition).expectNonNull(TAG)?.freeze(context)
 		}
 
 		override fun setName(name: String, highlight: String?) {
