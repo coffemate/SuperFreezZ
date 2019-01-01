@@ -4,12 +4,12 @@
 		android:key="appslist_show_special"
 		android:title="@string/appslist_show_special"
 		android:entries="@array/appslist_show_special_titles"
-		android:entryValues="@array/appslist_show_special_values"/>
+		android:entryValues="@array/appslist_show_special_values"
+		android:summary="@string/pref_summary_appslist_show_special" />
 
 	<ListPreference
 		android:key="standard_freeze_mode"
 		android:title="@string/pref_title_standard_freeze_mode"
-		android:summary="@string/pref_summary_standard_freeze_mode"
 		android:defaultValue="2"
 		android:entries="@array/standard_freeze_mode_titles"
 		android:entryValues="@array/standard_freeze_mode_values"

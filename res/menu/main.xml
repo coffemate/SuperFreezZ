@@ -33,5 +33,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		android:id="@+id/action_create_shortcut"
 		android:title="@string/create_freeze_shortcut" />
 
-	<item android:title="@string/settings" />
+	<item
+		android:id="@+id/action_settings"
+		android:title="@string/settings"/>
 </menu>
