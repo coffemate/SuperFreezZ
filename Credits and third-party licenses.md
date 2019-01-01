@@ -1,7 +1,8 @@
 SuperFreezZ uses the third-party libraries and code from third-party apps. Below they are listed, together with their concerning licenses.
 The licenses apply only to the concerning third-party code or library.
 
-##[ApkExtractor](https://github.com/axxapy/apkExtractor)
+[ApkExtractor](https://github.com/axxapy/apkExtractor)
+---------------------
 
 The MIT License (MIT)
 
@@ -25,7 +26,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-##[Kotlin](https://github.com/JetBrains/kotlin)
+[Kotlin](https://github.com/JetBrains/kotlin)
+---------------------
 
 Copyright 2010-2015 JetBrains s.r.o.
 
@@ -40,7 +42,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-##[AppIntro](https://github.com/apl-devs/AppIntro)
+[AppIntro](https://github.com/apl-devs/AppIntro)
+---------------------
 
                                  Apache License
                            Version 2.0, January 2004
