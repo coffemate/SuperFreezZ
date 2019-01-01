@@ -11,12 +11,16 @@ import android.os.Bundle
 import android.preference.*
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.NavUtils
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.database.usageStatsAvailable
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+
 
 private const val TAG = "SettingsActivity"
 
@@ -181,11 +185,14 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			addPreferencesFromResource(R.xml.pref_about)
 			setHasOptionsMenu(true)
 
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"))
+			findPreference("send_logs").setOnPreferenceClickListener {
+				//Share info about the exception so that it can be viewed or sent to someone else
+				val sharingIntent = Intent(Intent.ACTION_SEND)
+				sharingIntent.type = "text/plain"
+				sharingIntent.putExtra(Intent.EXTRA_TEXT, getLogs())
+				startActivity(Intent.createChooser(sharingIntent, "Share logs using..."))
+				true
+			}
 		}
 
 		override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -195,6 +202,20 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				return true
 			}
 			return super.onOptionsItemSelected(item)
+		}
+
+		private fun getLogs(): String {
+			try {
+				val process = Runtime.getRuntime().exec("logcat -d")
+				val bufferedReader = BufferedReader(
+						InputStreamReader(process.inputStream))
+
+				return bufferedReader.use { it.readText() }
+
+			} catch (e: IOException) {
+				Log.e(TAG, "Could not get logs (???)")
+				return ""
+			}
 		}
 	}
 
