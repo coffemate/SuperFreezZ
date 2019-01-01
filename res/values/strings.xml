@@ -150,5 +150,7 @@
 	<string name="appslist_show_special">Show special apps in the list</string>
 	<string name="pref_autofreeze_delay">Freeze mode AUTO: Apps are frozen after… (in days)</string>
 	<string name="pref_summary_standard_freeze_mode">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
+	<string name="create_freeze_shortcut">Create Freeze shortcut</string>
+	<string name="settings">Settings</string>
 
 </resources>

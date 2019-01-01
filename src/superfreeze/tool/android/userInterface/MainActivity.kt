@@ -29,6 +29,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +41,8 @@ import superfreeze.tool.android.backend.expectNonNull
 import superfreeze.tool.android.backend.getAggregatedUsageStats
 import superfreeze.tool.android.backend.getApplications
 import superfreeze.tool.android.database.isFirstLaunch
+
+
 
 /**
  * The activity that is shown at startup
@@ -126,12 +129,29 @@ class MainActivity : AppCompatActivity() {
 			}
 		})
 
-
 		//Listen on clicks on the floating action button:
 		fab.setOnClickListener {
 			startActivity(Intent(this, FreezeShortcutActivity::class.java))
 		}
 		return super.onCreateOptionsMenu(menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+		return when(item?.itemId) {
+
+			R.id.action_create_shortcut -> {
+				//Adding shortcut for FreezeShortcutActivity:
+				val intent = FreezeShortcutActivity.createIntent(this)
+				intent.action = "com.android.launcher.action.INSTALL_SHORTCUT"
+				//addIntent.putExtra("duplicate", false)  //uncomment to not install a shortcut if it's already there
+				applicationContext.sendBroadcast(intent)
+				true
+			}
+
+
+
+			else -> false
+		}
 	}
 
 	override fun onConfigurationChanged(newConfig: Configuration?) {

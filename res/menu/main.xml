@@ -28,4 +28,10 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		android:title="@string/msg_search"
 		app:actionViewClass="androidx.appcompat.widget.SearchView"
 		app:showAsAction="always|collapseActionView" />
+
+	<item
+		android:id="@+id/action_create_shortcut"
+		android:title="@string/create_freeze_shortcut" />
+
+	<item android:title="@string/settings" />
 </menu>
