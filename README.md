@@ -57,6 +57,8 @@ I took the code to show the apps list from [apkExtractor](https://f-droid.org/wi
 Copying
 -------
 
+1
+
 ```
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocuri
@@ -77,7 +79,11 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 ------------------------------------------------------------------
 
+2
+
 SuperFreezZ contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
+
+2a
 
 ```
 build.gradle
@@ -95,8 +101,10 @@ res/menu/main.xml
 AndroidManifest.xml
 ```
 
+2b
+
 ```
-The MIT License (MIT) (applies only to the files listed above)
+The MIT License (MIT) (applies only to the files listed at 2a)
 
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocuri
