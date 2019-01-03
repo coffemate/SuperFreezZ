@@ -96,7 +96,7 @@ AndroidManifest.xml
 ```
 
 ```
-The MIT License (MIT)
+The MIT License (MIT) (applies only to the files listed above)
 
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocuri
