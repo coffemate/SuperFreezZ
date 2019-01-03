@@ -5,16 +5,19 @@
 	<header
 		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$AppsListPreferenceFragment"
 		android:title="@string/pref_header_appslist"
+		android:summary="Show special apps, standard freeze mode"
 		android:icon="@drawable/ic_view_list_black_24dp"/>
 
 	<header
 		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$FreezingAppsPreferenceFragment"
 		android:title="@string/pref_header_freezing"
-		android:icon="@drawable/ic_settings_applications_black_24dp"/>
+		android:summary="Customize how apps are frozen"
+		android:icon="@drawable/ic_settings_applications_black_24dp" />
 
 	<header
 		android:fragment="superfreeze.tool.android.userInterface.SettingsActivity$AboutPreferenceFragment"
 		android:title="@string/pref_header_about"
+		android:summary="Useful links, send logs"
 		android:icon="@drawable/ic_info_black_24dp"/>
 
 </preference-headers>

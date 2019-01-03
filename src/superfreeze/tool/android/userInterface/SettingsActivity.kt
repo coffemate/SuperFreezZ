@@ -205,16 +205,16 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 		}
 
 		private fun getLogs(): String {
-			try {
+			return try {
 				val process = Runtime.getRuntime().exec("logcat -d")
 				val bufferedReader = BufferedReader(
 						InputStreamReader(process.inputStream))
 
-				return bufferedReader.use { it.readText() }
+				bufferedReader.use { it.readText() }
 
 			} catch (e: IOException) {
 				Log.e(TAG, "Could not get logs (???)")
-				return ""
+				""
 			}
 		}
 	}
