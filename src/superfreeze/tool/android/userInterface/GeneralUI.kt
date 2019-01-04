@@ -44,8 +44,8 @@ import superfreeze.tool.android.database.usageStatsAvailable
 internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: () -> Unit) {
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-			&& neverCalled("requestUsageStatsPermission", context)
-			&& !usageStatsPermissionGranted(context)) {
+			&& !usageStatsPermissionGranted(context)
+			&& neverCalled("requestUsageStatsPermission", context)) {
 
 		// Actually we want the dialog to be only shown in onResume, not in onCreate as the app intro is supposed to be shown before this dialog:
 		MainActivity.doOnResume {
