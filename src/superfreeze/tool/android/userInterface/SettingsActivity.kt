@@ -60,6 +60,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 		return super.onMenuItemSelected(featureId, item)
 	}
 
+	override fun onBackPressed() {
+		super.onBackPressed()
+	}
+
 	private fun finishAndRestartMain() {
 		val intent = Intent(this, MainActivity::class.java)
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -97,12 +101,22 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				|| FreezingAppsPreferenceFragment::class.java.name == fragmentName
 	}
 
-	open class MyPreferenceFragment : PreferenceFragment()
 
-	/**
-	 * This fragment shows general preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
+
+	open class MyPreferenceFragment : PreferenceFragment() {
+		final override fun onOptionsItemSelected(item: MenuItem): Boolean {
+			val id = item.itemId
+			if (id == android.R.id.home) {
+				val intent = Intent(activity, SettingsActivity::class.java)
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+				activity.startActivity(intent)
+				activity.finish()
+				return true
+			}
+			return super.onOptionsItemSelected(item)
+		}
+	}
+
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	class AppsListPreferenceFragment : MyPreferenceFragment() {
 		override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,23 +130,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference("standard_freeze_mode"))
 		}
-
-		override fun onOptionsItemSelected(item: MenuItem): Boolean {
-			val id = item.itemId
-			if (id == android.R.id.home) {
-				startActivity(Intent(activity, SettingsActivity::class.java))
-				return true
-			}
-			return super.onOptionsItemSelected(item)
-		}
 	}
 
-	/**
-	 * This fragment shows notification preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	class FreezingAppsPreferenceFragment : PreferenceFragment() {
+	class FreezingAppsPreferenceFragment : MyPreferenceFragment() {
 		private lateinit var useAccessibilityServicePreference: SwitchPreference
 		private lateinit var useUsagestatsPreference: SwitchPreference
 		override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,23 +178,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			useAccessibilityServicePreference.isChecked = FreezerService.isEnabled
 			useUsagestatsPreference.isChecked = usageStatsPermissionGranted(activity)
 		}
-
-		override fun onOptionsItemSelected(item: MenuItem): Boolean {
-			val id = item.itemId
-			if (id == android.R.id.home) {
-				startActivity(Intent(activity, SettingsActivity::class.java))
-				return true
-			}
-			return super.onOptionsItemSelected(item)
-		}
 	}
 
-	/**
-	 * This fragment shows data and sync preferences only. It is used when the
-	 * activity is showing a two-pane settings UI.
-	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	class AboutPreferenceFragment : PreferenceFragment() {
+	class AboutPreferenceFragment : MyPreferenceFragment() {
 		override fun onCreate(savedInstanceState: Bundle?) {
 			super.onCreate(savedInstanceState)
 			addPreferencesFromResource(R.xml.pref_about)
@@ -207,15 +195,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				startActivity(Intent.createChooser(sharingIntent, "Share logs using..."))
 				true
 			}
-		}
-
-		override fun onOptionsItemSelected(item: MenuItem): Boolean {
-			val id = item.itemId
-			if (id == android.R.id.home) {
-				startActivity(Intent(activity, SettingsActivity::class.java))
-				return true
-			}
-			return super.onOptionsItemSelected(item)
 		}
 
 		private fun getLogs(): String {
@@ -232,6 +211,8 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			}
 		}
 	}
+
+
 
 	companion object {
 
@@ -317,5 +298,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 					.getString(preference.key, "")
 			)
 		}
+
 	}
 }
