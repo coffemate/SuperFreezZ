@@ -14,12 +14,13 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.app.NavUtils
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+
+
 
 
 private const val TAG = "SettingsActivity"
@@ -52,11 +53,22 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 		val id = item.itemId
 		if (id == android.R.id.home) {
 			if (!super.onMenuItemSelected(featureId, item)) {
-				NavUtils.navigateUpFromSameTask(this)
+				finishAndRestartMain()
 			}
 			return true
 		}
 		return super.onMenuItemSelected(featureId, item)
+	}
+
+	private fun finishAndRestartMain() {
+		val intent = Intent(this, MainActivity::class.java)
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+		startActivity(intent)
+		finish()
+		// This was:
+		// NavUtils.navigateUpFromSameTask(this)
+		// On newer Android versions the following might be possible:
+		// navigateUpTo(Intent(this, MainActivity::class.java))
 	}
 
 	/**
@@ -85,12 +97,14 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				|| FreezingAppsPreferenceFragment::class.java.name == fragmentName
 	}
 
+	open class MyPreferenceFragment : PreferenceFragment()
+
 	/**
 	 * This fragment shows general preferences only. It is used when the
 	 * activity is showing a two-pane settings UI.
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	class AppsListPreferenceFragment : PreferenceFragment() {
+	class AppsListPreferenceFragment : MyPreferenceFragment() {
 		override fun onCreate(savedInstanceState: Bundle?) {
 			super.onCreate(savedInstanceState)
 			addPreferencesFromResource(R.xml.pref_appslist)

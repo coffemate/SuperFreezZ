@@ -152,5 +152,9 @@
 	<string name="pref_summary_appslist_show_special">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
 	<string name="create_freeze_shortcut">Create Freeze shortcut</string>
 	<string name="settings">Settings</string>
+	<string name="sort">Sort</string>
+	<string name="pref_header_freezing_summary">Customize how and which apps are frozen</string>
+	<string name="pref_header_about_summary">Useful links, send logs</string>
+	<string name="pref_header_appslist_summary">Show special apps, standard freeze mode</string>
 
 </resources>
