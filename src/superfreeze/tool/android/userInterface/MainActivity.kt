@@ -150,6 +150,8 @@ class MainActivity : AppCompatActivity() {
 
 			R.id.action_settings -> {
 				startActivity(Intent(this, SettingsActivity::class.java))
+				// Recreate after the settingsActivity was shown as settings might have changed:
+				doOnResume { recreate(); false }
 				true
 			}
 

@@ -65,9 +65,10 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 	}
 
 	private fun finishAndRestartMain() {
-		val intent = Intent(this, MainActivity::class.java)
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-		startActivity(intent)
+		// val intent = Intent(this, MainActivity::class.java)
+		// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+		// startActivity(intent)
+		// Main will recreate itself
 		finish()
 		// This was:
 		// NavUtils.navigateUpFromSameTask(this)
@@ -107,10 +108,11 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 		final override fun onOptionsItemSelected(item: MenuItem): Boolean {
 			val id = item.itemId
 			if (id == android.R.id.home) {
-				val intent = Intent(activity, SettingsActivity::class.java)
+				/*val intent = Intent(activity, SettingsActivity::class.java)
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 				activity.startActivity(intent)
-				activity.finish()
+				activity.finish()*/
+				activity.onBackPressed()
 				return true
 			}
 			return super.onOptionsItemSelected(item)
