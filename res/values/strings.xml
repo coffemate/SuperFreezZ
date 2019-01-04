@@ -157,4 +157,9 @@
 	<string name="pref_header_about_summary">Useful links, send logs</string>
 	<string name="pref_header_appslist_summary">Show special apps, standard freeze mode</string>
 
+	<string-array name="sortmodes">
+		<item>Name</item>
+		<item>Freeze state</item>
+		<item>Last time used</item>
+	</string-array>
 </resources>

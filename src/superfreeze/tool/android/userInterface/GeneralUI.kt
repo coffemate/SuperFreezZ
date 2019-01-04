@@ -139,6 +139,17 @@ internal fun showAccessibilityDialog(context: Context) {
 		.show()
 }
 
+
+
+internal fun showSortChooserDialog(context: Context, onChosen: (which: Int) -> Unit) {
+	AlertDialog.Builder(context)
+			.setTitle("Sort by")
+			.setItems(R.array.sortmodes) { _, which ->
+				onChosen(which)
+			}
+			.show()
+}
+
 private fun toast(context: Context, s: String, duration: Int) {
 	Toast.makeText(context, s, duration).show()
 }

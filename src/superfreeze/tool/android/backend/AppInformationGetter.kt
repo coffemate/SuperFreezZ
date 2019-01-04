@@ -77,7 +77,7 @@ internal fun getApplications(context: Context): List<PackageInfo> {
  * @return A map with the package names of running apps or null if it could not be determined (on older versions of Android)
  * @see android.app.usage.UsageStatsManager.queryAndAggregateUsageStats
  */
-internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>? {
+internal fun getRecentAggregatedUsageStats(context: Context): Map<String, UsageStats>? {
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
 		//In Android versions older than LOLLIPOP there is no UsageStatsManager
 		return null
@@ -89,6 +89,19 @@ internal fun getAggregatedUsageStats(context: Context): Map<String, UsageStats>?
 	val numberOfDays = preferences?.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
+
+	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
+}
+
+internal fun getAllAggregatedUsageStats(context: Context): Map<String, UsageStats>? {
+	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
+		//In Android versions older than LOLLIPOP there is no UsageStatsManager
+		return null
+	}
+	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+
+	val now = System.currentTimeMillis()
+	val startDate = now - 1000L * 60 * 60 * 24 * 356 * 2
 
 	return usageStatsManager.queryAndAggregateUsageStats(startDate, now)
 }
@@ -178,11 +191,11 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 
 /**
  * Queries the usage stats and returns those apps that are pending freeze.
- * Do not use if you have already called getAggregatedUsageStats().
+ * Do not use if you have already called getRecentAggregatedUsageStats().
  */
 internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
 
-	val usageStatsMap = getAggregatedUsageStats(context)
+	val usageStatsMap = getRecentAggregatedUsageStats(context)
 	return getApplications(context)
 		.asSequence()
 		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
