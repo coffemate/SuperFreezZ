@@ -51,12 +51,18 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 				android:visibility="gone" />
 		</androidx.appcompat.widget.Toolbar>
 
-
-		<androidx.recyclerview.widget.RecyclerView
-			android:id="@android:id/list"
+		<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+			android:id="@+id/swiperefresh"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_below="@+id/toolbar" />
+			android:layout_below="@+id/toolbar">
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@android:id/list"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+		</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 	</RelativeLayout>
 

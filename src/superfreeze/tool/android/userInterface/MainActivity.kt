@@ -37,6 +37,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getAllAggregatedUsageStats
@@ -79,6 +80,10 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		setSupportActionBar(toolbar)
+
+		findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+			recreate()
+		}
 	}
 
 	override fun onResume() {
