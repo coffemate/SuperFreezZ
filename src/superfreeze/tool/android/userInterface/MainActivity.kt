@@ -39,7 +39,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.*
+import superfreeze.tool.android.backend.getAllAggregatedUsageStats
+import superfreeze.tool.android.backend.getApplications
+import superfreeze.tool.android.backend.getPendingFreezeExplanation
+import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
 
 
@@ -113,12 +116,12 @@ class MainActivity : AppCompatActivity() {
 		val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 		val searchView = menu.findItem(R.id.action_search).actionView as SearchView
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-		searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
+		/*searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
 			if (!queryTextFocused && searchView.query.isEmpty()) {
 				val supportActionBar = supportActionBar
 				supportActionBar?.expectNonNull(TAG)?.collapseActionView()
 			}
-		}
+		}*/
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 			override fun onQueryTextSubmit(s: String) = false
 
