@@ -27,19 +27,25 @@ import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.expectNonNull
-import superfreeze.tool.android.backend.getAggregatedUsageStats
-import superfreeze.tool.android.backend.getRunningApplications
+import superfreeze.tool.android.backend.getAllAggregatedUsageStats
+import superfreeze.tool.android.backend.getApplications
+import superfreeze.tool.android.backend.getPendingFreezeExplanation
+import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
+
 
 /**
  * The activity that is shown at startup
@@ -50,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var progressBar: ProgressBar
 
 	internal val usageStatsMap: Map<String, UsageStats>? by lazy {
-		getAggregatedUsageStats(this)
+		getRecentAggregatedUsageStats(this)
 	}
 
 
@@ -69,11 +75,15 @@ class MainActivity : AppCompatActivity() {
 		progressBar.visibility = View.VISIBLE
 
 		requestUsageStatsPermission(this) {
-			val packages = getRunningApplications(applicationContext)
+			val packages = getApplications(applicationContext)
 			appsListAdapter.setAndLoadItems(packages)
 		}
 
 		setSupportActionBar(toolbar)
+
+		findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+			recreate()
+		}
 	}
 
 	override fun onResume() {
@@ -111,12 +121,12 @@ class MainActivity : AppCompatActivity() {
 		val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 		val searchView = menu.findItem(R.id.action_search).actionView as SearchView
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-		searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
+		/*searchView.setOnQueryTextFocusChangeListener { _, queryTextFocused ->
 			if (!queryTextFocused && searchView.query.isEmpty()) {
 				val supportActionBar = supportActionBar
 				supportActionBar?.expectNonNull(TAG)?.collapseActionView()
 			}
-		}
+		}*/
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 			override fun onQueryTextSubmit(s: String) = false
 
@@ -126,12 +136,75 @@ class MainActivity : AppCompatActivity() {
 			}
 		})
 
-
 		//Listen on clicks on the floating action button:
 		fab.setOnClickListener {
 			startActivity(Intent(this, FreezeShortcutActivity::class.java))
 		}
 		return super.onCreateOptionsMenu(menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+		return when(item?.itemId) {
+
+			R.id.action_create_shortcut -> {
+				//Adding shortcut for FreezeShortcutActivity:
+				val intent = FreezeShortcutActivity.createIntent(this)
+				intent.action = "com.android.launcher.action.INSTALL_SHORTCUT"
+				//addIntent.putExtra("duplicate", false)  //uncomment to not install a shortcut if it's already there
+				applicationContext.sendBroadcast(intent)
+				true
+			}
+
+			R.id.action_settings -> {
+				startActivity(Intent(this, SettingsActivity::class.java))
+				// Recreate after the settingsActivity was shown as settings might have changed:
+				doOnResume { recreate(); false }
+				true
+			}
+
+			R.id.action_sort -> {
+				showSortChooserDialog()
+				true
+			}
+
+			else -> false
+		}
+	}
+
+	private fun showSortChooserDialog() {
+		showSortChooserDialog(this) { index ->
+			appsListAdapter.comparator = when (index) {
+
+				// 0: Sort by name
+				0 -> compareBy {
+					it.text
+				}
+
+				// 1: Sort by freeze state
+				1 -> compareBy<AppsListAdapter.ListItemApp> {
+					it.freezeMode
+				}.thenBy {
+					getPendingFreezeExplanation(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName), this)
+				}
+
+				// 2: Sort by last time used
+				2 -> {
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+						Toast.makeText(this, "Last time used is not available for your Android version", Toast.LENGTH_LONG).show()
+						compareBy<AppsListAdapter.ListItemApp> { it.text }
+					} else {
+						val allUsageStats = getAllAggregatedUsageStats(this)
+						compareBy {
+							allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L
+						}
+					}
+				}
+				else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
+			}
+
+			appsListAdapter.sortList()
+			appsListAdapter.refresh()
+		}
 	}
 
 	override fun onConfigurationChanged(newConfig: Configuration?) {

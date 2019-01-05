@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+	<SwitchPreference
+		android:key="use_accessibility_service"
+		android:title="@string/automate_the_freezing_of_apps"
+		android:defaultValue="true"/>
+
+	<SwitchPreference
+		android:key="use_usagestats"
+		android:title="@string/usagestats_access"
+		android:summary="@string/usatestats_explanation"
+		android:defaultValue="true"/>
+
+	<EditTextPreference
+		android:key="autofreeze_delay"
+		android:title="@string/pref_autofreeze_delay"
+		android:defaultValue="7"
+		android:inputType="number"
+		android:dependency="use_usagestats"/>
+
+</PreferenceScreen>

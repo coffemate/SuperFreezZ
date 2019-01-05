@@ -35,6 +35,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.R
+import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.usageStatsAvailable
 
 /**
@@ -42,7 +43,9 @@ import superfreeze.tool.android.database.usageStatsAvailable
  */
 internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: () -> Unit) {
 
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !usageStatsPermissionGranted(context)) {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+			&& !usageStatsPermissionGranted(context)
+			&& neverCalled("requestUsageStatsPermission", context)) {
 
 		// Actually we want the dialog to be only shown in onResume, not in onCreate as the app intro is supposed to be shown before this dialog:
 		MainActivity.doOnResume {
@@ -63,7 +66,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 						false
 					}
 				}
-				.setNeutralButton(context.getString(R.string.not_now)) { _, _ ->
+				.setNegativeButton(context.getString(android.R.string.no)) { _, _ ->
 					//directly load running applications
 					doAfterwards()
 				}
@@ -92,7 +95,7 @@ private fun showUsageStatsSettings(context: Context) {
  * Finds out whether the usage stats permission was granted, updates the usageStatsAvailable Variable accordingly and
  * returns the result.
  */
-private fun usageStatsPermissionGranted(context: Context): Boolean {
+internal fun usageStatsPermissionGranted(context: Context): Boolean {
 
 	//On earlier versions there are no usage stats
 	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -134,6 +137,17 @@ internal fun showAccessibilityDialog(context: Context) {
 		.setIcon(R.mipmap.ic_launcher)
 		.setCancelable(false)
 		.show()
+}
+
+
+
+internal fun showSortChooserDialog(context: Context, onChosen: (which: Int) -> Unit) {
+	AlertDialog.Builder(context)
+			.setTitle("Sort by")
+			.setItems(R.array.sortmodes) { _, which ->
+				onChosen(which)
+			}
+			.show()
 }
 
 private fun toast(context: Context, s: String, duration: Int) {

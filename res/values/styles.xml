@@ -7,7 +7,6 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<!--<item name="textColorHint">@color/secondary_text_light</item>-->
-		<item name="android:textColorSecondary">@color/text_color_secondary</item>
 		<item name="android:textColorSecondaryInverse">@color/secondary_text_material_dark</item>
 	</style>
 
@@ -26,8 +25,12 @@
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
 		<item name="android:textColorPrimary">@android:color/white</item>
 		<item name="android:textColorSecondary">@android:color/white</item>
-		<item name="actionMenuTextColor">@android:color/white</item>
 		<item name="android:textColorHint">@color/secondary_text_light</item>
+		<item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+	</style>
+
+	<style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance">
+		<item name="android:textColor">@android:color/black</item>
 	</style>
 
 	<style name="Theme.Invisible" parent="android:Theme">

@@ -71,6 +71,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 					android:layout_height="wrap_content"
 					android:gravity="left|bottom"
 					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:textColor="@color/text_color_primary"
 					android:singleLine="true" />
 
 				<TextView

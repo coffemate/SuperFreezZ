@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Preference android:title="Report an issue, propose a feature, ...">
+		<intent android:action="android.intent.action.VIEW"
+			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues"/>
+	</Preference>
+
+	<Preference android:title="Source code">
+		<intent android:action="android.intent.action.VIEW"
+			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/"/>
+	</Preference>
+
+	<Preference android:title="License"
+		android:summary="Copyright SuperFreezZ contributors 2018-2019">
+		<intent android:action="android.intent.action.VIEW"
+			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ#copying"/>
+	</Preference>
+
+	<Preference
+		android:title="Credits and third-party licenses">
+		<intent android:action="android.intent.action.VIEW"
+			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/blob/master/Credits%20and%20third-party%20licenses.md"/>
+	</Preference>
+
+	<Preference android:title="Send logs"
+		android:key="send_logs"/>
+
+</PreferenceScreen>

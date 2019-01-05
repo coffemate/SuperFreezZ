@@ -27,6 +27,7 @@ import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
 import androidx.fragment.app.Fragment;
+import superfreeze.tool.android.BuildConfig;
 import superfreeze.tool.android.R;
 import superfreeze.tool.android.database.DatabaseKt;
 
@@ -35,38 +36,49 @@ import superfreeze.tool.android.database.DatabaseKt;
  */
 public final class IntroActivity extends AppIntro {
 
+	static final String SHOW_ACCESSIBILITY_SERVICE_CHOOSER = BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		SliderPage page1 = new SliderPage();
-		page1.setTitle(getString(R.string.welcome));
-		page1.setDescription(getString(R.string.short_description));
-		page1.setBgColor(getResources().getColor(R.color.ic_launcher_background));
-		addSlide(AppIntroFragment.newInstance(page1));
 
-		SliderPage page2 = new SliderPage();
-		page2.setTitle(getString(R.string.intro_always_freeze_title));
-		page2.setDescription(getString(R.string.intro_always_freeze_explanation));
-		page2.setImageDrawable(R.drawable.symbol_always_freeze);
-		page2.setBgColor(getResources().getColor(R.color.always_freeeze_background));
-		addSlide(AppIntroFragment.newInstance(page2));
+		String action = getIntent().getAction();
+		if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
 
-		SliderPage page3 = new SliderPage();
-		page3.setTitle(getString(R.string.intro_never_freeze_title));
-		page3.setDescription(getString(R.string.intro_never_freeze_explanation));
-		page3.setImageDrawable(R.drawable.symbol_never_freeze);
-		page3.setBgColor(getResources().getColor(R.color.never_freeeze_background));
-		addSlide(AppIntroFragment.newInstance(page3));
+			addSlide(new AccessibilityServiceChooserFragment());
 
-		SliderPage page4 = new SliderPage();
-		page4.setTitle(getString(R.string.intro_auto_freeze_title));
-		page4.setDescription(getString(R.string.intro_auto_freeze_explanation));
-		page4.setImageDrawable(R.drawable.symbol_freeze_when_inactive);
-		page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
-		addSlide(AppIntroFragment.newInstance(page4));
+		} else {
 
-		addSlide(new AccessibilityServiceChooserFragment());
+			SliderPage page1 = new SliderPage();
+			page1.setTitle(getString(R.string.welcome));
+			page1.setDescription(getString(R.string.short_description));
+			page1.setBgColor(getResources().getColor(R.color.ic_launcher_background));
+			addSlide(AppIntroFragment.newInstance(page1));
+
+			SliderPage page2 = new SliderPage();
+			page2.setTitle(getString(R.string.intro_always_freeze_title));
+			page2.setDescription(getString(R.string.intro_always_freeze_explanation));
+			page2.setImageDrawable(R.drawable.symbol_always_freeze);
+			page2.setBgColor(getResources().getColor(R.color.always_freeeze_background));
+			addSlide(AppIntroFragment.newInstance(page2));
+
+			SliderPage page3 = new SliderPage();
+			page3.setTitle(getString(R.string.intro_never_freeze_title));
+			page3.setDescription(getString(R.string.intro_never_freeze_explanation));
+			page3.setImageDrawable(R.drawable.symbol_never_freeze);
+			page3.setBgColor(getResources().getColor(R.color.never_freeeze_background));
+			addSlide(AppIntroFragment.newInstance(page3));
+
+			SliderPage page4 = new SliderPage();
+			page4.setTitle(getString(R.string.intro_auto_freeze_title));
+			page4.setDescription(getString(R.string.intro_auto_freeze_explanation));
+			page4.setImageDrawable(R.drawable.symbol_freeze_when_inactive);
+			page4.setBgColor(getResources().getColor(R.color.inactive_freeeze_background));
+			addSlide(AppIntroFragment.newInstance(page4));
+
+			addSlide(new AccessibilityServiceChooserFragment());
+		}
 
 		setDepthAnimation();
 		showSkipButton(false);

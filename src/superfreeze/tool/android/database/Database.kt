@@ -26,16 +26,24 @@ package superfreeze.tool.android.database
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.backend.FreezeMode
+import superfreeze.tool.android.backend.expectNonNull
 
-val standardFreezeMode = FreezeMode.FREEZE_WHEN_INACTIVE
 val values = FreezeMode.values()
 private const val TAG = "DatabaseBackend"
 
 internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
+
 	val sharedPreferences = getFreezeModesPreferences(context)
-	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode.ordinal)
+	val standardFreezeMode = mGetDefaultSharedPreferences(context)
+			?.getString("standard_freeze_mode", FreezeMode.FREEZE_WHEN_INACTIVE.ordinal.toString())
+			?.toIntOrNull()
+			.expectNonNull(TAG)
+			?: FreezeMode.FREEZE_WHEN_INACTIVE.ordinal
+
+	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode)
 	val result = values[ordinal]
 
 	return if (result == FreezeMode.FREEZE_WHEN_INACTIVE && !usageStatsAvailable) {
@@ -86,6 +94,10 @@ private fun getFreezeModesPreferences(context: Context): SharedPreferences {
 
 private fun getMainPreferences(context: Context): SharedPreferences {
 	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.MAIN", Context.MODE_PRIVATE)
+}
+
+internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences? {
+	return PreferenceManager.getDefaultSharedPreferences(context)
 }
 
 internal var usageStatsAvailable: Boolean = false

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	package="superfreeze.tool.android"
@@ -7,7 +7,10 @@
 
 	<uses-permission
 		android:name="android.permission.PACKAGE_USAGE_STATS"
-		tools:ignore="ProtectedPermissions" />
+		tools:ignore="ProtectedPermissions"/>
+
+	<uses-permission
+		android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
 
 	<application
 		android:name=".MyApplication"
@@ -22,49 +25,63 @@
 			android:launchMode="singleTask"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
 
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
 			<intent-filter>
-				<action android:name="android.intent.action.SEARCH" />
+				<action android:name="android.intent.action.SEARCH"/>
 			</intent-filter>
 
 			<meta-data
 				android:name="android.app.default_searchable"
-				android:value=".MainActivity" />
-
+				android:value=".MainActivity"/>
 			<meta-data
 				android:name="android.app.searchable"
-				android:resource="@xml/searchable" />
-
-			<meta-data android:name="android.app.shortcuts"
-				android:resource="@xml/shortcuts" />
-
+				android:resource="@xml/searchable"/>
+			<meta-data
+				android:name="android.app.shortcuts"
+				android:resource="@xml/shortcuts"/>
 		</activity>
-
-		<activity android:name=".userInterface.FreezeShortcutActivity" android:theme="@style/Theme.Invisible">
+		<activity
+			android:name=".userInterface.FreezeShortcutActivity"
+			android:theme="@style/Theme.Invisible">
 			<intent-filter>
-				<action android:name="android.intent.action.CREATE_SHORTCUT" />
-				<category android:name="android.intent.category.DEFAULT" />
+				<action android:name="android.intent.action.CREATE_SHORTCUT"/>
+
+				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
 			<intent-filter>
-				<action android:name="superfreeze.tool.android.FREEZE" />
+				<action android:name="superfreeze.tool.android.FREEZE"/>
 			</intent-filter>
 		</activity>
-
-		<activity android:name=".userInterface.IntroActivity"
-			android:label="Intro activity" />
+		<activity
+			android:name=".userInterface.IntroActivity"
+			android:label="Intro activity"/>
 
 		<service
 			android:name=".backend.FreezerService"
 			android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
 			<intent-filter>
-				<action android:name="android.accessibilityservice.AccessibilityService" />
+				<action android:name="android.accessibilityservice.AccessibilityService"/>
 			</intent-filter>
+
 			<meta-data
 				android:name="android.accessibilityservice"
-				android:resource="@xml/accessibility_service" />
+				android:resource="@xml/accessibility_service"/>
 		</service>
+
+		<activity
+			android:name=".userInterface.SettingsActivity"
+			android:label="@string/title_activity_settings"
+			android:parentActivityName=".userInterface.MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="superfreeze.tool.android.userInterface.MainActivity"/>
+			<intent-filter>
+				<action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
+			</intent-filter>
+		</activity>
 	</application>
+
 </manifest>

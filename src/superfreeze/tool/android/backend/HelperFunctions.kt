@@ -23,6 +23,7 @@ package superfreeze.tool.android.backend
 import android.util.Log
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.util.function.BiPredicate
 
 /**
  * This function gets all indexes of item in the receiver list.
@@ -69,4 +70,16 @@ fun getStackTrace(throwable: Throwable): String {
 	val stringWriter = StringWriter()
 	throwable.printStackTrace(PrintWriter(stringWriter, true))
 	return stringWriter.buffer.toString()
+}
+
+/**
+ * Returns a sequence containing only elements matching the given predicate
+ * or returns the sequence unchanged if the condition is false.
+ */
+fun <T> Sequence<T>.filterIf(condition: Boolean, predicate: (T) -> Boolean): Sequence<T> {
+	return if (condition) {
+		this.filter(predicate)
+	} else {
+		this
+	}
 }
