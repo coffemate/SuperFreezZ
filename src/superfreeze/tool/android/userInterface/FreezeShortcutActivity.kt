@@ -45,12 +45,17 @@ const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
  */
 class FreezeShortcutActivity : Activity() {
 
+	/**
+	 * Whether the activity is in the process of being created.
+	 */
+	private var isBeingNewlyCreated = true
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val action = intent.action
+		isBeingNewlyCreated = true
 
-		if (Intent.ACTION_CREATE_SHORTCUT == action) {
+		if (Intent.ACTION_CREATE_SHORTCUT == intent.action) {
 			setupShortcut()
 			finish()
 		} else {
@@ -73,11 +78,11 @@ class FreezeShortcutActivity : Activity() {
 					.setTitle(R.string.freeze_manually)
 					.setMessage(R.string.Press_forcestop_ok_back)
 					.setPositiveButton(android.R.string.ok) { _, _ ->
-						performFreeze(triesLeft)
+						performFreeze()
 					}
 					.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
 						showAccessibilityDialog(this)
-						doOnResume {
+						doOnReenterActivity {
 							showFreezeManuallyDialog()
 							false
 						}
@@ -91,7 +96,6 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-
 		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
@@ -99,10 +103,12 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
+		// Now we can do the actual freezing work:
+
 		var somethingWentWrong = false
 
 		val freezeNextApp = freezeAll(this, activity = this)
-		doOnResume {
+		doOnReenterActivity {
 			val appsLeft = freezeNextApp()
 
 			if (!appsLeft) {
@@ -128,21 +134,31 @@ class FreezeShortcutActivity : Activity() {
 				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 				startActivity(i)
 			}
-
 		}
+
+		return
 	}
 
 	override fun onResume() {
 		super.onResume()
 
-		//Execute all tasks and retain only those that returned true.
-		toBeDoneOnResume.retainAll { it() }
+		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
+		// NOT after onCreate finished
+		if (!isBeingNewlyCreated) {
+			//Execute all tasks and retain only those that returned true.
+			toBeDoneOnReenterActivity.retainAll { it() }
+		}
+
+		isBeingNewlyCreated = false
 	}
 
-	private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
+	private val toBeDoneOnReenterActivity: MutableList<() -> Boolean> = mutableListOf()
 
-	private fun doOnResume(task: () -> Boolean) {
-		toBeDoneOnResume.add(task)
+	/**
+	 * Execute the task when this activity was left and re-entered
+	 */
+	private fun doOnReenterActivity(task: () -> Boolean) {
+		toBeDoneOnReenterActivity.add(task)
 	}
 
 	companion object {

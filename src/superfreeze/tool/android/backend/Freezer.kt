@@ -69,9 +69,7 @@ internal fun freezeAll(context: Context, apps: List<String>? = null, activity: A
  * Freezes all apps in the "apps" list.
  * @param context: The context
  * @param apps: A list of apps to be frozen.
- * @return A function that has to be called
- * 1. immediately
- * 2. when the current activity is entered again so that the next app can be frozen.
+ * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
  *
  * It returns whether it wants to be executed again.
  */
@@ -87,7 +85,9 @@ internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 		return nextIndex < apps.size
 	}
 
-	// The returned function will be called now and in onResume:
+	freezeNext()
+
+	// The returned function will be called in onResume:
 	return ::freezeNext
 }
 
