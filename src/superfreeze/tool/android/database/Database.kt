@@ -28,7 +28,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import superfreeze.tool.android.BuildConfig
-import superfreeze.tool.android.backend.expectNonNull
+import superfreeze.tool.android.expectNonNull
 
 val values = FreezeMode.values()
 private const val TAG = "DatabaseBackend"

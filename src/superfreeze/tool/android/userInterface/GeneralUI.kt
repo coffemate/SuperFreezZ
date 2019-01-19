@@ -23,20 +23,16 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.userInterface
 
-import android.Manifest
-import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Process
 import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.R
+import superfreeze.tool.android.backend.usageStatsPermissionGranted
 import superfreeze.tool.android.database.neverCalled
-import superfreeze.tool.android.database.usageStatsAvailable
 import superfreeze.tool.android.userInterface.mainActivity.MainActivity
 
 /**
@@ -91,40 +87,6 @@ private fun showUsageStatsSettings(context: Context) {
 	context.startActivity(intent)
 	toast(context, "Please select SuperFreezZ, then enable access", Toast.LENGTH_LONG)
 }
-
-/**
- * Finds out whether the usage stats permission was granted, updates the usageStatsAvailable Variable accordingly and
- * returns the result.
- */
-internal fun usageStatsPermissionGranted(context: Context): Boolean {
-
-	//On earlier versions there are no usage stats
-	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-		return false
-	}
-
-	val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-
-	val mode = appOpsManager.checkOpNoThrow(
-		AppOpsManager.OPSTR_GET_USAGE_STATS,
-		Process.myUid(),
-		context.packageName
-	)
-
-	val result = if (mode == AppOpsManager.MODE_DEFAULT) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			context.checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
-		} else {
-			false//TODO check if this assumption is right: At Lollipop, mode will be AppOpsManager.MODE_ALLOWED if it was allowed
-		}
-	} else {
-		mode == AppOpsManager.MODE_ALLOWED
-	}
-
-	usageStatsAvailable = result
-	return result
-}
-
 
 
 internal fun showAccessibilityDialog(context: Context) {

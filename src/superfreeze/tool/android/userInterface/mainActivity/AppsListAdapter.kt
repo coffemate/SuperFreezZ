@@ -41,11 +41,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
+import superfreeze.tool.android.allIndexesOf
 import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
+import superfreeze.tool.android.expectNonNull
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory

@@ -23,8 +23,10 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.backend
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AppOpsManager
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
@@ -33,11 +35,12 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
-import superfreeze.tool.android.BuildConfig
-import superfreeze.tool.android.R
+import android.os.Process
+import superfreeze.tool.android.*
 import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
+import superfreeze.tool.android.database.usageStatsAvailable
 
 
 private const val TAG = "AppInformationGetter"
@@ -220,3 +223,35 @@ private fun Int.isFlagSet(value: Int): Boolean {
 	return (this and value) == value
 }
 
+/**
+ * Finds out whether the usage stats permission was granted, updates the usageStatsAvailable Variable accordingly and
+ * returns the result.
+ */
+internal fun usageStatsPermissionGranted(context: Context): Boolean {
+
+	//On earlier versions there are no usage stats
+	if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+		return false
+	}
+
+	val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+
+	val mode = appOpsManager.checkOpNoThrow(
+			AppOpsManager.OPSTR_GET_USAGE_STATS,
+			Process.myUid(),
+		context.packageName
+	)
+
+	val result = if (mode == AppOpsManager.MODE_DEFAULT) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			context.checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED
+		} else {
+			false//TODO check if this assumption is right: At Lollipop, mode will be AppOpsManager.MODE_ALLOWED if it was allowed
+		}
+	} else {
+		mode == AppOpsManager.MODE_ALLOWED
+	}
+
+	usageStatsAvailable = result
+	return result
+}

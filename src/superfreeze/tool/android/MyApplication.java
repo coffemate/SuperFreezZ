@@ -22,7 +22,7 @@ package superfreeze.tool.android;
 import android.app.Application;
 import android.content.Intent;
 
-import static superfreeze.tool.android.backend.HelperFunctionsKt.getStackTrace;
+import static superfreeze.tool.android.HelperFunctionsKt.getStackTrace;
 
 
 public class MyApplication extends Application {

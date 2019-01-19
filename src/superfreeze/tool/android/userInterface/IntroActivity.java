@@ -36,7 +36,7 @@ import superfreeze.tool.android.database.DatabaseKt;
  */
 public final class IntroActivity extends AppIntro {
 
-	static final String SHOW_ACCESSIBILITY_SERVICE_CHOOSER = BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER";
+	public static final String SHOW_ACCESSIBILITY_SERVICE_CHOOSER = BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

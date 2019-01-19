@@ -18,12 +18,11 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-package superfreeze.tool.android.backend
+package superfreeze.tool.android
 
 import android.util.Log
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.util.function.BiPredicate
 
 /**
  * This function gets all indexes of item in the receiver list.

@@ -17,7 +17,7 @@ import android.widget.Toast
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.userInterface.IntroActivity
-import superfreeze.tool.android.userInterface.usageStatsPermissionGranted
+import superfreeze.tool.android.backend.usageStatsPermissionGranted
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

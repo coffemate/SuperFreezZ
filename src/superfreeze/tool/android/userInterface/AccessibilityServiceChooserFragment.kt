@@ -29,7 +29,7 @@ import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.backend.expectNonNull
+import superfreeze.tool.android.expectNonNull
 
 
 /**
