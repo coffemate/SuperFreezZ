@@ -20,6 +20,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -27,7 +28,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
-
+import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 
 
 /**
@@ -184,6 +185,17 @@ class FreezerService : AccessibilityService() {
 
 	override fun onServiceConnected() {
 		isEnabled = true
+
+		val prefs = mGetDefaultSharedPreferences(this)
+		// From now on, expect that the service works:
+		if (prefs != null) {
+			with(prefs.edit()) {
+				putBoolean("use_accessibility_service", true)
+				apply()
+			}
+		}
+
+
 	}
 
 	override fun onDestroy() {
@@ -246,6 +258,15 @@ class FreezerService : AccessibilityService() {
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}
+
+		@JvmStatic
+		fun updateUseAccessibilityPreference(prefs: SharedPreferences) {
+			with(prefs.edit()) {
+				putBoolean("use_accessibility_service", FreezerService.isEnabled)
+				apply()
+			}
+		}
+
 	}
 
 }

@@ -46,7 +46,7 @@ import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
 import superfreeze.tool.android.userInterface.*
-import superfreeze.tool.android.userInterface.settings.SettingsActivity
+import superfreeze.tool.android.userInterface.settingsActivity.SettingsActivity
 
 
 /**

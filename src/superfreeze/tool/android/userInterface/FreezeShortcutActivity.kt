@@ -25,6 +25,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.BuildConfig
@@ -33,6 +34,7 @@ import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
 import superfreeze.tool.android.backend.setFreezerExceptionHandler
+import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.database.neverCalled
 
 const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
@@ -71,7 +73,24 @@ class FreezeShortcutActivity : Activity() {
 
 	private fun performFreeze(triesLeft: Int = 1) {
 
-		// Tell the user how to manually freeze if necessary, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/14
+		val prefs = mGetDefaultSharedPreferences(this)
+
+		// Sometimes the accessibility service is disabled for some reason.
+		// In this case, tell the user to re-enable it:
+		if (!FreezerService.isEnabled && prefs?.getBoolean("use_accessibility_service", false) == true) {
+			showAccessibilityDialog(this)
+			doOnReenterActivity {
+				with(prefs.edit()) {
+					putBoolean("use_accessibility_service", FreezerService.isEnabled)
+					apply()
+				}
+				performFreeze()
+				false
+			}
+			return
+		}
+
+		// Tell the user how to manually freeze if necessary, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/14:
 		fun showFreezeManuallyDialog() {
 			if (!FreezerService.isEnabled) {
 				AlertDialog.Builder(this, R.style.myAlertDialog)
@@ -120,7 +139,7 @@ class FreezeShortcutActivity : Activity() {
 					finish()
 				}
 			}
-
+			Log.e(TAG, "appsLeft: $appsLeft")
 			appsLeft // Only execute again if there are still apps left
 		}
 		// We are still in onCreate. When we finish, onResume will be called and the resume() function will be called
@@ -141,12 +160,13 @@ class FreezeShortcutActivity : Activity() {
 
 	override fun onResume() {
 		super.onResume()
-
+		Log.e(TAG, "onResume, $isBeingNewlyCreated")
 		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
 		// NOT after onCreate finished
 		if (!isBeingNewlyCreated) {
 			//Execute all tasks and retain only those that returned true.
-			toBeDoneOnReenterActivity.retainAll { it() }
+			Log.e(TAG,"Executing things")
+			toBeDoneOnReenterActivity.cloneAndRetainAll { it() }
 		}
 
 		isBeingNewlyCreated = false
@@ -189,3 +209,16 @@ class FreezeShortcutActivity : Activity() {
 		}
 	}
 }
+
+/**
+ * Executes retainAll() on a clone of this collection so that it is no problem if new entries
+ * are added to the original list while running this.
+ */
+private fun <E> MutableCollection<E>.cloneAndRetainAll(predicate: (E) -> Boolean) {
+	val cloned = this.toMutableList()
+	this.clear()
+	cloned.retainAll(predicate)
+	this.addAll(cloned)
+}
+
+private const val TAG = "FreezeShortcutActivity"

@@ -72,7 +72,7 @@
 		</service>
 
 		<activity
-			android:name=".userInterface.settings.SettingsActivity"
+			android:name=".userInterface.settingsActivity.SettingsActivity"
 			android:label="@string/title_activity_settings"
 			android:parentActivityName=".userInterface.mainActivity.MainActivity">
 			<meta-data

@@ -1,4 +1,4 @@
-package superfreeze.tool.android.userInterface.settings
+package superfreeze.tool.android.userInterface.settingsActivity
 
 import android.annotation.TargetApi
 import android.content.Context
