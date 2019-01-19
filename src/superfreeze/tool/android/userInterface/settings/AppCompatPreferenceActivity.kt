@@ -1,4 +1,4 @@
-package superfreeze.tool.android.userInterface
+package superfreeze.tool.android.userInterface.settings
 
 import android.content.res.Configuration
 import android.os.Bundle

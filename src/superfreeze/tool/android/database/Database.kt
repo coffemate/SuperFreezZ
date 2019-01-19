@@ -28,7 +28,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import superfreeze.tool.android.BuildConfig
-import superfreeze.tool.android.backend.FreezeMode
 import superfreeze.tool.android.backend.expectNonNull
 
 val values = FreezeMode.values()
@@ -101,3 +100,24 @@ internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences? 
 }
 
 internal var usageStatsAvailable: Boolean = false
+
+/**
+ * The freeze mode of an app: ALWAYS_FREEZE, NEVER_FREEZE or FREEZE_WHEN_INACTIVE
+ */
+enum class FreezeMode {
+
+	/**
+	 * This app will always be frozen if it is running, regardless of when it was used last.
+	 */
+	ALWAYS_FREEZE,
+
+	/**
+	 * This app will never be frozen, even if it has been running in background for whatever time.
+	 */
+	NEVER_FREEZE,
+
+	/**
+	 * This app will be frozen if it was not used for a specific time but is running in background.
+	 */
+	FREEZE_WHEN_INACTIVE
+}

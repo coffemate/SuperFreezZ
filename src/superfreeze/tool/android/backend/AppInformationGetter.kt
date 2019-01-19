@@ -35,6 +35,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
+import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 
@@ -119,9 +120,9 @@ internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, 
 }
 
 internal fun isPendingFreeze(
-	freezeMode: FreezeMode,
-	applicationInfo: ApplicationInfo,
-	usageStats: UsageStats?
+		freezeMode: FreezeMode,
+		applicationInfo: ApplicationInfo,
+		usageStats: UsageStats?
 ): Boolean {
 
 	if (!isRunning(applicationInfo)) {
@@ -141,10 +142,10 @@ internal fun isPendingFreeze(
 }
 
 internal fun getPendingFreezeExplanation(
-	freezeMode: FreezeMode,
-	applicationInfo: ApplicationInfo,
-	usageStats: UsageStats?,
-	context: Context
+		freezeMode: FreezeMode,
+		applicationInfo: ApplicationInfo,
+		usageStats: UsageStats?,
+		context: Context
 ): String {
 
 	fun string(stringID: Int) = context.getString(stringID)
@@ -219,23 +220,3 @@ private fun Int.isFlagSet(value: Int): Boolean {
 	return (this and value) == value
 }
 
-/**
- * The freeze mode of an app: ALWAYS_FREEZE, NEVER_FREEZE or FREEZE_WHEN_INACTIVE
- */
-enum class FreezeMode {
-
-	/**
-	 * This app will always be frozen if it is running, regardless of when it was used last.
-	 */
-	ALWAYS_FREEZE,
-
-	/**
-	 * This app will never be frozen, even if it has been running in background for whatever time.
-	 */
-	NEVER_FREEZE,
-
-	/**
-	 * This app will be frozen if it was not used for a specific time but is running in background.
-	 */
-	FREEZE_WHEN_INACTIVE
-}

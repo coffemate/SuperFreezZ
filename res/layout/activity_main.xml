@@ -25,7 +25,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:id="@+id/myCoordinatorLayout"
-	tools:context=".userInterface.MainActivity">
+	tools:context=".userInterface.mainActivity.MainActivity">
 
 	<RelativeLayout
 		android:layout_width="match_parent"

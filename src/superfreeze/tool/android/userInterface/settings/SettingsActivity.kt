@@ -1,4 +1,4 @@
-package superfreeze.tool.android.userInterface
+package superfreeze.tool.android.userInterface.settings
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -16,6 +16,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.userInterface.IntroActivity
+import superfreeze.tool.android.userInterface.usageStatsPermissionGranted
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

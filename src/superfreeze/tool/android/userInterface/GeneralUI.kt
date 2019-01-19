@@ -37,6 +37,7 @@ import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.R
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.usageStatsAvailable
+import superfreeze.tool.android.userInterface.mainActivity.MainActivity
 
 /**
  * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity.onCreate!!!

@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android.userInterface
+package superfreeze.tool.android.userInterface.mainActivity
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
@@ -42,6 +42,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.*
+import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
@@ -101,7 +102,7 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 			)
 		} else {
 			ViewHolderSectionHeader(
-				LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false)
+					LayoutInflater.from(viewGroup.context).inflate(R.layout.list_section_header, viewGroup, false)
 			)
 		}
 	}
@@ -267,10 +268,10 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
 		internal fun setFreezeModeTo(
-			freezeMode: FreezeMode,
-			changeSettings: Boolean,
-			showSnackbar: Boolean = changeSettings,
-			listItem: ListItemApp = this.listItem
+				freezeMode: FreezeMode,
+				changeSettings: Boolean,
+				showSnackbar: Boolean = changeSettings,
+				listItem: ListItemApp = this.listItem
 		) {
 
 			if (!this::listItem.isInitialized) {

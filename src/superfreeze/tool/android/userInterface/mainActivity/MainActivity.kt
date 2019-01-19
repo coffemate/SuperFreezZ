@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package superfreeze.tool.android.userInterface
+package superfreeze.tool.android.userInterface.mainActivity
 
 import android.annotation.SuppressLint
 import android.app.SearchManager
@@ -45,6 +45,8 @@ import superfreeze.tool.android.backend.getApplications
 import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
+import superfreeze.tool.android.userInterface.*
+import superfreeze.tool.android.userInterface.settings.SettingsActivity
 
 
 /**
