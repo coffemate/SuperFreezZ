@@ -1,0 +1,3 @@
+After the accessibility service was enabled, expect it to stay enabled and ask the user otherwise
+BUGFIX After showing a dialog before performFreeze() the app was not properly frozen
+Code style
