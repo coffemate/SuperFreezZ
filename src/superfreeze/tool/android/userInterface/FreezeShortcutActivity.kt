@@ -61,6 +61,7 @@ class FreezeShortcutActivity : Activity() {
 			setupShortcut()
 			finish()
 		} else {
+			Log.v(TAG, "Performing Freeze.")
 			performFreeze()
 		}
 	}
@@ -115,7 +116,7 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-		val appsPendingFreeze = getAppsPendingFreeze(applicationContext, this)
+		val appsPendingFreeze = getAppsPendingFreeze(applicationContext)
 		if (appsPendingFreeze.isEmpty()) {
 			Toast.makeText(this, getString(R.string.NothingToFreeze), Toast.LENGTH_SHORT).show()
 			finish()
@@ -128,18 +129,23 @@ class FreezeShortcutActivity : Activity() {
 
 		val freezeNextApp = freezeAll(this, activity = this)
 		doOnReenterActivity {
+			Log.v(TAG, "Ready to freeze the next app.")
 			val appsLeft = freezeNextApp()
 
 			if (!appsLeft) {
 				if (somethingWentWrong && triesLeft > 0) {
 					// Sometimes an app can't be frozen due to a bug I did not find yet.
 					// So simply try again by calling performFreeze again
+					Log.v(TAG, "Didn't finish freezing, trying again.")
 					performFreeze(triesLeft - 1)
 				} else {
+					Log.v(TAG, "Finished freezing")
+					onFreezeFinishedListener?.invoke()
+					onFreezeFinishedListener = null
 					finish()
 				}
 			}
-			Log.e(TAG, "appsLeft: $appsLeft")
+
 			appsLeft // Only execute again if there are still apps left
 		}
 		// We are still in onCreate. When we finish, onResume will be called and the resume() function will be called
@@ -160,12 +166,11 @@ class FreezeShortcutActivity : Activity() {
 
 	override fun onResume() {
 		super.onResume()
-		Log.e(TAG, "onResume, $isBeingNewlyCreated")
+
 		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
 		// NOT after onCreate finished
 		if (!isBeingNewlyCreated) {
 			//Execute all tasks and retain only those that returned true.
-			Log.e(TAG,"Executing things")
 			toBeDoneOnReenterActivity.cloneAndRetainAll { it() }
 		}
 
@@ -173,6 +178,7 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private val toBeDoneOnReenterActivity: MutableList<() -> Boolean> = mutableListOf()
+
 
 	/**
 	 * Execute the task when this activity was left and re-entered
@@ -207,6 +213,9 @@ class FreezeShortcutActivity : Activity() {
 			}
 			return intent
 		}
+
+		@JvmStatic
+		internal var onFreezeFinishedListener: (() -> Unit)? = null
 	}
 }
 

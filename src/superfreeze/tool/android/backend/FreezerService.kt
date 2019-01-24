@@ -183,6 +183,8 @@ class FreezerService : AccessibilityService() {
 		return true
 	}
 
+	private lateinit var screenReceiver: ScreenReceiver
+
 	override fun onServiceConnected() {
 		isEnabled = true
 
@@ -195,12 +197,13 @@ class FreezerService : AccessibilityService() {
 			}
 		}
 
-
+		screenReceiver = registerScreenReceiver(this)
 	}
 
 	override fun onDestroy() {
 		Log.w(TAG, "FreezerService was destroyed.")
 		isEnabled = false
+		unregisterReceiver(screenReceiver)
 		abort()
 	}
 

@@ -25,7 +25,6 @@ package superfreeze.tool.android.backend
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AppOpsManager
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
@@ -114,9 +113,9 @@ internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
 	return !applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
-internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, activity: Activity): Boolean {
+internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, context: Context): Boolean {
 	return isPendingFreeze(
-		getFreezeMode(activity, packageInfo.packageName),
+		getFreezeMode(context, packageInfo.packageName),
 		packageInfo.applicationInfo,
 		usageStats
 	)
@@ -197,12 +196,12 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
  * Queries the usage stats and returns those apps that are pending freeze.
  * Do not use if you have already called getRecentAggregatedUsageStats().
  */
-internal fun getAppsPendingFreeze(context: Context, activity: Activity): List<String> {
+internal fun getAppsPendingFreeze(context: Context): List<String> {
 
 	val usageStatsMap = getRecentAggregatedUsageStats(context)
 	return getApplications(context)
 		.asSequence()
-		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), activity) }
+		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), context) }
 		.map { it.packageName }
 		.toList()
 }

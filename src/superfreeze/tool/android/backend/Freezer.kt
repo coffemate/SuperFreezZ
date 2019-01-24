@@ -61,7 +61,7 @@ internal fun freezeApp(packageName: String, context: Context) {
 internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
 	return freezeAll(
 		context,
-		apps ?: getAppsPendingFreeze(context, activity)
+		apps ?: getAppsPendingFreeze(activity)
 	)
 }
 
