@@ -31,8 +31,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.PowerManager
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
-import android.view.WindowManager
-
 
 
 
@@ -78,7 +76,7 @@ private fun enableScreenUntilFrozen(context: Context) {
 	val kl = km!!.newKeyguardLock("SuperFreezZ")
 	kl.disableKeyguard()
 
-	val lp = context.getWindow().getAttributes()
+	/*val lp = context.getWindow().getAttributes()
 	lp.screenBrightness = 0.2f// 100 / 100.0f;
 	getWindow().setAttributes(lp)
 
@@ -87,13 +85,13 @@ private fun enableScreenUntilFrozen(context: Context) {
 			android.provider.Settings.System.SCREEN_BRIGHTNESS, 120);
 
 	android.provider.Settings.System.putInt(context.contentResolver,
-			android.provider.Settings.System.SCREEN_BRIGHTNESS, 0);
+			android.provider.Settings.System.SCREEN_BRIGHTNESS, 0);*/
 
 	FreezeShortcutActivity.onFreezeFinishedListener = {
 		wl.release()
 		kl.reenableKeyguard()
-		android.provider.Settings.System.putInt(context.contentResolver,
-				android.provider.Settings.System.SCREEN_BRIGHTNESS, originalBrightness)
+		/*android.provider.Settings.System.putInt(context.contentResolver,
+				android.provider.Settings.System.SCREEN_BRIGHTNESS, originalBrightness)*/
 
 	}
 }

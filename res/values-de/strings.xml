@@ -47,7 +47,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	</string>
 	<string name="enable">Einschalten</string>
 	<string name="usagestats_not_enabled">Sie haben keinen Zugriff auf die Nutzungsdaten gewährt.</string>
-	<string name="not_now">Nicht jetzt</string>
 	<string name="automate_the_freezing_of_apps">Apps einfrieren automatisieren?</string>
 	<string name="accessibility_arguments_yes">Für Benutzer die: \n\u2022 es so einfach wie möglich haben wollen \n\u2022
 		viele Apps einfrieren wollen
