@@ -23,7 +23,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 	<string name="app_name">SuperFreezZ</string>
 	<string name="msg_search">Search</string>
-	<string name="msg_search_help">Search by name&#8230;</string>
+	<string name="msg_search_help">Search&#8230;</string>
 	<string name="share_exception">An exception occurred. Share infos using&#8230;</string>
 	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of
 		apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and
