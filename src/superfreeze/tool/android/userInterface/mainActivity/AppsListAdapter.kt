@@ -31,6 +31,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -272,6 +273,12 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 			symbolNeverFreeze.setOnClickListener {
 				setFreezeModeTo(FreezeMode.NEVER_FREEZE, changeSettings = true)
+			}
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				symbolAlwaysFreeze.tooltipText = context.getString(R.string.always_freeze_this_app)
+				symbolFreezeWhenInactive.tooltipText = context.getString(R.string.freeze_this_app_if_it_has_not_been_used_for_a_longer_time)
+				symbolNeverFreeze.tooltipText = context.getString(R.string.do_never_freeze_this_app)
 			}
 		}
 
