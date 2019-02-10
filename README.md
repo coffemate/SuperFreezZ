@@ -57,7 +57,6 @@ I took the code to show the apps list from [apkExtractor](https://f-droid.org/wi
 Copying
 -------
 
-1
 
 ```
 Copyright (c) 2015 axxapy
@@ -75,55 +74,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
-```
-
-------------------------------------------------------------------
-
-2
-
-SuperFreezZ contains files additionally distributed under the MIT license. For these files you may choose between GPLv3-or-later (see above) and MIT (see below). These files are:
-
-2a
-
-```
-build.gradle
-src/superfreeze/tool/android/userInterface/AppsListAdapter.kt
-src/superfreeze/tool/android/userInterface/MainActivity.kt
-res/layout/list_item.xml
-res/layout/activity_main.xml
-res/values/strings.xml
-res/values/colors.xml
-res/values/styles.xml
-res/values/attrs.xml
-res/values-de/strings.xml
-res/xml/searchable.xml
-res/menu/main.xml
-AndroidManifest.xml
-```
-
-2b
-
-```
-The MIT License (MIT) (applies only to the files listed at 2a)
-
-Copyright (c) 2015 axxapy
-Copyright (c) 2018 Hocuri
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 ```
