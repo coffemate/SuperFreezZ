@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * This file is responsible for freezing apps. It acts as an abstraction layer between the UI and FreezerService.
+ */
+
 package superfreeze.tool.android.backend
 
 import android.app.Activity
@@ -25,11 +29,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import org.jetbrains.annotations.Contract
-
-/**
- * This file is responsible for freezing apps. It acts as an abstraction layer between the UI and FreezerService.
- */
-
 
 /**
  * Freeze a package.

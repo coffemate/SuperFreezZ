@@ -1,5 +1,27 @@
-package superfreeze.tool.android.backend
+/*
+Copyright (c) 2018 Hocuri
 
+This file is part of SuperFreezZ.
+
+SuperFreezZ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SuperFreezZ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/**
+ * This file is responsible to initiate "freeze on screen off", if this feature is enabled.
+ */
+
+package superfreeze.tool.android.backend
 
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver
@@ -9,10 +31,18 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.PowerManager
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
+import android.view.WindowManager
 
 
 
-class ScreenReceiver(private val context: Context) : BroadcastReceiver() {
+
+/**
+ * Receives and handles a broadcast when the screen turns off.
+ * @param screenLockerFunction
+ * A function that locks the screen (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
+ * after freezing the apps.
+ */
+class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) : BroadcastReceiver() {
 	override fun onReceive(context: Context, intent: Intent) {
 		if (intent.action == Intent.ACTION_SCREEN_OFF) {
 
@@ -29,11 +59,11 @@ class ScreenReceiver(private val context: Context) : BroadcastReceiver() {
 	}
 }
 
-internal fun registerScreenReceiver(context: Context): ScreenReceiver {
+internal fun registerScreenReceiver(context: Context, screenLockerFunction: () -> Unit): ScreenReceiver {
 	val filter = IntentFilter().apply {
 		addAction(Intent.ACTION_SCREEN_OFF)
 	}
-	val screenReceiver = ScreenReceiver(context)
+	val screenReceiver = ScreenReceiver(context, screenLockerFunction)
 	context.registerReceiver(screenReceiver, filter)
 	return screenReceiver
 }
@@ -48,9 +78,23 @@ private fun enableScreenUntilFrozen(context: Context) {
 	val kl = km!!.newKeyguardLock("SuperFreezZ")
 	kl.disableKeyguard()
 
+	val lp = context.getWindow().getAttributes()
+	lp.screenBrightness = 0.2f// 100 / 100.0f;
+	getWindow().setAttributes(lp)
+
+
+	val originalBrightness = android.provider.Settings.System.getInt(context.contentResolver,
+			android.provider.Settings.System.SCREEN_BRIGHTNESS, 120);
+
+	android.provider.Settings.System.putInt(context.contentResolver,
+			android.provider.Settings.System.SCREEN_BRIGHTNESS, 0);
+
 	FreezeShortcutActivity.onFreezeFinishedListener = {
 		wl.release()
 		kl.reenableKeyguard()
+		android.provider.Settings.System.putInt(context.contentResolver,
+				android.provider.Settings.System.SCREEN_BRIGHTNESS, originalBrightness)
+
 	}
 }
 

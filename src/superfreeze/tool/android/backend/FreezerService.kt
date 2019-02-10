@@ -188,7 +188,7 @@ class FreezerService : AccessibilityService() {
 	override fun onServiceConnected() {
 		isEnabled = true
 
-		val prefs = mGetDefaultSharedPreferences(this)
+		val prefs = mGetDefaultSharedPreferences(applicationContext)
 		// From now on, expect that the service works:
 		if (prefs != null) {
 			with(prefs.edit()) {
@@ -197,7 +197,13 @@ class FreezerService : AccessibilityService() {
 			}
 		}
 
-		screenReceiver = registerScreenReceiver(this)
+		screenReceiver = registerScreenReceiver(applicationContext, screenLockerFunction = {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+				performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+			} else {
+				// TODO
+			}
+		})
 	}
 
 	override fun onDestroy() {
@@ -262,6 +268,7 @@ class FreezerService : AccessibilityService() {
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}
 
+		//to be deleted:
 		@JvmStatic
 		fun updateUseAccessibilityPreference(prefs: SharedPreferences) {
 			with(prefs.edit()) {
