@@ -1,0 +1,3 @@
+Freeze on screen off can now basically be used (experimental) when activated in the settings. Please report bugs using the issue tracker.
+Tooltips
+Licensing
