@@ -27,6 +27,13 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		android:defaultValue="true"/>
 
 	<SwitchPreference
+		android:key="freeze_on_screen_off"
+		android:title="@string/freeze_on_screen_off_title"
+		android:summary="@string/freeze_on_screen_off_sum"
+		android:defaultValue="false"
+		android:dependency="use_accessibility_service"/>
+
+	<SwitchPreference
 		android:key="use_usagestats"
 		android:title="@string/usagestats_access"
 		android:summary="@string/usatestats_explanation"

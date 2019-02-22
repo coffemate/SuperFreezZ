@@ -130,6 +130,8 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="pref_header_about_summary">Useful links, send logs</string>
 	<string name="pref_header_appslist_summary">Show special apps, standard freeze mode</string>
 	<string name="freeze_apps_now">Freeze apps now</string>
+	<string name="freeze_on_screen_off_title">Freeze when the screen turns off</string>
+	<string name="freeze_on_screen_off_sum">You will need to disable \'Power button instantly locks\' in the device settings</string>
 
 	<string-array name="sortmodes">
 		<item>Name</item>

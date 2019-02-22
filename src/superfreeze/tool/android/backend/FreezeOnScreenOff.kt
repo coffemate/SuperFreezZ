@@ -29,23 +29,37 @@ import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.PowerManager
+import android.util.Log
+import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
-
-
 
 /**
  * Receives and handles a broadcast when the screen turns off.
  * @param screenLockerFunction
- * A function that locks the screen (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
+ * A function that locks the screen on newer Android versions. (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
  * after freezing the apps.
  */
 class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) : BroadcastReceiver() {
+	private var lastTime = 0L
+
 	override fun onReceive(context: Context, intent: Intent) {
-		if (intent.action == Intent.ACTION_SCREEN_OFF) {
+		if (intent.action == Intent.ACTION_SCREEN_OFF
+			&& mGetDefaultSharedPreferences(context)?.getBoolean("freeze_on_screen_off", false) == true
+		) {
+			FreezerService.abort() // If a freeze was already running, abort it
 
 			if (getAppsPendingFreeze(context).isEmpty()) {
 				return
+			}
+
+			// Throttle to once a minute:
+			if (lastTime + 60*1000 > System.currentTimeMillis()) {
+				lastTime = Math.min(System.currentTimeMillis(), lastTime)
+				return
+			} else {
+				lastTime = System.currentTimeMillis()
 			}
 
 			enableScreenUntilFrozen(this.context)
@@ -67,6 +81,8 @@ internal fun registerScreenReceiver(context: Context, screenLockerFunction: () -
 }
 
 private fun enableScreenUntilFrozen(context: Context) {
+	Log.i(TAG, "turning screen on for freeze...")
+
 	val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager?
 	val wl = pm!!.newWakeLock(PowerManager.FULL_WAKE_LOCK
 			or PowerManager.ACQUIRE_CAUSES_WAKEUP, "keepawake_until_frozen:")
@@ -88,6 +104,7 @@ private fun enableScreenUntilFrozen(context: Context) {
 			android.provider.Settings.System.SCREEN_BRIGHTNESS, 0);*/
 
 	FreezeShortcutActivity.onFreezeFinishedListener = {
+		Log.i(TAG, "turning screen off after freeze...")
 		wl.release()
 		kl.reenableKeyguard()
 		/*android.provider.Settings.System.putInt(context.contentResolver,

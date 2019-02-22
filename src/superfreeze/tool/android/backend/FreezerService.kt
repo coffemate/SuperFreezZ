@@ -262,7 +262,7 @@ class FreezerService : AccessibilityService() {
 		 * Cleans up when no more apps shall be frozen or before exceptionHandler() is called
 		 * (in the latter case, exceptionHandler() will care about restarting freeze)
 		 */
-		private fun abort() {
+		internal fun abort() {
 			Log.w(TAG, "aborting")
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
