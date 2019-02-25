@@ -31,6 +31,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
@@ -41,21 +42,46 @@ import superfreeze.tool.android.userInterface.FreezeShortcutActivity
  * A function that locks the screen on newer Android versions. (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
  * after freezing the apps.
  */
-class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) : BroadcastReceiver() {
+class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) :
+	BroadcastReceiver() {
 	private var lastTime = 0L
+	private var originalBrightness = -1
+	private var originalTimeout = -1
 
 	override fun onReceive(context: Context, intent: Intent) {
 		if (intent.action == Intent.ACTION_SCREEN_OFF
-			&& mGetDefaultSharedPreferences(context)?.getBoolean("freeze_on_screen_off", false) == true
+			&& mGetDefaultSharedPreferences(context)?.getBoolean(
+				"freeze_on_screen_off",
+				false
+			) == true
 		) {
 			FreezerService.abort() // If a freeze was already running, abort it
 
 			if (getAppsPendingFreeze(context).isEmpty()) {
+				// Reset screen timeout and brightness to the original values:
+				if (originalBrightness > 0 && originalTimeout > 0) {
+					try {
+						android.provider.Settings.System.putInt(
+							context.contentResolver,
+							android.provider.Settings.System.SCREEN_BRIGHTNESS,
+							originalBrightness
+						)
+						android.provider.Settings.System.putInt(
+							context.contentResolver,
+							Settings.System.SCREEN_OFF_TIMEOUT,
+							originalTimeout
+						)
+					} catch (e: SecurityException) {
+						Log.w(TAG, "Could not write change screen brightness an timeout")
+					}
+					originalBrightness = -1
+					originalTimeout = -1
+				}
 				return
 			}
 
 			// Throttle to once a minute:
-			if (lastTime + 60*1000 > System.currentTimeMillis()) {
+			if (lastTime + 60 * 1000 > System.currentTimeMillis()) {
 				lastTime = Math.min(System.currentTimeMillis(), lastTime)
 				return
 			} else {
@@ -69,48 +95,71 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 			})
 		}
 	}
+
+	private fun enableScreenUntilFrozen(context: Context) {
+		Log.i(TAG, "turning screen on for freeze...")
+
+		val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager?
+		val wl = pm!!.newWakeLock(
+			PowerManager.FULL_WAKE_LOCK
+					or PowerManager.ACQUIRE_CAUSES_WAKEUP, "keepawake_until_frozen:"
+		)
+		wl.acquire(3 * 60 * 1000L /*3 minutes*/)
+
+		val km = context.getSystemService(KEYGUARD_SERVICE) as KeyguardManager?
+		val kl = km!!.newKeyguardLock("SuperFreezZ")
+		kl.disableKeyguard()
+
+		try {
+			originalBrightness = android.provider.Settings.System.getInt(
+				context.contentResolver,
+				android.provider.Settings.System.SCREEN_BRIGHTNESS, 120
+			)
+
+			android.provider.Settings.System.putInt(
+				context.contentResolver,
+				android.provider.Settings.System.SCREEN_BRIGHTNESS, 0
+			)
+		} catch (e: SecurityException) {
+			Log.w(TAG, "Could not write change screen brightness and timeout")
+		}
+
+		FreezeShortcutActivity.onFreezeFinishedListener = {
+			Log.i(TAG, "turning screen off after freeze...")
+			wl.release()
+			kl.reenableKeyguard()
+
+			// Turn screen off:
+			try {
+				originalTimeout = android.provider.Settings.System.getInt(
+					context.contentResolver,
+					Settings.System.SCREEN_OFF_TIMEOUT,
+					1 * 60 * 1000
+				)
+				android.provider.Settings.System.putInt(
+					context.contentResolver,
+					Settings.System.SCREEN_OFF_TIMEOUT,
+					0
+				)
+			} catch (e: SecurityException) {
+				Log.w(TAG, "Could not write change screen brightness and timeout")
+			}
+
+		}
+	}
+
 }
 
-internal fun registerScreenReceiver(context: Context, screenLockerFunction: () -> Unit): ScreenReceiver {
+internal fun registerScreenReceiver(
+	context: Context,
+	screenLockerFunction: () -> Unit
+): ScreenReceiver {
 	val filter = IntentFilter().apply {
 		addAction(Intent.ACTION_SCREEN_OFF)
 	}
 	val screenReceiver = ScreenReceiver(context, screenLockerFunction)
 	context.registerReceiver(screenReceiver, filter)
 	return screenReceiver
-}
-
-private fun enableScreenUntilFrozen(context: Context) {
-	Log.i(TAG, "turning screen on for freeze...")
-
-	val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager?
-	val wl = pm!!.newWakeLock(PowerManager.FULL_WAKE_LOCK
-			or PowerManager.ACQUIRE_CAUSES_WAKEUP, "keepawake_until_frozen:")
-	wl.acquire(3 * 60 * 1000L /*3 minutes*/)
-
-	val km = context.getSystemService(KEYGUARD_SERVICE) as KeyguardManager?
-	val kl = km!!.newKeyguardLock("SuperFreezZ")
-	kl.disableKeyguard()
-
-	/*val lp = context.getWindow().getAttributes()
-	lp.screenBrightness = 0.2f// 100 / 100.0f;
-	getWindow().setAttributes(lp)
-
-
-	val originalBrightness = android.provider.Settings.System.getInt(context.contentResolver,
-			android.provider.Settings.System.SCREEN_BRIGHTNESS, 120);
-
-	android.provider.Settings.System.putInt(context.contentResolver,
-			android.provider.Settings.System.SCREEN_BRIGHTNESS, 0);*/
-
-	FreezeShortcutActivity.onFreezeFinishedListener = {
-		Log.i(TAG, "turning screen off after freeze...")
-		wl.release()
-		kl.reenableKeyguard()
-		/*android.provider.Settings.System.putInt(context.contentResolver,
-				android.provider.Settings.System.SCREEN_BRIGHTNESS, originalBrightness)*/
-
-	}
 }
 
 private const val TAG = "FreezeOnScreenOff"

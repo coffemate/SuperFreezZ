@@ -263,7 +263,7 @@ class FreezerService : AccessibilityService() {
 		 * (in the latter case, exceptionHandler() will care about restarting freeze)
 		 */
 		internal fun abort() {
-			Log.w(TAG, "aborting")
+			Log.i(TAG, "aborting")
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}

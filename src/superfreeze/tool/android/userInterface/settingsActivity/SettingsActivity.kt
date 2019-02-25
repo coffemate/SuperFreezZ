@@ -1,6 +1,8 @@
 package superfreeze.tool.android.userInterface.settingsActivity
 
 import android.annotation.TargetApi
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -14,6 +16,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.userInterface.IntroActivity
@@ -170,6 +173,25 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				}
 			} else {
 				useUsagestatsPreference.isEnabled = false
+			}
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				findPreference("freeze_on_screen_off").setOnPreferenceChangeListener { _, newValue ->
+					if (newValue == true && !Settings.System.canWrite(context)) {
+
+						AlertDialog.Builder(context, R.style.myAlertDialog)
+							.setTitle("Modify settings")
+							.setMessage("SuperFreezZ needs to modify the settings in order to turn off the screen after freezing.")
+							.setPositiveButton("Ok") {_, _ ->
+								val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+								intent.data = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+								startActivity(intent)
+							}
+							.setCancelable(false)
+							.show()
+					}
+					true
+				}
 			}
 		}
 
