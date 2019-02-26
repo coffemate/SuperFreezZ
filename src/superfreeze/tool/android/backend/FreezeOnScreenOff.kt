@@ -59,24 +59,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 
 			if (getAppsPendingFreeze(context).isEmpty()) {
 				// Reset screen timeout and brightness to the original values:
-				if (originalBrightness > 0 && originalTimeout > 0) {
-					try {
-						android.provider.Settings.System.putInt(
-							context.contentResolver,
-							android.provider.Settings.System.SCREEN_BRIGHTNESS,
-							originalBrightness
-						)
-						android.provider.Settings.System.putInt(
-							context.contentResolver,
-							Settings.System.SCREEN_OFF_TIMEOUT,
-							originalTimeout
-						)
-					} catch (e: SecurityException) {
-						Log.w(TAG, "Could not write change screen brightness an timeout")
-					}
-					originalBrightness = -1
-					originalTimeout = -1
-				}
+				resetScreenIfNecessary(context)
 				return
 			}
 
@@ -96,15 +79,36 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		}
 	}
 
+	private fun resetScreenIfNecessary(context: Context) {
+		if (originalBrightness > 0 && originalTimeout > 0) {
+			try {
+				Settings.System.putInt(
+					context.contentResolver,
+					Settings.System.SCREEN_BRIGHTNESS,
+					originalBrightness
+				)
+				Settings.System.putInt(
+					context.contentResolver,
+					Settings.System.SCREEN_OFF_TIMEOUT,
+					originalTimeout
+				)
+			} catch (e: SecurityException) {
+				Log.w(TAG, "Could not write change screen brightness an timeout")
+			}
+			originalBrightness = -1
+			originalTimeout = -1
+		}
+	}
+
 	private fun enableScreenUntilFrozen(context: Context) {
 		Log.i(TAG, "turning screen on for freeze...")
 
 		val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager?
-		val wl = pm!!.newWakeLock(
+		val wl = pm?.newWakeLock(
 			PowerManager.FULL_WAKE_LOCK
 					or PowerManager.ACQUIRE_CAUSES_WAKEUP, "keepawake_until_frozen:"
 		)
-		wl.acquire(3 * 60 * 1000L /*3 minutes*/)
+		wl?.acquire(3 * 60 * 1000L /*3 minutes*/) ?: Log.w(TAG, "wl was null")
 
 		val km = context.getSystemService(KEYGUARD_SERVICE) as KeyguardManager?
 		val kl = km!!.newKeyguardLock("SuperFreezZ")
@@ -126,7 +130,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 
 		FreezeShortcutActivity.onFreezeFinishedListener = {
 			Log.i(TAG, "turning screen off after freeze...")
-			wl.release()
+			wl?.release()
 			kl.reenableKeyguard()
 
 			// Turn screen off:
