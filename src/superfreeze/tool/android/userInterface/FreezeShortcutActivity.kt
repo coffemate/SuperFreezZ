@@ -155,7 +155,7 @@ class FreezeShortcutActivity : Activity() {
 			runOnUiThread {
 				somethingWentWrong = true
 				val i =
-					Intent(this@FreezeShortcutActivity.applicationContext, this@FreezeShortcutActivity::class.java)
+					Intent(applicationContext, FreezeShortcutActivity::class.java)
 				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 				startActivity(i)
 			}
@@ -188,6 +188,11 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	companion object {
+
+		/**
+		 * Returns an intent containing information for a launcher how to create a shortcut.
+		 * See e.g https://developer.android.com/reference/android/content/pm/ShortcutManager.html#createShortcutResultIntent(android.content.pm.ShortcutInfo)
+		 */
 		@JvmStatic
 		fun createIntent(activity: Activity): Intent {
 			val intent: Intent
