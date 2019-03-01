@@ -54,20 +54,19 @@ internal fun freezeApp(packageName: String, context: Context) {
  * Freezes all apps in the "apps" list or all apps that are pending freeze.
  * @param context: The context
  * @param apps: A list of apps to be frozen. If it is null or not given, a list of apps that pend freeze is computed automatically.
- * @param activity The current activity, needed to access the SharedPreferences to read which apps are pending freeze.
  * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
  * It returns whether it wants to be executed again.
  */
-internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
-	return freezeAll(
+internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
+	return _freezeAll(
 		context,
-		(apps ?: getAppsPendingFreeze(activity))
+		(apps ?: getAppsPendingFreeze(context))
 			// The following line is necessary to always freeze SuperFreezZ itself last:
 			.sortedBy{ it == BuildConfig.APPLICATION_ID }
 	)
 }
 
-private fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
+private fun _freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	var nextIndex = 0
 
 	fun freezeNext(): Boolean {

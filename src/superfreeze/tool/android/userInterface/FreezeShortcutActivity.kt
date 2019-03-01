@@ -127,7 +127,7 @@ class FreezeShortcutActivity : Activity() {
 
 		var somethingWentWrong = false
 
-		val freezeNextApp = freezeAll(this, activity = this)
+		val freezeNextApp = freezeAll(this)
 		doOnReenterActivity {
 			Log.v(TAG, "Ready to freeze the next app.")
 			val appsLeft = freezeNextApp()
