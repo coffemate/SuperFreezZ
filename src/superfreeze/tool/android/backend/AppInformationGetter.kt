@@ -194,7 +194,6 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 
 /**
  * Queries the usage stats and returns those apps that are pending freeze.
- * Do not use if you have already called getRecentAggregatedUsageStats().
  */
 internal fun getAppsPendingFreeze(context: Context): List<String> {
 

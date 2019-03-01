@@ -29,6 +29,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import org.jetbrains.annotations.Contract
+import superfreeze.tool.android.BuildConfig
 
 /**
  * Freeze a package.
@@ -60,19 +61,13 @@ internal fun freezeApp(packageName: String, context: Context) {
 internal fun freezeAll(context: Context, apps: List<String>? = null, activity: Activity): () -> Boolean {
 	return freezeAll(
 		context,
-		apps ?: getAppsPendingFreeze(activity)
+		(apps ?: getAppsPendingFreeze(activity))
+			// The following line is necessary to always freeze SuperFreezZ itself last:
+			.sortedBy{ it == BuildConfig.APPLICATION_ID }
 	)
 }
 
-/**
- * Freezes all apps in the "apps" list.
- * @param context: The context
- * @param apps: A list of apps to be frozen.
- * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
- *
- * It returns whether it wants to be executed again.
- */
-internal fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
+private fun freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	var nextIndex = 0
 
 	fun freezeNext(): Boolean {
