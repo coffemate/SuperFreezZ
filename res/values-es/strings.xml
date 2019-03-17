@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Copyright (c) 2018,2019 Hocuri
+
+This file is part of SuperFreezZ.
+
+SuperFreezZ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SuperFreezZ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="MissingTranslation">
+
+	<string name="app_name">SuperFreezZ</string>
+	<string name="msg_search">Buscar</string>
+	<string name="msg_search_help">Buscar&#8230;</string>
+	<string name="share_exception">Ha ocurrido un error.Deje el informe usando&#8230;</string>
+	<string name="accessibility_service_description">Activando esto hace posible la automatización de congelación de
+		apps.\n\nEsto tiene las siguientes ventajas :\n -
+El usuario no tiene que hacerlo el mismo: esto es más rápido y
+		el usuario no tiene que preocuparse de como hacerlo.\n - Usuarios con discapacidades físicas solamente necesitara iniciar el
+		acceso directo "auto-congelacion" (por ejemplo por reconocimiento de voz). Entonces ellos pueden congelar todas las apps automáticamente.
+		\n\nSuperFreezZ solamente usa el servicio de accesibilidad para tocar "FORZAR DETENCIÓN", "OK", "atrás" y evaluar el
+		resultado de estas interacciones.
+	</string>
+	<string name="freeze_shortcut_label">Congelar</string>
+	<string name="NothingToFreeze">Nada para congelar</string>
+	<string name="undo">Deshacer</string>
+	<string name="icon">Icono</string>
+	<string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Congelar esta app si no se ha usado por un largo tiempo.
+	</string>
+	<string name="always_freeze_this_app">Siempre congelar esta app</string>
+	<string name="do_never_freeze_this_app">Nunca congelar esta app</string>
+	<string name="pending_freeze">Pendiente para congelar</string>
+	<string name="frozen">Congelar</string>
+	<string name="freeze_off">No congelar</string>
+	<string name="used_recently">Usado recientemente</string>
+	<string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
+	<string name="no_apps_pending_freeze">[NO HAY APPS PENDIENTE PARA CONGELAR]</string>
+	<string name="all_apps">TODAS LAS APPS</string>
+	<string name="usagestats_access">Acceso a UsageStats</string>
+	<string name="usatestats_explanation"> El acceso a UsageStats hace posible que SuperFreezZ congele apps si usted
+		 no las usa por un tiempo (AUTO CONGELACIÓN).
+	</string>
+	<string name="enable">Activado</string>
+	<string name="usagestats_not_enabled">Usted no tiene activado el acceso a Usagestats.</string>
+	<string name="automate_the_freezing_of_apps">¿Automatizar la congelación de apps?</string>
+	<string name="accessibility_arguments_yes">Para usuarios que: \n\u2022 quieren que sea lo más fácil que sea posible \n\u2022 congelar
+		muchas apps
+	</string>
+	<string name="accessibility_arguments_no">Deberá presionar "FORZAR DETENCIÓN", "OK" y Atrás manualmente para congelar una
+		app.\nPara usuarios que: \n\u2022 tienen un teléfono lento \n\u2022 se preocupan por su seguridad \n\u2022 o no quiere registrar a SuperFreezZ un servicio de accesibilidad
+	</string>
+	<string name="yes">Si</string>
+	<string name="no">No</string>
+	<string name="welcome">Bienvenido a SuperFreezZ!</string>
+	<string name="short_description">SuperFreezZ facilita la congelación completa de todas las actividades de fondo de las apps.
+	</string>
+	<string name="intro_always_freeze_title">Modo de congelación: SIEMPRE CONGELAR</string>
+	<string name="intro_always_freeze_explanation">Hay 3 modos de congelación. Tu puedes elegir uno para cada app. SIEMPRE
+		CONGELAR congelará una app en cualquier caso.
+	</string>
+	<string name="intro_never_freeze_title">Modo de congelación: NUNCA CONGELAR</string>
+	<string name="intro_never_freeze_explanation">NUNCA CONGELAR - Desactiva la congelación y nunca congela una app.
+	</string>
+	<string name="intro_auto_freeze_title">Modo de congelación: AUTO CONGELACIÓN</string>
+	<string name="intro_auto_freeze_explanation">AUTO CONGELACIÓN Se congelará una app solo si no se ha usado por algún
+		tiempo (por defecto son 7 días)
+	</string>
+	<string name="freeze_manually">Congelación manual</string>
+	<string name="Press_forcestop_ok_back">Para congelar una app, por favor presiona "FORZAR DETENCIÓN", luego "OK" y después Atrás</string>
+	<string name="freeze_manually_no">No quiero tener que hacer esto</string>
+	<string name="title_activity_settings">Ajustes</string>
+
+	<!-- Strings related to Settings -->
+
+	<string name="pref_header_appslist">Lista de Apps</string>
+
+
+	<string-array name="appslist_show_special_titles">
+		<item>Launcher</item>
+		<item>SuperFreezZ</item>
+		<item>Apps del sistema(El sistema los descongelara rapidamente)</item>
+	</string-array>
+	<string-array name="appslist_show_special_values"  translatable="false">
+		<item>Launcher</item>
+		<item>SuperFreezZ</item>
+		<item>AppsdelSistema</item>
+	</string-array>
+
+
+	<string name="pref_title_standard_freeze_mode">Modo de congelación Standard</string>
+	<string-array name="standard_freeze_mode_titles">
+		<item>Siempre congelar</item>
+		<item>Nunca congelar</item>
+		<item>Auto congelar</item>
+	</string-array>
+	<string-array name="standard_freeze_mode_values" translatable="false">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+
+	<!-- Example settings for Data & Sync -->
+	<string name="pref_header_about">A cerca de</string>
+
+	<!-- Example settings for Notifications -->
+	<string name="pref_header_freezing">Apps congeladas</string>
+
+	<string name="pref_ringtone_silent">Silencio</string>
+
+	<string name="appslist_show_special">Mostrar apps especiales en la lista</string>
+	<string name="pref_autofreeze_delay">Modo congelación AUTO:Las apps se congelarán después de… (en días)</string>
+	<string name="pref_summary_appslist_show_special">El Launcher, SuperFreezZ y apps del sistema son ocultos por defecto.</string>
+	<string name="create_freeze_shortcut">Crear un acceso directo de congelación</string>
+	<string name="settings">Ajustes</string>
+	<string name="sort">Ordenar</string>
+	<string name="pref_header_freezing_summary">Personalizar como y cuales apps serán congeladas</string>
+	<string name="pref_header_about_summary">Links útiles, enviar logs</string>
+	<string name="pref_header_appslist_summary">Mostrar apps especiales, modo de congelación standard</string>
+	<string name="freeze_apps_now">Congelar las apps ahora</string>
+	<string name="freeze_on_screen_off_title">Congelar cuando la pantalla se apaga</string>
+	<string name="freeze_on_screen_off_sum">Usted necesitara desactivar \'el botón de encendido bloquea automaticamente\' en los ajustes del dispositivo</string>
+
+	<string-array name="sortmodes">
+		<item>Nombre</item>
+		<item>Estado de congelación</item>
+		<item> Última vez usado</item>
+	</string-array>
+</resources>
