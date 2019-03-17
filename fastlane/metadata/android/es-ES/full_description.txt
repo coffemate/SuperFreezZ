@@ -1,0 +1,19 @@
+Tenga en cuenta  que esta es una version aplha muy temprana.¡Uselo bajo su propio riesgo! Esta app generalmente puede usarse, pero es posible que encuentres algunos errores, algunos son muy confusos, otros son molestos o incluso pueden hacer
+ la app inutilizable.
+
+Congela por completo todas las actividades de fondo de las apps.
+
+Greenify es otra app que puede hacer esto, pero no es Open Source.
+
+Las colaboraciones son muy bienvenidas.
+
+SuperFreezZ no es otro administrador de tareas que promete borrar 10 GB de datos por mes o hacer que su dispositivo sea el doble de rapido. Esto es imposible.Solamente deberias congelar
+* Apps en las que no confia (y no quiere que se ejecuten en segundo plano) y 
+* Apps que use muy poco.
+
+Si usted congela apps que usa a diario, la bateria de su dispositivo se agotara más rapido y estas apps tardarán más en cargarse. Usted deberia tomar el nombre en serio: SuperFreezZ super congelara sus apps y no será tan facil descongelarlas.
+
+Caracteristicas:
+
+* Opcionalmente trabaja sin el servicio de accesibilidad, ya que esto hace al dispositivo más lento.
+* Opcion para congelar apps que no usa por una semana.
