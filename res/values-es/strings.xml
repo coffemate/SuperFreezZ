@@ -2,6 +2,7 @@
 
 <!--
 Copyright (c) 2018,2019 Hocuri
+Copyright (c) 2019 Cristian Amoyao
 
 This file is part of SuperFreezZ.
 
@@ -33,7 +34,7 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 		\n\nSuperFreezZ solamente usa el servicio de accesibilidad para tocar "FORZAR DETENCIÓN", "OK", "atrás" y evaluar el
 		resultado de estas interacciones.
 	</string>
-	<string name="freeze_shortcut_label">Congelar</string>
+	<string name="freeze_shortcut_label">Congelado</string>
 	<string name="NothingToFreeze">Nada para congelar</string>
 	<string name="undo">Deshacer</string>
 	<string name="icon">Icono</string>
@@ -53,13 +54,13 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 		 no las usa por un tiempo (AUTO CONGELACIÓN).
 	</string>
 	<string name="enable">Activado</string>
-	<string name="usagestats_not_enabled">Usted no tiene activado el acceso a Usagestats.</string>
+	<string name="usagestats_not_enabled">Usted no tiene activado el acceso a datos de uso.</string>
 	<string name="automate_the_freezing_of_apps">¿Automatizar la congelación de apps?</string>
 	<string name="accessibility_arguments_yes">Para usuarios que: \n\u2022 quieren que sea lo más fácil que sea posible \n\u2022 congelar
 		muchas apps
 	</string>
 	<string name="accessibility_arguments_no">Deberá presionar "FORZAR DETENCIÓN", "OK" y Atrás manualmente para congelar una
-		app.\nPara usuarios que: \n\u2022 tienen un teléfono lento \n\u2022 se preocupan por su seguridad \n\u2022 o no quiere registrar a SuperFreezZ un servicio de accesibilidad
+		app.\nPara usuarios que: \n\u2022 tienen un teléfono lento \n\u2022 se preocupan por su seguridad \n\u2022 o no quieren registrar a SuperFreezZ como servicio de accesibilidad
 	</string>
 	<string name="yes">Si</string>
 	<string name="no">No</string>
@@ -130,7 +131,7 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 	<string name="pref_header_appslist_summary">Mostrar apps especiales, modo de congelación standard</string>
 	<string name="freeze_apps_now">Congelar las apps ahora</string>
 	<string name="freeze_on_screen_off_title">Congelar cuando la pantalla se apaga</string>
-	<string name="freeze_on_screen_off_sum">Usted necesitara desactivar \'el botón de encendido bloquea automaticamente\' en los ajustes del dispositivo</string>
+	<string name="freeze_on_screen_off_sum">Usted necesitará desactivar 'Bloquear al encender/apagar' en los ajustes del dispositivo</string>
 
 	<string-array name="sortmodes">
 		<item>Nombre</item>
