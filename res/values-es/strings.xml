@@ -131,7 +131,7 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 	<string name="pref_header_appslist_summary">Mostrar apps especiales, modo de congelación standard</string>
 	<string name="freeze_apps_now">Congelar las apps ahora</string>
 	<string name="freeze_on_screen_off_title">Congelar cuando la pantalla se apaga</string>
-	<string name="freeze_on_screen_off_sum">Usted necesitará desactivar 'Bloquear al encender/apagar' en los ajustes del dispositivo</string>
+	<string name="freeze_on_screen_off_sum">Usted necesitará desactivar \'Bloquear al encender/apagar\' en los ajustes del dispositivo</string>
 
 	<string-array name="sortmodes">
 		<item>Nombre</item>
