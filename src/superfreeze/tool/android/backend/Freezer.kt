@@ -57,7 +57,7 @@ internal fun freezeApp(packageName: String, context: Context) {
  * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
  * It returns whether it wants to be executed again.
  */
-internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
+internal suspend fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
 	return _freezeAll(
 		context,
 		(apps ?: getAppsPendingFreeze(context))
@@ -66,7 +66,7 @@ internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Bool
 	)
 }
 
-private fun _freezeAll(context: Context, apps: List<String>): () -> Boolean {
+private suspend fun _freezeAll(context: Context, apps: List<String>): () -> Boolean {
 	var nextIndex = 0
 
 	fun freezeNext(): Boolean {
