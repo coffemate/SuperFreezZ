@@ -26,6 +26,7 @@ SOFTWARE.
 package superfreeze.tool.android.userInterface.mainActivity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.SearchManager
 import android.app.usage.UsageStats
 import android.content.ComponentCallbacks2
@@ -142,6 +143,8 @@ class MainActivity : AppCompatActivity() {
 
 			override fun onQueryTextChange(s: String): Boolean {
 				appsListAdapter.searchPattern = s
+				val o = Object()
+				(o as Activity).actionBar
 				return true
 			}
 		})

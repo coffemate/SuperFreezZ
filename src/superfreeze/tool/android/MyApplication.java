@@ -21,6 +21,11 @@ package superfreeze.tool.android;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+
+import java.util.List;
 
 import static superfreeze.tool.android.HelperFunctionsKt.getStackTrace;
 
@@ -48,15 +53,33 @@ public class MyApplication extends Application {
 			public void uncaughtException(Thread thread, Throwable e) {
 				e.printStackTrace();
 
-				//Share info about the exception so that it can be viewed or sent to someone else
-				Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-				sharingIntent.setType("text/plain");
-				sharingIntent.putExtra(Intent.EXTRA_SUBJECT, e.getClass());
-
 				String message = e.toString() + "\n\n" + getStackTrace(e);
-				sharingIntent.putExtra(Intent.EXTRA_TEXT, message);
 
-				startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_exception)));
+//				PackageManager packageManager = getPackageManager();
+//				List<ResolveInfo> activities = packageManager.queryIntentActivities(intent,
+//						PackageManager.MATCH_DEFAULT_ONLY);
+//				boolean isIntentSafe = activities.size() > 0;
+
+				if (true) {
+					Intent emailIntent = new Intent(Intent.ACTION_SEND);
+					emailIntent.setType("text/plain");
+					emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"jon@example.com"}); // recipients
+					emailIntent.putExtra(Intent.EXTRA_SUBJECT, "SuperFreezZ Crash report");
+					emailIntent.putExtra(Intent.EXTRA_TEXT, "Please answer these questions: \n When did this happen? \n Does this happen every time? \n Is there anything else? \n May I contact you per email for further questions? \n " + message);
+					startActivity(emailIntent);
+				} else {
+					//Share info about the exception so that it can be viewed or sent to someone else
+					Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+					sharingIntent.setType("text/plain");
+					sharingIntent.putExtra(Intent.EXTRA_SUBJECT, e.getClass());
+
+					sharingIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+					startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_exception)));
+				}
+
+
+
 			}
 		});
 
