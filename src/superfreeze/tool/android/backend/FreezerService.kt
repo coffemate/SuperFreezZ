@@ -29,6 +29,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
+import superfreeze.tool.android.expectNonNull
 
 
 /**
@@ -75,7 +76,7 @@ class FreezerService : AccessibilityService() {
 
 			NextAction.PRESS_FORCE_STOP -> {
 				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
-					pressForceStopButton(event.source)
+					pressForceStopButton(event.source.expectNonNull(TAG) ?: return)
 				} else {
 					Log.w(TAG, "awaited InstalledAppDetailsTop to be the next screen but it was ${event.className}")
 					wrongScreenShown()
@@ -84,7 +85,7 @@ class FreezerService : AccessibilityService() {
 
 			NextAction.PRESS_OK -> {
 				if (event.className == "android.app.AlertDialog") {
-					pressOkButton(event.source)
+					pressOkButton(event.source.expectNonNull(TAG) ?: return)
 				} else {
 					Log.w(TAG, "awaited AlertDialog to be the next screen but it was ${event.className}")
 					wrongScreenShown()
