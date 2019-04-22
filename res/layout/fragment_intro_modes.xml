@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".IntroFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="55dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="22dp">
+
+            <TextView
+                android:id="@+id/txv_Welcome3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="22dp"
+                android:text="MODES"
+                android:textColor="@color/secondary_text_material_dark"
+                android:textSize="40sp"
+                app:fontFamily="@font/uni_sans_heavy"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TabHost
+                android:id="@+id/tab_host"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txv_Welcome3"
+                app:layout_constraintVertical_bias="0.43">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corner"
+                    android:orientation="vertical">
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/tab_one_container"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/always_freeeze"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txv_Mode1Ttitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:text="@string/intro_always_freeze_title"
+                                android:textColor="@color/secondary_text_material_dark"
+                                android:textSize="16sp"
+                                app:fontFamily="sans-serif-black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="338dp"
+                                android:layout_height="74dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:text="@string/intro_always_freeze_explanation"
+                                android:textColor="@color/secondary_text_material_dark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txv_Mode1Ttitle" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/triangle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.15"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/tab_two_container"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/inactive_freeeze"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txv_Mode2Ttitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:text="@string/intro_auto_freeze_title"
+                                android:textColor="@color/secondary_text_material_dark"
+                                android:textSize="16sp"
+                                app:fontFamily="sans-serif-black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="338dp"
+                                android:layout_height="74dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:text="@string/intro_auto_freeze_explanation"
+                                android:textColor="@color/secondary_text_material_dark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txv_Mode2Ttitle" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/triangle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/tab_three_container"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/never_freeeze"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txv_Mode3Ttitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:text="@string/intro_never_freeze_title"
+                                android:textColor="@color/secondary_text_material_dark"
+                                android:textSize="16sp"
+                                app:fontFamily="sans-serif-black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:layout_width="338dp"
+                                android:layout_height="74dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:text="@string/intro_never_freeze_explanation"
+                                android:textColor="@color/secondary_text_material_dark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/txv_Mode3Ttitle" />
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/triangle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.86"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</FrameLayout>
