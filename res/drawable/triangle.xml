@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item>
+		<rotate
+			android:fromDegrees="45"
+			android:toDegrees="45"
+			android:pivotX="115%"
+			android:pivotY="12" >
+			<shape
+				android:shape="rectangle" >
+				<stroke android:color="@color/transparent" android:width="10dp"/>
+				<solid
+					android:color="@color/cardview_light_background" />
+			</shape>
+		</rotate>
+	</item>
+</layer-list>
