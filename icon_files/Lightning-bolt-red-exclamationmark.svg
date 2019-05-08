@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="137.11301mm"
+   height="137.11301mm"
+   viewBox="0 0 485.8335 485.83349"
+   id="svg6093"
+   version="1.1"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="Lightning-bolt-red-exclamationmark.svg">
+  <defs
+     id="defs6095" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="457.4919"
+     inkscape:cy="80.050929"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="744"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata6098">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-309.09864,-277.15736)">
+    <path
+       style="fill:#ff0000;fill-opacity:1;stroke-width:0.58229101"
+       clip-path="none"
+       d="m 578.51513,277.15738 145.46977,1.56194 c -4.1547,4.47793 -6.91301,7.45755 -11.2073,12.08474 -100.4574,108.24499 -93.36584,100.5242 -93.09599,101.37531 0.18097,0.57081 5.98057,0.66944 42.79413,0.72284 23.42228,0.0341 48.64217,0.18716 56.04421,0.34107 l 13.45962,0.28099 -104.62144,96.35422 c -67.54974,62.21327 -104.62721,96.63786 -104.63891,97.15263 -0.0169,0.74029 0.71603,0.79929 10.23924,0.80229 5.64116,0 27.95489,-0.22384 49.58795,-0.49998 21.63306,-0.27605 39.84124,-0.43135 40.46227,-0.34495 1.01006,0.14057 0.71242,0.42643 -2.82268,2.70919 -5.56426,3.59303 -213.71481,137.55702 -238.8199,153.70243 -29.40672,18.91184 -31.16978,20.02067 -31.00871,19.49913 0.0794,-0.25725 20.30981,-26.17137 44.95527,-57.58657 24.64548,-31.41523 49.83997,-63.53581 55.98797,-71.37859 6.80611,-8.6823 11.17818,-14.60557 11.17818,-15.14662 0,-0.72393 -0.26249,-0.88961 -1.4123,-0.88561 -5.61126,0.0173 -66.56223,-1.49496 -66.69668,-1.65497 -0.23411,-0.27864 -5.0894,5.31543 78.83516,-90.85834 84.86027,-97.24613 84.87627,-97.26519 84.87627,-97.88128 0,-0.24515 -0.15278,-0.56041 -0.34143,-0.70152 -0.18864,-0.14111 -23.25709,-1.18298 -51.26216,-2.3158 -28.00509,-1.13281 -50.98324,-2.13869 -51.06234,-2.23439 -0.0791,-0.0957 23.71464,-28.22779 52.87429,-62.51658 21.36987,-25.1288 47.06011,-55.33922 70.22551,-82.58158 z"
+       id="path4807"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.93749994"
+       x="583.73389"
+       y="609.57391"
+       id="text4671"><tspan
+         sodipodi:role="line"
+         id="tspan4669"
+         x="583.73389"
+         y="642.75262"
+         style="stroke-width:0.93749994"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:390.88531494px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:9.77213192;"
+       x="682.13843"
+       y="892.30115"
+       id="text5939"
+       transform="matrix(1.1694784,0,-0.28723451,0.85508207,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan5937"
+         x="682.13843"
+         y="892.30115"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:9.77213192;">!</tspan></text>
+  </g>
+</svg>
