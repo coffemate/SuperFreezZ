@@ -1,4 +1,4 @@
-Please note that this is a very early alpha version. Use at your own risk! This app can generally be used, but you probably will encounter some bugs, some of which are very confusing, others are annoying or maybe even make it un-usable.
+Please note that this is an alpha version. Use at your own risk! This app can generally be used, but you probably will encounter some bugs, some of which are very confusing, others are annoying or maybe even make it un-usable.
 
 Entirely freeze all background activities of apps.
 
