@@ -2,7 +2,8 @@ package superfreeze.tool.android.userInterface.settingsActivity
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
-import android.app.Dialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -19,13 +20,11 @@ import android.widget.Toast
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.userInterface.IntroActivity
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
+import superfreeze.tool.android.userInterface.IntroActivity
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-
-
 
 
 private const val TAG = "SettingsActivity"
@@ -217,8 +216,16 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				//Share info about the exception so that it can be viewed or sent to someone else
 				val sharingIntent = Intent(Intent.ACTION_SEND)
 				sharingIntent.type = "text/plain"
-				sharingIntent.putExtra(Intent.EXTRA_TEXT, getLogs())
+				val logs = getLogs()
+				sharingIntent.putExtra(Intent.EXTRA_TEXT, logs)
 				startActivity(Intent.createChooser(sharingIntent, "Share logs using..."))
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					// Copy to clipboard:
+					Toast.makeText(context ?: activity, "Logs were copied to the clipboard.", Toast.LENGTH_LONG).show()
+					val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+					val clip = ClipData.newPlainText("logs", logs)
+					clipboard?.primaryClip = clip
+				}
 				true
 			}
 		}
