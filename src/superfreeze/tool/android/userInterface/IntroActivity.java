@@ -60,6 +60,14 @@ public final class IntroActivity extends AppIntro {
 		//The 3D animation has a early 2000 feel to it. Therefore I did not find it visually fitting
 		//setDepthAnimation();
 		showSkipButton(false);
+
+
+	}
+
+	//If the user presses the back button it tends to break the AppIntro route logic
+	@Override
+	public void onBackPressed() {
+		//do nothing
 	}
 
 	@Override
