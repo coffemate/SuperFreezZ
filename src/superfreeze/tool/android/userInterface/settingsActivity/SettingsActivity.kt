@@ -218,14 +218,19 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 				sharingIntent.type = "text/plain"
 				val logs = getLogs()
 				sharingIntent.putExtra(Intent.EXTRA_TEXT, logs)
-				startActivity(Intent.createChooser(sharingIntent, "Share logs using..."))
+				startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_logs)))
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 					// Copy to clipboard:
-					Toast.makeText(context ?: activity, "Logs were copied to the clipboard.", Toast.LENGTH_LONG).show()
+					Toast.makeText(context ?: activity, getString(R.string.logs_copied), Toast.LENGTH_LONG).show()
 					val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
 					val clip = ClipData.newPlainText("logs", logs)
 					clipboard?.primaryClip = clip
 				}
+				true
+			}
+
+			findPreference("view_intro_again").setOnPreferenceClickListener {
+				startActivity(Intent(activity, IntroActivity::class.java))
 				true
 			}
 		}

@@ -132,6 +132,18 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="freeze_apps_now">Freeze apps now</string>
 	<string name="freeze_on_screen_off_title">Freeze when the screen turns off</string>
 	<string name="freeze_on_screen_off_sum">You will need to disable \'Power button instantly locks\' in the device settings</string>
+	<string name="problems">Problems</string>
+	<string name="links">Links</string>
+	<string name="info">Info</string>
+	<string name="view_intro_again">View intro again</string>
+	<string name="logs_copied">Logs were copied to the clipboard.</string>
+	<string name="share_logs">Share logs using...</string>
+	<string name="sf_crashed">SuperFreezZ crashed. Please send a report, if you did not already do it.</string>
+	<string name="report">Report an issue, propose a feature, ...</string>
+	<string name="send_logs">Send logs</string>
+	<string name="source_code">Source code</string>
+	<string name="license">License</string>
+	<string name="credits_and_licenses">Credits and third-party licenses</string>
 
 	<string-array name="sortmodes">
 		<item>Name</item>

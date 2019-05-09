@@ -19,29 +19,49 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<Preference android:title="Report an issue, propose a feature, ...">
-		<intent android:action="android.intent.action.VIEW"
-			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues"/>
-	</Preference>
+	<PreferenceCategory android:title="@string/problems">
 
-	<Preference android:title="Source code">
-		<intent android:action="android.intent.action.VIEW"
-			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/"/>
-	</Preference>
+		<Preference android:title="@string/report">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues" />
+		</Preference>
 
-	<Preference android:title="License"
-		android:summary="Copyright SuperFreezZ contributors 2018-2019">
-		<intent android:action="android.intent.action.VIEW"
-			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ#copying"/>
-	</Preference>
+		<Preference
+			android:key="send_logs"
+			android:title="@string/send_logs" />
 
-	<Preference
-		android:title="Credits and third-party licenses">
-		<intent android:action="android.intent.action.VIEW"
-			android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/blob/master/Credits%20and%20third-party%20licenses.md"/>
-	</Preference>
+	</PreferenceCategory>
 
-	<Preference android:title="Send logs"
-		android:key="send_logs"/>
+	<PreferenceCategory android:title="@string/links">
 
+		<Preference android:title="@string/source_code">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/" />
+		</Preference>
+
+		<Preference
+			android:summary="Copyright SuperFreezZ contributors 2018-2019"
+			android:title="@string/license">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ#copying" />
+		</Preference>
+
+		<Preference android:title="@string/credits_and_licenses">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="https://gitlab.com/SuperFreezZ/SuperFreezZ/blob/master/Credits%20and%20third-party%20licenses.md" />
+		</Preference>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/info">
+
+		<Preference
+			android:title="@string/view_intro_again"
+			android:key="view_intro_again"/>
+
+	</PreferenceCategory>
 </PreferenceScreen>

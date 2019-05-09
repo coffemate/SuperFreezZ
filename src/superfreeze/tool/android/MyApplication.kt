@@ -44,7 +44,7 @@ class MyApplication : Application() {
 
 			Toast.makeText(
 				this,
-				"SuperFreezZ crashed. Please send a report, if you did not already do it.",
+				getString(R.string.sf_crashed),
 				Toast.LENGTH_LONG
 			).show()
 
