@@ -23,14 +23,13 @@ package superfreeze.tool.android.userInterface;
 import android.os.Bundle;
 
 import com.github.paolorotolo.appintro.AppIntro;
-import com.github.paolorotolo.appintro.AppIntroFragment;
-import com.github.paolorotolo.appintro.model.SliderPage;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+
 import superfreeze.tool.android.BuildConfig;
-import superfreeze.tool.android.IntroFragment;
-import superfreeze.tool.android.IntroModesFragment;
-import superfreeze.tool.android.R;
+import superfreeze.tool.android.userInterface.intro.IntroFragment;
+import superfreeze.tool.android.userInterface.intro.IntroModesFragment;
 import superfreeze.tool.android.database.DatabaseKt;
 
 /**
@@ -38,47 +37,51 @@ import superfreeze.tool.android.database.DatabaseKt;
  */
 public final class IntroActivity extends AppIntro {
 
-	public static final String SHOW_ACCESSIBILITY_SERVICE_CHOOSER = BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER";
+    public static final String SHOW_ACCESSIBILITY_SERVICE_CHOOSER = BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getSupportActionBar().hide();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		String action = getIntent().getAction();
-		if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
-			addSlide(new AccessibilityServiceChooserFragment());
+        String action = getIntent().getAction();
+        if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
 
-		} else {
+            addSlide(new AccessibilityServiceChooserFragment());
 
-			addSlide(new IntroFragment());
-			addSlide(new IntroModesFragment());
-			addSlide(new AccessibilityServiceChooserFragment());
-		}
+        } else {
 
-		//The 3D animation has a early 2000 feel to it. Therefore I did not find it visually fitting
-		//setDepthAnimation();
-		showSkipButton(false);
+            addSlide(new IntroFragment());
+            addSlide(new IntroModesFragment());
+            addSlide(new AccessibilityServiceChooserFragment());
+        }
+
+        //The 3D animation has a early 2000 feel to it. Therefore I did not find it visually fitting
+        //setDepthAnimation();
+        showSkipButton(false);
 
 
-	}
+    }
 
-	//If the user presses the back button it tends to break the AppIntro route logic
-	@Override
-	public void onBackPressed() {
-		//do nothing
-	}
+    //If the user presses the back button it tends to break the AppIntro route logic
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
 
-	@Override
-	public void onDonePressed(Fragment currentFragment) {
-		super.onDonePressed(currentFragment);
-		done();
-	}
+    @Override
+    public void onDonePressed(Fragment currentFragment) {
+        super.onDonePressed(currentFragment);
+        done();
+    }
 
-	public void done() {
-		DatabaseKt.firstLaunchCompleted(getApplicationContext());
-		finish();
-	}
+    public void done() {
+        DatabaseKt.firstLaunchCompleted(getApplicationContext());
+        finish();
+    }
 
 }

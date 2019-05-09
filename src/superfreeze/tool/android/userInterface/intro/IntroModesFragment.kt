@@ -1,8 +1,5 @@
-package superfreeze.tool.android
+package superfreeze.tool.android.userInterface.intro
 
-
-import android.app.TabActivity
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +9,13 @@ import android.widget.LinearLayout
 import android.widget.TabHost
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
+import superfreeze.tool.android.R
 
 
 class IntroModesFragment : Fragment(), ISlidePolicy {
 
-    var allWatched = false
-    var _host: TabHost? = null
+    private var allWatched = false
+    private var _host: TabHost? = null
 
     override fun isPolicyRespected(): Boolean {
         return allWatched
@@ -29,11 +27,11 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
         if (tabs != null) {
 
             val pageNr = tabs.currentTab
-            if(pageNr < 2){
+            if (pageNr < 2) {
                 tabs.currentTab += 1
             }
 
-            if(pageNr == 2){
+            if (pageNr == 2) {
                 allWatched = true
             }
 
@@ -42,12 +40,6 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
             System.err.println("IntroModesFragment | TabHost is null. " +
                     "User interactions can't be handled")
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -75,38 +67,25 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
         icon3.layoutParams = layoutParams
 
 
-        var spec1 = host.newTabSpec("mode_1")
+        val spec1 = host.newTabSpec("mode_1")
         spec1.setContent(R.id.tab_one_container)
         spec1.setIndicator(icon1)
         host.addTab(spec1)
 
-        var spec2 = host.newTabSpec("mode_2")
+        val spec2 = host.newTabSpec("mode_2")
         spec2.setContent(R.id.tab_two_container)
         spec2.setIndicator(icon2)
         host.addTab(spec2)
 
-        var spec3 = host.newTabSpec("mode_3")
+        val spec3 = host.newTabSpec("mode_3")
         spec3.setContent(R.id.tab_three_container)
         spec3.setIndicator(icon3)
         host.addTab(spec3)
 
-        _host = host;
-        return layout;
+        _host = host
+        return layout
         // Inflate the layout for this fragment
 
-    }
-
-
-    fun scaleBitmap(width: Int, bitmap: Bitmap?): Bitmap? {
-
-        if (bitmap == null) {
-            System.out.println("isNull")
-            return null
-        }
-
-        var newHeight = Math.floor(bitmap.height as Double * (width as Double / bitmap.width as Double)).toInt()
-
-        return Bitmap.createScaledBitmap(bitmap, width, newHeight, true)
     }
 
 }
