@@ -78,7 +78,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/always_freeeze"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp">
 
                             <TextView
                                 android:id="@+id/txv_Mode1Ttitle"
@@ -94,7 +95,7 @@
                                 android:textSize="16sp"
                                 app:fontFamily="sans-serif-black"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -129,7 +130,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/inactive_freeeze"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp">
 
                             <TextView
                                 android:id="@+id/txv_Mode2Ttitle"
@@ -145,7 +147,7 @@
                                 android:textSize="16sp"
                                 app:fontFamily="sans-serif-black"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,7 +182,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/never_freeeze"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp">
 
                             <TextView
                                 android:id="@+id/txv_Mode3Ttitle"
@@ -196,7 +199,7 @@
                                 android:textSize="16sp"
                                 app:fontFamily="sans-serif-black"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.065"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
