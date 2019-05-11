@@ -31,7 +31,7 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
                 tabs.currentTab += 1
             }
 
-            if (pageNr == 2) {
+            if (tabs.currentTab == 2) {
                 allWatched = true
             }
 
