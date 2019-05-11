@@ -17,6 +17,7 @@ class IntroFragment : Fragment(), ISlidePolicy {
         return true
     }
 
+
     override fun onUserIllegallyRequestedNextPage() {
         // Toast.makeText(context ?: activity, "Please select 'Yes' or 'No'", Toast.LENGTH_LONG).show()
     }

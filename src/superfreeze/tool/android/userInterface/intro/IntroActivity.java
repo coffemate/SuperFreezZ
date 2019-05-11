@@ -49,13 +49,13 @@ public final class IntroActivity extends AppIntro {
         String action = getIntent().getAction();
         if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER.equals(action)) {
 
-            addSlide(new AccessibilityServiceChooserFragment());
+            addSlide(new AccessibilityServiceChooserFragment(this));
 
         } else {
 
             addSlide(new IntroFragment());
             addSlide(new IntroModesFragment());
-            addSlide(new AccessibilityServiceChooserFragment());
+            addSlide(new AccessibilityServiceChooserFragment(this));
         }
 
         //The 3D animation has a early 2000 feel to it. Therefore I did not find it visually fitting

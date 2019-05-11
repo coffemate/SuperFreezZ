@@ -26,6 +26,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
@@ -36,47 +37,56 @@ import superfreeze.tool.android.userInterface.showAccessibilityDialog
 /**
  * Shows a screen to let the user choose whether to use the accessibility service or not. Used in [IntroActivity].
  */
-class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
+class AccessibilityServiceChooserFragment(appIntro: AppIntro) : Fragment(), ISlidePolicy {
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View? {
+    val _appIntro = appIntro
 
-		// Inflate the layout for this fragment
-		val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
-		layout.findViewById<View>(R.id.accessibilityYes).setOnClickListener {
-			showAccessibilityDialog(context ?: activity!!)
-		}
-		layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
-			done()
-		}
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
 
-		return layout
-	}
+        //Hiding the "Done" button like this would hide the button one page before this one.
+        //Therefore the button just has no text for now. Nonetheless this is far from the
+        //optimal solution.
+        //_appIntro.showDoneButton(false);
+        _appIntro.setDoneText("")
 
 
-	override fun onResume() {
-		super.onResume()
-		if (FreezerService.isEnabled) {
-			done()
-		}
-	}
+        // Inflate the layout for this fragment
+        val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
+        layout.findViewById<View>(R.id.accessibilityYes).setOnClickListener {
+            showAccessibilityDialog(context ?: activity!!)
+        }
+        layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
+            done()
+        }
+
+        return layout
+    }
 
 
-	private fun done() {
-		(this.activity as? IntroActivity)
-			.expectNonNull(TAG)
-			?.done()
-	}
+    override fun onResume() {
+        super.onResume()
+        if (FreezerService.isEnabled) {
+            done()
+        }
+    }
 
-	override fun isPolicyRespected(): Boolean {
-		return false // The user is supposed to select yes or no, not to press "Done"
-	}
 
-	override fun onUserIllegallyRequestedNextPage() {
-		Toast.makeText(context ?: activity, "Please select 'Yes' or 'No'", Toast.LENGTH_LONG).show()
-	}
+    private fun done() {
+        (this.activity as? IntroActivity)
+                .expectNonNull(TAG)
+                ?.done()
+    }
+
+    override fun isPolicyRespected(): Boolean {
+        return false // The user is supposed to select yes or no, not to press "Done"
+    }
+
+    override fun onUserIllegallyRequestedNextPage() {
+        Toast.makeText(context ?: activity, "Please select 'Yes' or 'No'", Toast.LENGTH_LONG).show()
+    }
 }
 
 private const val TAG = "AccessibilityServiceChooserFragment"
