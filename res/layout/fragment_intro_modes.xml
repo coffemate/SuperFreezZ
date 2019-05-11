@@ -38,7 +38,7 @@
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="22dp"
                 android:layout_marginTop="22dp"
-                android:text="MODES"
+                android:text="@string/intro_header_modes"
                 android:textColor="@color/secondary_text_material_dark"
                 android:textSize="40sp"
                 app:fontFamily="@font/uni_sans_heavy"

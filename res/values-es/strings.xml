@@ -22,7 +22,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 <resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="MissingTranslation">
 
-	<string name="app_name">SuperFreezZ</string>
 	<string name="msg_search">Buscar</string>
 	<string name="msg_search_help">Buscar&#8230;</string>
 	<string name="share_exception">Ha ocurrido un error.Deje el informe usando&#8230;</string>
@@ -64,8 +63,7 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 	</string>
 	<string name="yes">Si</string>
 	<string name="no">No</string>
-	<string name="welcome">Bienvenido a SuperFreezZ!</string>
-	<string name="short_description">SuperFreezZ facilita la congelación completa de todas las actividades de fondo de las apps.
+    <string name="short_description">SuperFreezZ facilita la congelación completa de todas las actividades de fondo de las apps.
 	</string>
 	<string name="intro_always_freeze_title">Modo de congelación: SIEMPRE CONGELAR</string>
 	<string name="intro_always_freeze_explanation">Hay 3 modos de congelación. Tu puedes elegir uno para cada app. SIEMPRE
