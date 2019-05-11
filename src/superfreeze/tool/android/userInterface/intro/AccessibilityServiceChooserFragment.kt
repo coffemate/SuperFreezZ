@@ -18,7 +18,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-package superfreeze.tool.android.userInterface
+package superfreeze.tool.android.userInterface.intro
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,7 +30,7 @@ import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.expectNonNull
-import superfreeze.tool.android.userInterface.intro.IntroActivity
+import superfreeze.tool.android.userInterface.showAccessibilityDialog
 
 
 /**

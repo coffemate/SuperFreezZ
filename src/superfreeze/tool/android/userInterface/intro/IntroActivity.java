@@ -29,7 +29,6 @@ import com.github.paolorotolo.appintro.AppIntro;
 
 import superfreeze.tool.android.BuildConfig;
 import superfreeze.tool.android.database.DatabaseKt;
-import superfreeze.tool.android.userInterface.AccessibilityServiceChooserFragment;
 
 /**
  * Shows the intro slides on the very first startup
