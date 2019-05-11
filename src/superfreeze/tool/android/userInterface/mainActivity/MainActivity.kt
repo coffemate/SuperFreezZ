@@ -51,7 +51,7 @@ import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
-import superfreeze.tool.android.userInterface.IntroActivity
+import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.userInterface.requestUsageStatsPermission
 import superfreeze.tool.android.userInterface.settingsActivity.SettingsActivity
 import superfreeze.tool.android.userInterface.showSortChooserDialog

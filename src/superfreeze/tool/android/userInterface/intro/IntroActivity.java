@@ -18,19 +18,18 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-package superfreeze.tool.android.userInterface;
+package superfreeze.tool.android.userInterface.intro;
 
 import android.os.Bundle;
-
-import com.github.paolorotolo.appintro.AppIntro;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
+import com.github.paolorotolo.appintro.AppIntro;
+
 import superfreeze.tool.android.BuildConfig;
-import superfreeze.tool.android.userInterface.intro.IntroFragment;
-import superfreeze.tool.android.userInterface.intro.IntroModesFragment;
 import superfreeze.tool.android.database.DatabaseKt;
+import superfreeze.tool.android.userInterface.AccessibilityServiceChooserFragment;
 
 /**
  * Shows the intro slides on the very first startup

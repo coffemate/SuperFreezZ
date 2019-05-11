@@ -83,7 +83,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".userInterface.IntroActivity"
+			android:name=".userInterface.intro.IntroActivity"
 			android:label="Intro activity"/>
 
 		<service

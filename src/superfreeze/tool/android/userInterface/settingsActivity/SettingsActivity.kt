@@ -2,7 +2,6 @@ package superfreeze.tool.android.userInterface.settingsActivity
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -19,7 +18,7 @@ import android.widget.Toast
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.userInterface.IntroActivity
+import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
 import java.io.BufferedReader
 import java.io.IOException
