@@ -26,7 +26,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
@@ -37,21 +36,12 @@ import superfreeze.tool.android.userInterface.showAccessibilityDialog
 /**
  * Shows a screen to let the user choose whether to use the accessibility service or not. Used in [IntroActivity].
  */
-class AccessibilityServiceChooserFragment(appIntro: AppIntro) : Fragment(), ISlidePolicy {
-
-    val _appIntro = appIntro
+class AccessibilityServiceChooserFragment() : Fragment(), ISlidePolicy {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
-        //Hiding the "Done" button like this would hide the button one page before this one.
-        //Therefore the button just has no text for now. Nonetheless this is far from the
-        //optimal solution.
-        //_appIntro.showDoneButton(false);
-        _appIntro.setDoneText("")
-
 
         // Inflate the layout for this fragment
         val layout = inflater.inflate(R.layout.fragment_accessibility_service_chooser, container, false)
