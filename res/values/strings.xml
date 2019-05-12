@@ -62,7 +62,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		app.\nFor users who: \n\u2022 have a slow phone \n\u2022 care a lot about security \n\u2022 do not want to
 		register SuperFreezZ as an accessibility service
 	</string>
-    <string name="yes" translatable="false">Yes</string>
+    <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="short_description">SuperFreezZ makes it easy to entirely freeze all background activities of apps.
 	</string>
@@ -77,70 +77,80 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
 		time (7 days by default)
 	</string>
-    <string name="freeze_manually">Freeze manually</string>
-    <string name="Press_forcestop_ok_back">To freeze an app, please press "FORCE STOP", then "OK", then Back</string>
-    <string name="freeze_manually_no">I do not want to have to do this</string>
-    <string name="title_activity_settings">Settings</string>
+	<string name="freeze_manually">Freeze manually</string>
+	<string name="Press_forcestop_ok_back">To freeze an app, please press "FORCE STOP", then "OK", then Back</string>
+	<string name="freeze_manually_no">I do not want to have to do this</string>
+	<string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
+	<!-- Strings related to Settings -->
 
-    <string name="pref_header_appslist">Apps list</string>
-
-
-    <string-array name="appslist_show_special_titles">
-        <item>Launcher</item>
-        <item>SuperFreezZ itself</item>
-        <item>System apps (the system will quickly defrost them)</item>
-    </string-array>
-    <string-array name="appslist_show_special_values" translatable="false">
-        <item>Launcher</item>
-        <item>SuperFreezZ</item>
-        <item>Systemapps</item>
-    </string-array>
+	<string name="pref_header_appslist">Apps list</string>
 
 
-    <string name="pref_title_standard_freeze_mode">Standard freeze mode</string>
-    <string-array name="standard_freeze_mode_titles">
-        <item>Always freeze</item>
-        <item>Never freeze</item>
-        <item>Auto freeze</item>
-    </string-array>
-    <string-array name="standard_freeze_mode_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
+	<string-array name="appslist_show_special_titles">
+		<item>Launcher</item>
+		<item>SuperFreezZ itself</item>
+		<item>System apps (the system will quickly defrost them)</item>
+	</string-array>
+	<string-array name="appslist_show_special_values"  translatable="false">
+		<item>Launcher</item>
+		<item>SuperFreezZ</item>
+		<item>Systemapps</item>
+	</string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_about">About</string>
 
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_freezing">Freezing apps</string>
+	<string name="pref_title_standard_freeze_mode">Standard freeze mode</string>
+	<string-array name="standard_freeze_mode_titles">
+		<item>Always freeze</item>
+		<item>Never freeze</item>
+		<item>Auto freeze</item>
+	</string-array>
+	<string-array name="standard_freeze_mode_values" translatable="false">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
 
-    <string name="pref_ringtone_silent">Silent</string>
+	<!-- Example settings for Data & Sync -->
+	<string name="pref_header_about">About</string>
 
-    <string name="appslist_show_special">Show special apps in the list</string>
-    <string name="pref_autofreeze_delay">Freeze mode AUTO: Apps are frozen after… (in days)</string>
-    <string name="pref_summary_appslist_show_special">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
-    <string name="create_freeze_shortcut">Create Freeze shortcut</string>
-    <string name="settings">Settings</string>
-    <string name="sort">Sort</string>
-    <string name="pref_header_freezing_summary">Customize how and which apps are frozen</string>
-    <string name="pref_header_about_summary">Useful links, send logs</string>
-    <string name="pref_header_appslist_summary">Show special apps, standard freeze mode</string>
-    <string name="freeze_apps_now">Freeze apps now</string>
-    <string name="freeze_on_screen_off_title">Freeze when the screen turns off</string>
-    <string name="freeze_on_screen_off_sum">You will need to disable \'Power button instantly locks\' in the device settings</string>
+	<!-- Example settings for Notifications -->
+	<string name="pref_header_freezing">Freezing apps</string>
 
-    <string-array name="sortmodes">
-        <item>Name</item>
-        <item>Freeze state</item>
-        <item>Last time used</item>
-    </string-array>
+	<string name="pref_ringtone_silent">Silent</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="intro_header_welcome">welcome to</string>
-    <string name="intro_header_modes">modes</string>
-    <string name="intro_header_automatifreezing">automatic freezing</string>
+	<string name="appslist_show_special">Show special apps in the list</string>
+	<string name="pref_autofreeze_delay">Freeze mode AUTO: Apps are frozen after… (in days)</string>
+	<string name="pref_summary_appslist_show_special">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
+	<string name="create_freeze_shortcut">Create Freeze shortcut</string>
+	<string name="settings">Settings</string>
+	<string name="sort">Sort</string>
+	<string name="pref_header_freezing_summary">Customize how and which apps are frozen</string>
+	<string name="pref_header_about_summary">Useful links, send logs</string>
+	<string name="pref_header_appslist_summary">Show special apps, standard freeze mode</string>
+	<string name="freeze_apps_now">Freeze apps now</string>
+	<string name="freeze_on_screen_off_title">Freeze when the screen turns off</string>
+	<string name="freeze_on_screen_off_sum">You will need to disable \'Power button instantly locks\' in the device settings</string>
+	<string name="problems">Problems</string>
+	<string name="links">Links</string>
+	<string name="info">Info</string>
+	<string name="view_intro_again">View intro again</string>
+	<string name="logs_copied">Logs were copied to the clipboard.</string>
+	<string name="share_logs">Share logs using...</string>
+	<string name="sf_crashed">SuperFreezZ crashed. Please send a report, if you did not already do it.</string>
+	<string name="report">Report an issue, propose a feature, ...</string>
+	<string name="send_logs">Send logs</string>
+	<string name="source_code">Source code</string>
+	<string name="license">License</string>
+	<string name="credits_and_licenses">Credits and third-party licenses</string>
+
+	<string-array name="sortmodes">
+		<item>Name</item>
+		<item>Freeze state</item>
+		<item>Last time used</item>
+	</string-array>
+
+	<string name="intro_header_welcome">welcome to</string>
+	<string name="intro_header_modes">modes</string>
+	<string name="intro_header_automatifreezing">automatic freezing</string>
 </resources>

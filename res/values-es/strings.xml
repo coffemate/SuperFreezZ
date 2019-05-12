@@ -91,23 +91,12 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 		<item>SuperFreezZ</item>
 		<item>Apps del sistema(El sistema los descongelara rapidamente)</item>
 	</string-array>
-	<string-array name="appslist_show_special_values"  translatable="false">
-		<item>Launcher</item>
-		<item>SuperFreezZ</item>
-		<item>AppsdelSistema</item>
-	</string-array>
-
 
 	<string name="pref_title_standard_freeze_mode">Modo de congelación Standard</string>
 	<string-array name="standard_freeze_mode_titles">
 		<item>Siempre congelar</item>
 		<item>Nunca congelar</item>
 		<item>Auto congelar</item>
-	</string-array>
-	<string-array name="standard_freeze_mode_values" translatable="false">
-		<item>0</item>
-		<item>1</item>
-		<item>2</item>
 	</string-array>
 
 	<!-- Example settings for Data & Sync -->
