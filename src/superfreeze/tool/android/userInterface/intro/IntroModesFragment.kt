@@ -26,12 +26,12 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
         val tabs = _host
         if (tabs != null) {
 
-            val pageNr = tabs.currentTab
-            if (pageNr < 2) {
+
+            if (tabs.currentTab < 2) {
                 tabs.currentTab += 1
             }
 
-            else if (tabs.currentTab == 2) {
+            if (tabs.currentTab == 2) {
                 allWatched = true
             }
 
