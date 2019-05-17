@@ -23,7 +23,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 package superfreeze.tool.android.backend
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -40,6 +39,7 @@ import superfreeze.tool.android.BuildConfig
 internal fun freezeApp(packageName: String, context: Context) {
 
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
+		// performFreeze will wait for the Force stop button to appear and then click Force stop, Ok, Back.
 		FreezerService.performFreeze()
 	}
 

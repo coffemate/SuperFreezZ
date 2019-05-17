@@ -48,9 +48,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.allIndexesOf
-import superfreeze.tool.android.backend.freezeApp
-import superfreeze.tool.android.backend.getPendingFreezeExplanation
-import superfreeze.tool.android.backend.isPendingFreeze
+import superfreeze.tool.android.backend.*
 import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
@@ -502,7 +500,13 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 		}
 
 		override fun freeze(context: Context) {
-			freezeApp(packageName, context)
+			// If the app is already frozen and the freezer service is not enabled, we can just show
+			// the settings page to the user, as if we were freezing it.
+			if (FreezerService.isEnabled && !isRunning(applicationInfo)) {
+				Snackbar.make(mainActivity.myCoordinatorLayout, R.string.already_frozen, Snackbar.LENGTH_SHORT).show()
+			} else {
+				freezeApp(packageName, context)
+			}
 		}
 
 		override val text: String

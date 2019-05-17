@@ -144,6 +144,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="source_code">Source code</string>
 	<string name="license">License</string>
 	<string name="credits_and_licenses">Credits and third-party licenses</string>
+	<string name="already_frozen">Already frozen</string>
 
 	<string-array name="sortmodes">
 		<item>Name</item>
