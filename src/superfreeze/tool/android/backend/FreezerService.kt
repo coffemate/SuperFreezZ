@@ -71,12 +71,14 @@ class FreezerService : AccessibilityService() {
 			return
 		}
 
+		var node: AccessibilityNodeInfo? = null
+
 		when (nextAction) {
 			NextAction.DO_NOTHING -> { }
 
 			NextAction.PRESS_FORCE_STOP -> {
 				if (event.className == "com.android.settings.applications.InstalledAppDetailsTop") {
-					pressForceStopButton(event.source.expectNonNull(TAG) ?: return)
+					pressForceStopButton(event)
 				} else {
 					Log.w(TAG, "awaited InstalledAppDetailsTop to be the next screen but it was ${event.className}")
 					wrongScreenShown()
@@ -85,7 +87,7 @@ class FreezerService : AccessibilityService() {
 
 			NextAction.PRESS_OK -> {
 				if (event.className == "android.app.AlertDialog") {
-					pressOkButton(event.source.expectNonNull(TAG) ?: return)
+					pressOkButton(event)
 				} else {
 					Log.w(TAG, "awaited AlertDialog to be the next screen but it was ${event.className}")
 					wrongScreenShown()
@@ -114,7 +116,8 @@ class FreezerService : AccessibilityService() {
 	}
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressForceStopButton(node: AccessibilityNodeInfo) {
+	private fun pressForceStopButton(event: AccessibilityEvent) {
+		val node = event.source.expectNonNull(TAG) ?: return
 
 		var nodesToClick = node.findAccessibilityNodeInfosByText("FORCE STOP")
 
@@ -128,15 +131,20 @@ class FreezerService : AccessibilityService() {
 			nodesToClick = node.findAccessibilityNodeInfosByViewId("com.android.settings:id/right_button")
 
 		val success = clickAll(nodesToClick, "force stop")
-
 		if (success) nextAction = NextAction.PRESS_OK
+
+		node.recycle()
 	}
 
 
 	@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private fun pressOkButton(node: AccessibilityNodeInfo) {
+	private fun pressOkButton(event: AccessibilityEvent) {
+		val node = event.source.expectNonNull(TAG) ?: return
+
 		val success = clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
 		if (success) nextAction = NextAction.PRESS_BACK
+
+		node.recycle()
 	}
 
 
