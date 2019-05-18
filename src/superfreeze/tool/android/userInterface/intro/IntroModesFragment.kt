@@ -1,6 +1,7 @@
 package superfreeze.tool.android.userInterface.intro
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +32,10 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
                 tabs.currentTab += 1
             }
 
-            else if (tabs.currentTab == 2) {
-                allWatched = true
+            if (tabs.currentTab == 2) {
+                Handler().postDelayed({
+                    allWatched = true
+                }, 100)
             }
 
 
@@ -41,6 +44,8 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
                     "User interactions can't be handled")
         }
     }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
