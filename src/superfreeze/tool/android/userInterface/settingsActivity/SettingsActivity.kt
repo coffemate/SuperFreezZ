@@ -20,8 +20,8 @@ import android.widget.Toast
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
-import superfreeze.tool.android.userInterface.IntroActivity
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

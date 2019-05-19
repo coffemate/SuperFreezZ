@@ -29,7 +29,12 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<color name="text_color_blue">#0091ea</color>
 	<color name="button_greyed_out">#a0a0a0</color>
 	<color name="transparent">#00000000</color>
-	<color name="always_freeeze_background">#be0025</color>
+	<color name="always_freeeze_background">#BE0025</color>
 	<color name="never_freeeze_background">#66CD00</color>
 	<color name="inactive_freeeze_background">#0002C4</color>
+
+	<!-- added for better handeling of colors-->
+	<color name="always_freeeze">#ff0000</color>
+	<color name="never_freeeze">#008015</color>
+	<color name="inactive_freeeze">#4fc3f7</color>
 </resources>

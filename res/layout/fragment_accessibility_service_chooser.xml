@@ -1,134 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-Copyright (c) 2018,2019 Hocuri
-
-This file is part of SuperFreezZ.
-
-SuperFreezZ is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SuperFreezZ is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
--->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/colorPrimaryDark"
-	android:paddingBottom="@dimen/appIntroBottomBarHeight"
-	tools:context=".userInterface.AccessibilityServiceChooserFragment">
+	android:background="@color/colorPrimary"
+	tools:context=".userInterface.intro.IntroFragment">
 
-	<ScrollView
+	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		android:paddingBottom="55dp">
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical">
+			android:layout_height="match_parent">
+
+			<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="0dp"
+				android:background="@color/colorPrimaryDark"
+				app:layout_constraintHeight_percent="0.5"
+				app:layout_constraintTop_toTopOf="parent">
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="22dp">
 
 			<TextView
-				android:id="@+id/title"
-				android:layout_width="wrap_content"
-				android:layout_height="0dp"
-				android:layout_gravity="center"
-				android:layout_weight="3"
-				android:gravity="center"
-				android:paddingLeft="32dp"
-				android:paddingTop="16dp"
-				android:paddingRight="32dp"
-				android:paddingBottom="16dp"
-				android:text="@string/automate_the_freezing_of_apps"
-				android:textColor="@android:color/white"
-				android:textSize="28sp"
-				android:textStyle="bold" />
+				android:id="@+id/txv_Welcome3"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:text="@string/intro_header_automatifreezing"
+				android:textColor="@color/secondary_text_material_dark"
+				android:textSize="40sp"
+				app:fontFamily="@font/uni_sans_heavy"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
 
-			<!--	<LinearLayout
+			<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:orientation="vertical"
+				app:layout_constraintBottom_toBottomOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@+id/txv_Welcome3"
+				app:layout_constraintVertical_bias="0.3">
+
+				<!--	<LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            tools:ignore="ContentDescription" />
+                    </LinearLayout>-->
+
+				<LinearLayout
+					android:id="@+id/accessibilityYes"
+					style="@style/myClickable"
 					android:layout_width="match_parent"
-					android:layout_height="0dp"
-					android:layout_weight="5"
-					android:gravity="center"
-					android:orientation="vertical">
+					android:layout_height="wrap_content"
+					android:background="@drawable/rounded_corner_top"
+					android:orientation="vertical"
+					android:paddingLeft="16dp"
+					android:paddingTop="10dp"
+					android:paddingRight="16dp"
+					android:paddingBottom="10dp">
 
-					<ImageView
-						android:id="@+id/image"
-						android:layout_width="wrap_content"
+					<TextView
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_gravity="center"
-						android:paddingLeft="16dp"
-						android:paddingRight="16dp"
-						tools:ignore="ContentDescription" />
-				</LinearLayout>-->
+						android:gravity="left"
+						android:text="@string/yes"
+						android:textColor="@color/text_color_primary"
+						android:textSize="25sp" />
 
-			<LinearLayout
-				android:id="@+id/accessibilityYes"
-				style="@style/myClickable"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="10dp"
-				android:background="@drawable/rounded_corner"
-				android:orientation="vertical"
-				android:paddingTop="10dp"
-				android:paddingBottom="10dp"
-				android:paddingLeft="16dp"
-				android:paddingRight="16dp">
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="left"
+						android:text="@string/accessibility_arguments_yes"
+						android:textColor="@color/text_color_primary"
+						android:textSize="16sp" />
+				</LinearLayout>
 
-				<TextView
+
+				<LinearLayout
+					android:id="@+id/accessibilityNo"
+					style="@style/myClickable"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:gravity="left"
-					android:text="@string/yes"
-					android:textColor="@android:color/white"
-					android:textSize="25sp" />
+					android:background="@drawable/rounded_corner_bottom"
+					android:orientation="vertical"
+					android:paddingLeft="16dp"
+					android:paddingTop="10dp"
+					android:paddingRight="16dp"
+					android:paddingBottom="10dp">
 
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:gravity="left"
-					android:text="@string/accessibility_arguments_yes"
-					android:textColor="@android:color/white"
-					android:textSize="16sp" />
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="left"
+						android:text="@string/no"
+						android:textColor="@color/text_color_primary"
+						android:textSize="25sp" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:gravity="left"
+						android:text="@string/accessibility_arguments_no"
+						android:textColor="@color/text_color_primary"
+						android:textSize="16sp" />
+				</LinearLayout>
 			</LinearLayout>
 
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	</FrameLayout>
 
-			<LinearLayout
-				android:id="@+id/accessibilityNo"
-				style="@style/myClickable"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="10dp"
-				android:background="@drawable/rounded_corner"
-				android:orientation="vertical"
-				android:paddingTop="10dp"
-				android:paddingBottom="10dp"
-				android:paddingLeft="16dp"
-				android:paddingRight="16dp">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:gravity="left"
-					android:text="@string/no"
-					android:textColor="@android:color/white"
-					android:textSize="25sp" />
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:gravity="left"
-					android:text="@string/accessibility_arguments_no"
-					android:textColor="@android:color/white"
-					android:textSize="16sp" />
-			</LinearLayout>
-		</LinearLayout>
-	</ScrollView>
 </FrameLayout>

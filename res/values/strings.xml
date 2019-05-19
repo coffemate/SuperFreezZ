@@ -19,63 +19,62 @@ You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-	<string name="app_name">SuperFreezZ</string>
-	<string name="msg_search">Search</string>
-	<string name="msg_search_help">Search&#8230;</string>
-	<string name="share_exception">An exception occurred. Share infos using&#8230;</string>
-	<string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of
+    <string name="app_name" translatable="false">SuperFreezZ</string>
+    <string name="msg_search">Search</string>
+    <string name="msg_search_help">Search&#8230;</string>
+    <string name="share_exception">An exception occurred. Share infos using&#8230;</string>
+    <string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of
 		apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and
 		the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the
 		shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically.
 		\n\nSuperFreezZ just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the
 		result of these interactions.
 	</string>
-	<string name="freeze_shortcut_label">Freeze</string>
-	<string name="NothingToFreeze">Nothing to freeze</string>
-	<string name="undo">Undo</string>
-	<string name="icon">Icon</string>
-	<string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Freeze this app if it has not been used for
+    <string name="freeze_shortcut_label">Freeze</string>
+    <string name="NothingToFreeze">Nothing to freeze</string>
+    <string name="undo">Undo</string>
+    <string name="icon">Icon</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Freeze this app if it has not been used for
 		a longer time.
 	</string>
-	<string name="always_freeze_this_app">Always freeze this app</string>
-	<string name="do_never_freeze_this_app">Do never freeze this app</string>
-	<string name="pending_freeze">Pending Freeze</string>
-	<string name="frozen">Frozen</string>
-	<string name="freeze_off">Freeze off</string>
-	<string name="used_recently">Used recently</string>
-	<string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
-	<string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
-	<string name="all_apps">ALL APPS</string>
-	<string name="usagestats_access">UsageStats access</string>
-	<string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you
+    <string name="always_freeze_this_app">Always freeze this app</string>
+    <string name="do_never_freeze_this_app">Do never freeze this app</string>
+    <string name="pending_freeze">Pending Freeze</string>
+    <string name="frozen">Frozen</string>
+    <string name="freeze_off">Freeze off</string>
+    <string name="used_recently">Used recently</string>
+    <string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
+    <string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
+    <string name="all_apps">ALL APPS</string>
+    <string name="usagestats_access">UsageStats access</string>
+    <string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you
 		did not use them for some time (AUTO FREEZE).
 	</string>
-	<string name="enable">Enable</string>
-	<string name="usagestats_not_enabled">You did not enable usagestats access.</string>
-	<string name="automate_the_freezing_of_apps">Automate the freezing of apps?</string>
-	<string name="accessibility_arguments_yes">For users who: \n\u2022 want to have it as easy as possible \n\u2022 want
+    <string name="enable">Enable</string>
+    <string name="usagestats_not_enabled">You did not enable usagestats access.</string>
+    <string name="automate_the_freezing_of_apps">Automate the freezing of apps?</string>
+    <string name="accessibility_arguments_yes">For users who: \n\u2022 want to have it as easy as possible \n\u2022 want
 		to freeze a lot of apps
 	</string>
-	<string name="accessibility_arguments_no">You will have to press "FORCE STOP", "OK" and Back manually to freeze an
+    <string name="accessibility_arguments_no">You will have to press "FORCE STOP", "OK" and Back manually to freeze an
 		app.\nFor users who: \n\u2022 have a slow phone \n\u2022 care a lot about security \n\u2022 do not want to
 		register SuperFreezZ as an accessibility service
 	</string>
-	<string name="yes">Yes</string>
-	<string name="no">No</string>
-	<string name="welcome">Welcome to SuperFreezZ!</string>
-	<string name="short_description">SuperFreezZ makes it easy to entirely freeze all background activities of apps.
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="short_description">SuperFreezZ makes it easy to entirely freeze all background activities of apps.
 	</string>
-	<string name="intro_always_freeze_title">Freeze Mode: ALWAYS FREEZE</string>
-	<string name="intro_always_freeze_explanation">There are 3 freeze modes. You can choose one for every app. ALWAYS
+    <string name="intro_always_freeze_title">Freeze Mode: ALWAYS FREEZE</string>
+    <string name="intro_always_freeze_explanation">There are 3 freeze modes. You can choose one for every app. ALWAYS
 		FREEZE will freeze an app in any case.
 	</string>
-	<string name="intro_never_freeze_title">Freeze Mode: NEVER FREEZE</string>
-	<string name="intro_never_freeze_explanation">NEVER FREEZE will - turn off freezing and never freeze an app.
+    <string name="intro_never_freeze_title">Freeze Mode: NEVER FREEZE</string>
+    <string name="intro_never_freeze_explanation">NEVER FREEZE will - turn off freezing and never freeze an app.
 	</string>
-	<string name="intro_auto_freeze_title">Freeze Mode: AUTO FREEZE</string>
-	<string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
+    <string name="intro_auto_freeze_title">Freeze Mode: AUTO FREEZE</string>
+    <string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
 		time (7 days by default)
 	</string>
 	<string name="freeze_manually">Freeze manually</string>
@@ -151,4 +150,8 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		<item>Freeze state</item>
 		<item>Last time used</item>
 	</string-array>
+
+	<string name="intro_header_welcome">welcome to</string>
+	<string name="intro_header_modes">modes</string>
+	<string name="intro_header_automatifreezing">automatic freezing</string>
 </resources>

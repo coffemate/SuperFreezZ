@@ -28,6 +28,7 @@ buildscript {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 		classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
 	}
+
 }
 
 apply plugin: 'com.android.application'
@@ -35,54 +36,56 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 repositories {
-	jcenter()
-	google()
-	maven { url 'https://jitpack.io' }
+    jcenter()
+    google()
+    maven { url 'https://jitpack.io' }
 }
 
 android {
-	compileSdkVersion 28
+    compileSdkVersion 28
 
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_6
-		targetCompatibility JavaVersion.VERSION_1_6
-	}
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
 
-	defaultConfig {
-		minSdkVersion 14
-		targetSdkVersion 28
-		vectorDrawables.useSupportLibrary = true
-	}
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+        vectorDrawables.useSupportLibrary = true
+    }
 
-	sourceSets {
-		main {
-			manifest.srcFile 'AndroidManifest.xml'
-			//resources.srcDirs = ['src']
-			java.srcDirs = ['src']
-			aidl.srcDirs = ['src']
-			renderscript.srcDirs = ['src']
-			res.srcDirs = ['res']
-			assets.srcDirs = ['assets']
-		}
-	}
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            //resources.srcDirs = ['src']
+            java.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
 
-	buildTypes {
-		debug {
-			minifyEnabled false
-			debuggable true
-		}
-		release {
-			minifyEnabled true
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			debuggable false
-		}
-	}
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+        }
+    }
 }
 
 dependencies {
-	implementation 'androidx.appcompat:appcompat:1.0.2'
-	implementation 'androidx.recyclerview:recyclerview:1.0.0'
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-	implementation 'com.google.android.material:material:1.0.0'
-	implementation 'com.github.paolorotolo:appintro:v5.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.github.paolorotolo:appintro:v5.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
