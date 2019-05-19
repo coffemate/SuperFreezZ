@@ -1,0 +1,11 @@
+GREAT new intro, thank you Robin!!
+
+First beta version
+
+Other changes:
+Update translations
+Rename Freeze mode "Auto" to "Intelligent" (#16)
+Tapping an app in the list will freeze it. Do not try this if it is already frozen.
+Possiblity to view the intro again from the settings
+Add decent crash reporting
+Other minor improvements and bugfixes
