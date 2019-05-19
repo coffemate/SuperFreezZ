@@ -1,0 +1,1 @@
+Entirely freeze all background activities of apps.
