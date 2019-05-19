@@ -26,6 +26,7 @@ SOFTWARE.
 package superfreeze.tool.android.userInterface.mainActivity
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.app.usage.UsageStats
 import android.content.ComponentCallbacks2
@@ -50,11 +51,15 @@ import superfreeze.tool.android.backend.getApplications
 import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
+import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.userInterface.requestUsageStatsPermission
 import superfreeze.tool.android.userInterface.settingsActivity.SettingsActivity
 import superfreeze.tool.android.userInterface.showSortChooserDialog
+import android.net.Uri
+
+
 
 
 /**
@@ -102,7 +107,27 @@ class MainActivity : AppCompatActivity() {
 		// Show the app intro at the first launch:
 		if (isFirstLaunch(applicationContext)) {
 			startActivity(Intent(this, IntroActivity::class.java))
+			neverCalled("AutoToIntelChange", this) // TODO delete line
 			return
+			// TODO delete from here on:
+		} else {
+			if (neverCalled("AutoToIntelChange", this)) {
+				AlertDialog.Builder(this, R.style.myAlertDialog)
+					.setTitle("Rename")
+					.setMessage("""The freeze mode "Auto" was renamed to "Intelligent". We are sorry for the inconvenience.""")
+					.setIcon(R.drawable.symbol_freeze_when_inactive)
+					.setPositiveButton("Ok") { _, _->}
+					.setNegativeButton("More info") {_,_->
+						startActivity(
+							Intent(
+								Intent.ACTION_VIEW,
+								Uri.parse("https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/16")
+							)
+						)
+					}
+					.show()
+			}
+			// TODO delete up to here
 		}
 
 		//Execute all tasks and retain only those that returned true.
@@ -173,7 +198,7 @@ class MainActivity : AppCompatActivity() {
 			}
 
 			R.id.action_sort -> {
-				showSortChooserDialog()
+				_showSortChooserDialog()
 				true
 			}
 
@@ -181,7 +206,7 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun showSortChooserDialog() {
+	private fun _showSortChooserDialog() {
 		showSortChooserDialog(this) { index ->
 			appsListAdapter.comparator = when (index) {
 

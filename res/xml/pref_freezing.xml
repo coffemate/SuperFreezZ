@@ -41,7 +41,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 	<EditTextPreference
 		android:key="autofreeze_delay"
-		android:title="@string/pref_autofreeze_delay"
+		android:title="@string/pref_intelligentfreeze_delay"
 		android:defaultValue="7"
 		android:inputType="number"
 		android:dependency="use_usagestats"/>

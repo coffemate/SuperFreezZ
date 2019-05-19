@@ -52,7 +52,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="all_apps">ALL APPS</string>
     <string name="usagestats_access">UsageStats access</string>
     <string name="usatestats_explanation">UsageStats access makes it possible for SuperFreezZ to freeze apps only if you
-		did not use them for some time (AUTO FREEZE).
+		did not use them for some time (INTELLIGENT FREEZE).
 	</string>
     <string name="enable">Enable</string>
     <string name="usagestats_not_enabled">You did not enable usagestats access.</string>
@@ -75,8 +75,8 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="intro_never_freeze_title">Freeze Mode: NEVER FREEZE</string>
     <string name="intro_never_freeze_explanation">NEVER FREEZE will - turn off freezing and never freeze an app.
 	</string>
-    <string name="intro_auto_freeze_title">Freeze Mode: AUTO FREEZE</string>
-    <string name="intro_auto_freeze_explanation">AUTO FREEZE will freeze an app only if it has not been used for some
+    <string name="intro_auto_freeze_title">Freeze Mode: INTELLIGENT</string>
+    <string name="intro_auto_freeze_explanation">INTELLIGENT FREEZE will freeze an app only if it has not been used for some
 		time (7 days by default)
 	</string>
 	<string name="freeze_manually">Freeze manually</string>
@@ -105,7 +105,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string-array name="standard_freeze_mode_titles">
 		<item>Always freeze</item>
 		<item>Never freeze</item>
-		<item>Auto freeze</item>
+		<item>Intelligent</item>
 	</string-array>
 	<string-array name="standard_freeze_mode_values" translatable="false">
 		<item>0</item>
@@ -122,7 +122,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="pref_ringtone_silent">Silent</string>
 
 	<string name="appslist_show_special">Show special apps in the list</string>
-	<string name="pref_autofreeze_delay">Freeze mode AUTO: Apps are frozen after… (in days)</string>
+	<string name="pref_intelligentfreeze_delay">Freeze mode INTELLIGENT: Apps are frozen after… (in days)</string>
 	<string name="pref_summary_appslist_show_special">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
 	<string name="create_freeze_shortcut">Create Freeze shortcut</string>
 	<string name="settings">Settings</string>

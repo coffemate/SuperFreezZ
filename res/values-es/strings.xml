@@ -108,7 +108,7 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 	<string name="pref_ringtone_silent">Silencio</string>
 
 	<string name="appslist_show_special">Mostrar apps especiales en la lista</string>
-	<string name="pref_autofreeze_delay">Modo congelación AUTO:Las apps se congelarán después de… (en días)</string>
+	<string name="pref_intelligentfreeze_delay">Modo congelación AUTO:Las apps se congelarán después de… (en días)</string>
 	<string name="pref_summary_appslist_show_special">El Launcher, SuperFreezZ y apps del sistema son ocultos por defecto.</string>
 	<string name="create_freeze_shortcut">Crear un acceso directo de congelación</string>
 	<string name="settings">Ajustes</string>
