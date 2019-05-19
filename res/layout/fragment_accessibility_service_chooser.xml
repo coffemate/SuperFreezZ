@@ -35,7 +35,7 @@
 				android:id="@+id/txv_Welcome3"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
-				android:text="@string/intro_header_automatifreezing"
+				android:text="@string/intro_header_automaticfreezing"
 				android:textColor="@color/secondary_text_material_dark"
 				android:textSize="40sp"
 				app:fontFamily="@font/uni_sans_heavy"

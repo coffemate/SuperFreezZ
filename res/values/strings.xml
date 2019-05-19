@@ -27,10 +27,12 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="share_exception">An exception occurred. Share infos using&#8230;</string>
     <string name="accessibility_service_description">Enabling this makes it possible to automate the freezing of
 		apps.\n\nThis has the following advantages:\n - The user does not have to do this himself: It is way faster and
-		the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the
-		shortcut "autofreeze" (by speech recognition, for example). Then they can freeze all apps automatically.
-		\n\nSuperFreezZ just uses the accessibility service to tap on "Force Stop", "OK", "Back" and to evaluate the
-		result of these interactions.
+		the user does not have to care about how to do it.\n - Users with physical disabilities just need to start the freeze
+		shortcut (by speech recognition, for example). Then they can freeze all apps automatically.
+		\n\nSuperFreezZ just uses the accessibility service to tap on "Force Stop", "OK", "Back". "Retrieve window content"
+	    is necessary to find these buttons and "Observe your actions" is necessary to realize when these buttons appear.
+	    \n\nAlso, SuperFreezZ can use the accessibility service to lock the screen after freezing on newer versions of
+	    Android, if you want this.
 	</string>
     <string name="freeze_shortcut_label">Freeze</string>
     <string name="NothingToFreeze">Nothing to freeze</string>
@@ -136,9 +138,9 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="info">Info</string>
 	<string name="view_intro_again">View intro again</string>
 	<string name="logs_copied">Logs were copied to the clipboard.</string>
-	<string name="share_logs">Share logs using...</string>
+	<string name="share_logs">Share logs using…</string>
 	<string name="sf_crashed">SuperFreezZ crashed. Please send a report, if you did not already do it.</string>
-	<string name="report">Report an issue, propose a feature, ...</string>
+	<string name="report">Report an issue, propose a feature, …</string>
 	<string name="send_logs">Send logs</string>
 	<string name="source_code">Source code</string>
 	<string name="license">License</string>
@@ -153,5 +155,5 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 	<string name="intro_header_welcome">welcome to</string>
 	<string name="intro_header_modes">modes</string>
-	<string name="intro_header_automatifreezing">automatic freezing</string>
+	<string name="intro_header_automaticfreezing">automatic freezing</string>
 </resources>

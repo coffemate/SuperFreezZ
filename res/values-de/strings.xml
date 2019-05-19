@@ -77,5 +77,5 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="freeze_manually_no">Ich möchte das nicht machen müssen</string>
 	<string name="intro_header_modes">Modi</string>
 	<string name="intro_header_welcome">Willkommen bei</string>
-	<string name="intro_header_automatifreezing">automatisches Einfrieren</string>
+	<string name="intro_header_automaticfreezing">automatisches Einfrieren</string>
 </resources>
