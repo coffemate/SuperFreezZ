@@ -1,5 +1,6 @@
 /*
-Copyright (c) 2018 Hocuri
+Copyright (c) 2018,2019 Hocuri
+Copyright (c) 2019 Robin Naumann
 
 This file is part of SuperFreezZ.
 

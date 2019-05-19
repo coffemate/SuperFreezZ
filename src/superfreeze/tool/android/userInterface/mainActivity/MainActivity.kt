@@ -33,6 +33,7 @@ import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -57,7 +58,6 @@ import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.userInterface.requestUsageStatsPermission
 import superfreeze.tool.android.userInterface.settingsActivity.SettingsActivity
 import superfreeze.tool.android.userInterface.showSortChooserDialog
-import android.net.Uri
 
 
 
