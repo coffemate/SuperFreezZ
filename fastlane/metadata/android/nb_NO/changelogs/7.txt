@@ -1,0 +1,3 @@
+Etter påslag av tilgjengelighetstjenesten, forvent at den forblir påslått, og ellers spør brukeren
+FEILRETTING Etter visning av et dialogvindu før performFreeze() var ikke programmet frosset på rett måte
+Kodestil
