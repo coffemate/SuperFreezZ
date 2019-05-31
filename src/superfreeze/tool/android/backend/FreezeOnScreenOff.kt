@@ -29,7 +29,6 @@ import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
@@ -49,11 +48,10 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 	private var originalTimeout = -1
 
 	override fun onReceive(context: Context, intent: Intent) {
-		if (intent.action == Intent.ACTION_SCREEN_OFF
-			&& mGetDefaultSharedPreferences(context)?.getBoolean(
+		if (intent.action == Intent.ACTION_SCREEN_OFF && mGetDefaultSharedPreferences(context).getBoolean(
 				"freeze_on_screen_off",
 				false
-			) == true
+			)
 		) {
 			FreezerService.abort() // If a freeze was already running, abort it
 
@@ -115,14 +113,14 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		kl.disableKeyguard()
 
 		try {
-			originalBrightness = android.provider.Settings.System.getInt(
+			originalBrightness = Settings.System.getInt(
 				context.contentResolver,
-				android.provider.Settings.System.SCREEN_BRIGHTNESS, 120
+				Settings.System.SCREEN_BRIGHTNESS, 120
 			)
 
-			android.provider.Settings.System.putInt(
+			Settings.System.putInt(
 				context.contentResolver,
-				android.provider.Settings.System.SCREEN_BRIGHTNESS, 0
+				Settings.System.SCREEN_BRIGHTNESS, 0
 			)
 		} catch (e: SecurityException) {
 			Log.w(TAG, "Could not write change screen brightness and timeout")
@@ -135,12 +133,12 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 
 			// Turn screen off:
 			try {
-				originalTimeout = android.provider.Settings.System.getInt(
+				originalTimeout = Settings.System.getInt(
 					context.contentResolver,
 					Settings.System.SCREEN_OFF_TIMEOUT,
 					1 * 60 * 1000
 				)
-				android.provider.Settings.System.putInt(
+				Settings.System.putInt(
 					context.contentResolver,
 					Settings.System.SCREEN_OFF_TIMEOUT,
 					0

@@ -53,7 +53,7 @@ class MyApplication : Application() {
 					"mailto", email, null
 				)
 			)
-			sharingIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email));
+			sharingIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
 			sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
 			sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
 

@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity() {
 					"Last time used is not available for your Android version",
 					Toast.LENGTH_LONG
 				).show()
-				compareBy<AppsListAdapter.ListItemApp> { it.text }
+				compareBy { it.text }
 			} else {
 				val allUsageStats = getAllAggregatedUsageStats(this)
 				compareBy {

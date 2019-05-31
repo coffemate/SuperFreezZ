@@ -69,7 +69,7 @@ class FreezeShortcutActivity : Activity() {
 	private fun setupShortcut() {
 		val intent: Intent = createIntent(this)
 		// Now, return the result to the launcher
-		setResult(Activity.RESULT_OK, intent)
+		setResult(RESULT_OK, intent)
 	}
 
 	private fun performFreeze(triesLeft: Int = 1) {

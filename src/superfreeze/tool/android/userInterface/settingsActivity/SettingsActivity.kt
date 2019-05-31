@@ -40,8 +40,8 @@ import android.widget.Toast
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
+import superfreeze.tool.android.userInterface.intro.IntroActivity
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -84,10 +84,6 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 		return super.onMenuItemSelected(featureId, item)
 	}
 
-	override fun onBackPressed() {
-		super.onBackPressed()
-	}
-
 	private fun finishAndRestartMain() {
 		// val intent = Intent(this, MainActivity::class.java)
 		// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -111,7 +107,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 	 * {@inheritDoc}
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	override fun onBuildHeaders(target: List<PreferenceActivity.Header>) {
+	override fun onBuildHeaders(target: List<Header>) {
 		loadHeadersFromResource(R.xml.pref_headers, target)
 	}
 
@@ -284,13 +280,12 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 			if (preference is ListPreference) {
 				// For list preferences, look up the correct display value in
 				// the preference's 'entries' list.
-				val listPreference = preference
-				val index = listPreference.findIndexOfValue(stringValue)
+				val index = preference.findIndexOfValue(stringValue)
 
 				// Set the summary to reflect the new value.
 				preference.setSummary(
 					if (index >= 0)
-						listPreference.entries[index]
+						preference.entries[index]
 					else
 						null
 				)

@@ -37,7 +37,7 @@ import superfreeze.tool.android.userInterface.showAccessibilityDialog
 /**
  * Shows a screen to let the user choose whether to use the accessibility service or not. Used in [IntroActivity].
  */
-class AccessibilityServiceChooserFragment() : Fragment(), ISlidePolicy {
+class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
