@@ -206,7 +206,7 @@ class FreezerService : AccessibilityService() {
 			}
 		}
 
-		screenReceiver = registerScreenReceiver(applicationContext, screenLockerFunction = {
+		screenReceiver = registerScreenReceiver(this, screenLockerFunction = {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 				performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
 			} else {
@@ -216,7 +216,7 @@ class FreezerService : AccessibilityService() {
 	}
 
 	override fun onDestroy() {
-		Log.w(TAG, "FreezerService was destroyed.")
+		Log.i(TAG, "FreezerService was destroyed.")
 		isEnabled = false
 		unregisterReceiver(screenReceiver)
 		abort()
