@@ -29,6 +29,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TabHost
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
@@ -79,17 +80,17 @@ class IntroModesFragment : Fragment(), ISlidePolicy {
 
         val icon1 = ImageView(this.context)
         icon1.setPadding(0, 50, 0, 50)
-        icon1.setImageDrawable(resources.getDrawable(R.drawable.symbol_always_freeze))
+        icon1.setImageDrawable(AppCompatResources.getDrawable(context!!, R.drawable.symbol_always_freeze))
         icon1.layoutParams = layoutParams
 
         val icon2 = ImageView(this.context)
         icon2.setPadding(0, 50, 0, 50)
-        icon2.setImageDrawable(resources.getDrawable(R.drawable.symbol_freeze_when_inactive))
+        icon2.setImageDrawable(AppCompatResources.getDrawable(context!!, R.drawable.symbol_freeze_when_inactive))
         icon2.layoutParams = layoutParams
 
         val icon3 = ImageView(this.context)
         icon3.setPadding(0, 50, 0, 50)
-        icon3.setImageDrawable(resources.getDrawable(R.drawable.symbol_never_freeze))
+        icon3.setImageDrawable(AppCompatResources.getDrawable(context!!, R.drawable.symbol_never_freeze))
         icon3.layoutParams = layoutParams
 
 
