@@ -47,7 +47,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/imv_AppIcon"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:translationX="0dp"
@@ -64,7 +63,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/txv_Welcome"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"

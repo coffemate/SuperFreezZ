@@ -74,9 +74,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	"</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="short_description">"SuperFreezZ macht es einfach, alle Hintergrundaktivitäten von Apps zu beenden.
-	"</string>
-    <string name="intro_always_freeze_title">Einfriermodus: IMMER EINFRIEREN</string>
+	<string name="intro_always_freeze_title">Einfriermodus: IMMER EINFRIEREN</string>
     <string name="intro_always_freeze_explanation">"Es gibt 3 Einfriermodi. Sie können diese für jede App einzeln
 		einstellen. IMMER EINFRIEREN friert eine App in jedem Fall ein.
 	"</string>

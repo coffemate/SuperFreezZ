@@ -63,8 +63,6 @@ El usuario no tiene que hacerlo el mismo: esto es más rápido y
 	</string>
 	<string name="yes">Si</string>
 	<string name="no">No</string>
-    <string name="short_description">SuperFreezZ facilita la congelación completa de todas las actividades de fondo de las apps.
-	</string>
 	<string name="intro_always_freeze_title">Modo de congelación: SIEMPRE CONGELAR</string>
 	<string name="intro_always_freeze_explanation">Hay 3 modos de congelación. Tu puedes elegir uno para cada app. SIEMPRE
 		CONGELAR congelará una app en cualquier caso.

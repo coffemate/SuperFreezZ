@@ -67,9 +67,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="short_description">SuperFreezZ makes it easy to entirely freeze all background activities of apps.
-	</string>
-    <string name="intro_always_freeze_title">Freeze Mode: ALWAYS FREEZE</string>
+	<string name="intro_always_freeze_title">Freeze Mode: ALWAYS FREEZE</string>
     <string name="intro_always_freeze_explanation">There are 3 freeze modes. You can choose one for every app. ALWAYS
 		FREEZE will freeze an app in any case.
 	</string>
