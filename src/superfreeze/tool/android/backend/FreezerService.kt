@@ -20,7 +20,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -28,7 +27,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
-import superfreeze.tool.android.database.mGetDefaultSharedPreferences
+import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.expectNonNull
 
 
@@ -197,14 +196,8 @@ class FreezerService : AccessibilityService() {
 	override fun onServiceConnected() {
 		isEnabled = true
 
-		val prefs = mGetDefaultSharedPreferences(applicationContext)
 		// From now on, expect that the service works:
-		if (prefs != null) {
-			with(prefs.edit()) {
-				putBoolean("use_accessibility_service", true)
-				apply()
-			}
-		}
+		prefUseAccessibilityService = true
 
 		screenReceiver = registerScreenReceiver(this, screenLockerFunction = {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -275,15 +268,6 @@ class FreezerService : AccessibilityService() {
 			Log.i(TAG, "aborting")
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
-		}
-
-		//to be deleted:
-		@JvmStatic
-		fun updateUseAccessibilityPreference(prefs: SharedPreferences) {
-			with(prefs.edit()) {
-				putBoolean("use_accessibility_service", FreezerService.isEnabled)
-				apply()
-			}
 		}
 
 	}

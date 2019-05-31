@@ -51,8 +51,8 @@ import superfreeze.tool.android.backend.getAllAggregatedUsageStats
 import superfreeze.tool.android.backend.getApplications
 import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
-import superfreeze.tool.android.database.isFirstLaunch
 import superfreeze.tool.android.database.neverCalled
+import superfreeze.tool.android.database.prefIntroAlreadyShown
 import superfreeze.tool.android.database.prefListSortMode
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 import superfreeze.tool.android.userInterface.intro.IntroActivity
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 		super.onResume()
 
 		// Show the app intro at the first launch:
-		if (isFirstLaunch(applicationContext)) {
+		if (prefIntroAlreadyShown) {
 			startActivity(Intent(this, IntroActivity::class.java))
 			neverCalled("AutoToIntelChange", this) // TODO delete line
 			return

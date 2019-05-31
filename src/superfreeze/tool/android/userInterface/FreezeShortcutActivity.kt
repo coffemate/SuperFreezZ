@@ -34,8 +34,8 @@ import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
 import superfreeze.tool.android.backend.setFreezerExceptionHandler
-import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.database.neverCalled
+import superfreeze.tool.android.database.prefUseAccessibilityService
 
 const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
 
@@ -74,17 +74,12 @@ class FreezeShortcutActivity : Activity() {
 
 	private fun performFreeze(triesLeft: Int = 1) {
 
-		val prefs = mGetDefaultSharedPreferences(this)
-
 		// Sometimes the accessibility service is disabled for some reason.
 		// In this case, tell the user to re-enable it:
-		if (!FreezerService.isEnabled && prefs?.getBoolean("use_accessibility_service", false) == true) {
+		if (!FreezerService.isEnabled && prefUseAccessibilityService) {
 			showAccessibilityDialog(this)
 			doOnReenterActivity {
-				with(prefs.edit()) {
-					putBoolean("use_accessibility_service", FreezerService.isEnabled)
-					apply()
-				}
+				prefUseAccessibilityService = FreezerService.isEnabled
 				performFreeze()
 				false
 			}

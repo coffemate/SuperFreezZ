@@ -37,7 +37,7 @@ internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 
 	val sharedPreferences = getFreezeModesPreferences(context)
 	val standardFreezeMode = mGetDefaultSharedPreferences(context)
-			?.getString("standard_freeze_mode", FreezeMode.FREEZE_WHEN_INACTIVE.ordinal.toString())
+			.getString("standard_freeze_mode", FreezeMode.FREEZE_WHEN_INACTIVE.ordinal.toString())
 			?.toIntOrNull()
 			.expectNonNull(TAG)
 			?: FreezeMode.FREEZE_WHEN_INACTIVE.ordinal
@@ -74,19 +74,6 @@ internal fun neverCalled(id: String, activity: Activity): Boolean {
 	return first
 }
 
-internal fun isFirstLaunch(context: Context): Boolean {
-	val sharedPreferences = getMainPreferences(context)
-	return sharedPreferences.getBoolean("FirstLaunch", true)
-}
-
-internal fun firstLaunchCompleted(context: Context) {
-	val sharedPreferences = getMainPreferences(context)
-	with(sharedPreferences.edit()) {
-		putBoolean("FirstLaunch", false)
-		apply()
-	}
-}
-
 private fun getFreezeModesPreferences(context: Context): SharedPreferences {
 	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.FREEZE_MODES", Context.MODE_PRIVATE)
 }
@@ -100,8 +87,16 @@ internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences {
 }
 
 internal var Context.prefListSortMode
-	get() = mGetDefaultSharedPreferences(this).getInt("ListSortMode", 0)
-	set(v) = mGetDefaultSharedPreferences(this).edit().putInt("ListSortMode", v).apply()
+	get() = getMainPreferences(this).getInt("ListSortMode", 0)
+	set(v) = getMainPreferences(this).edit().putInt("ListSortMode", v).apply()
+
+internal var Context.prefIntroAlreadyShown
+	get() = getMainPreferences(this).getBoolean("FirstLaunch", true)
+	set(v) = getMainPreferences(this).edit().putBoolean("FirstLaunch", v).apply()
+
+internal var Context.prefUseAccessibilityService
+	get() = getMainPreferences(this).getBoolean("use_accessibility_service", false)
+	set(v) = getMainPreferences(this).edit().putBoolean("use_accessibility_service", v).apply()
 
 internal var usageStatsAvailable: Boolean = false
 
