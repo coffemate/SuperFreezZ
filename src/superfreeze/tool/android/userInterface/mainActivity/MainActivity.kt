@@ -53,6 +53,7 @@ import superfreeze.tool.android.backend.getPendingFreezeExplanation
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.isFirstLaunch
 import superfreeze.tool.android.database.neverCalled
+import superfreeze.tool.android.database.prefListSortMode
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.userInterface.requestUsageStatsPermission
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
 		val listView = list
 
-		appsListAdapter = AppsListAdapter(this)
+		appsListAdapter = AppsListAdapter(this, listComparator(prefListSortMode))
 		listView.layoutManager = LinearLayoutManager(this)
 		listView.adapter = appsListAdapter
 
@@ -198,7 +199,14 @@ class MainActivity : AppCompatActivity() {
 			}
 
 			R.id.action_sort -> {
-				_showSortChooserDialog()
+				showSortChooserDialog(this, prefListSortMode) { index ->
+					prefListSortMode = index
+
+					appsListAdapter.comparator = listComparator(index)
+
+					appsListAdapter.sortList()
+					appsListAdapter.refresh()
+				}
 				true
 			}
 
@@ -206,41 +214,45 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun _showSortChooserDialog() {
-		showSortChooserDialog(this) { index ->
-			appsListAdapter.comparator = when (index) {
+	private fun listComparator(index: Int): Comparator<AppsListAdapter.ListItemApp> = when (index) {
 
-				// 0: Sort by name
-				0 -> compareBy {
-					it.text
-				}
-
-				// 1: Sort by freeze state
-				1 -> compareBy<AppsListAdapter.ListItemApp> {
-					it.freezeMode
-				}.thenBy {
-					getPendingFreezeExplanation(it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName), this)
-				}
-
-				// 2: Sort by last time used
-				2 -> {
-					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-						Toast.makeText(this, "Last time used is not available for your Android version", Toast.LENGTH_LONG).show()
-						compareBy<AppsListAdapter.ListItemApp> { it.text }
-					} else {
-						val allUsageStats = getAllAggregatedUsageStats(this)
-						compareBy {
-							allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L
-						}
-					}
-				}
-				else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
-			}
-
-			appsListAdapter.sortList()
-			appsListAdapter.refresh()
+		// 0: Sort by name
+		0 -> compareBy {
+			it.text
 		}
+
+		// 1: Sort by freeze state
+		1 -> compareBy<AppsListAdapter.ListItemApp> {
+			it.freezeMode
+		}.thenBy {
+			getPendingFreezeExplanation(
+				it.freezeMode,
+				it.applicationInfo,
+				usageStatsMap?.get(it.packageName),
+				this
+			)
+		}
+
+		// 2: Sort by last time used
+		2 -> {
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+				Toast.makeText(
+					this,
+					"Last time used is not available for your Android version",
+					Toast.LENGTH_LONG
+				).show()
+				compareBy<AppsListAdapter.ListItemApp> { it.text }
+			} else {
+				val allUsageStats = getAllAggregatedUsageStats(this)
+				compareBy {
+					allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L
+				}
+			}
+		}
+
+		else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
 	}
+
 
 	override fun onConfigurationChanged(newConfig: Configuration?) {
 		super.onConfigurationChanged(newConfig)

@@ -37,6 +37,7 @@ import superfreeze.tool.android.userInterface.mainActivity.MainActivity
 
 /**
  * Request the usage stats permission. MUST BE CALLED ONLY FROM MainActivity.onCreate!!!
+ * (because it uses MainActivity.doOnResume to show the dialog not now but after the intro).
  */
 internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: () -> Unit) {
 
@@ -103,12 +104,32 @@ internal fun showAccessibilityDialog(context: Context) {
 }
 
 
-
-internal fun showSortChooserDialog(context: Context, onChosen: (which: Int) -> Unit) {
-	AlertDialog.Builder(context)
+// Must be called ONLY from MainActivity as it uses MainActivity.onResume()!!
+internal fun showSortChooserDialog(context: Context, current: Int, onChosen: (which: Int) -> Unit) {
+	lateinit var dialog: AlertDialog
+	dialog = AlertDialog.Builder(context)
 			.setTitle("Sort by")
-			.setItems(R.array.sortmodes) { _, which ->
-				onChosen(which)
+			.setSingleChoiceItems(R.array.sortmodes, current) { _, which ->
+				dialog.dismiss()
+				
+				// 2 means "Last time used" and requires usagestats access
+				if (current == 2 && !usageStatsPermissionGranted(context)) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						showUsageStatsSettings(context)
+						MainActivity.doOnResume {
+							if (usageStatsPermissionGranted(context)) {
+								onChosen(which)
+							}
+							false
+						}
+					} else {
+						Toast.makeText(context, context.getString(R.string.not_available), Toast.LENGTH_SHORT).show()
+					}
+
+
+				} else {
+					onChosen(which)
+				}
 			}
 			.show()
 }

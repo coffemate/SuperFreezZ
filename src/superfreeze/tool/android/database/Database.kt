@@ -95,9 +95,13 @@ private fun getMainPreferences(context: Context): SharedPreferences {
 	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.MAIN", Context.MODE_PRIVATE)
 }
 
-internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences? {
+internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences {
 	return PreferenceManager.getDefaultSharedPreferences(context)
 }
+
+internal var Context.prefListSortMode
+	get() = mGetDefaultSharedPreferences(this).getInt("ListSortMode", 0)
+	set(v) = mGetDefaultSharedPreferences(this).edit().putInt("ListSortMode", v).apply()
 
 internal var usageStatsAvailable: Boolean = false
 

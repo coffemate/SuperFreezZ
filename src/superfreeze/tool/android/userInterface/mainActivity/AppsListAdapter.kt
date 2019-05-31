@@ -64,8 +64,11 @@ import kotlin.collections.ArrayList
 /**
  * This class is responsible for viewing the list of installed apps.
  */
-internal class AppsListAdapter internal constructor(private val mainActivity: MainActivity) :
-	RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
+internal class AppsListAdapter internal constructor(
+	private val mainActivity: MainActivity,
+	internal var comparator: kotlin.Comparator<ListItemApp>
+) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
+
 	private val tFactory = ThreadFactory { r ->
 		Thread(r).apply { isDaemon = true }
 	}
@@ -91,8 +94,6 @@ internal class AppsListAdapter internal constructor(private val mainActivity: Ma
 
 	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
 	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
-
-	internal var comparator = kotlin.Comparator<ListItemApp> { o1, o2 -> o1.text.compareTo(o2.text) }
 
 	var searchPattern: String = ""
 		set(value) {

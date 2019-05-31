@@ -157,4 +157,5 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="intro_header_welcome">welcome to</string>
 	<string name="intro_header_modes">modes</string>
 	<string name="intro_header_automaticfreezing">automatic freezing</string>
+	<string name="not_available">Not available</string>
 </resources>
