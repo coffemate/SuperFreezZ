@@ -1,0 +1,3 @@
+Disable obfuscating to make it easier to fix reported bugs. I'll re-enable it later.
+CRASHFIX SF crashed when the accessibility service was disabled
+CRASHFIX SF crashed on older devices when showing the intro
