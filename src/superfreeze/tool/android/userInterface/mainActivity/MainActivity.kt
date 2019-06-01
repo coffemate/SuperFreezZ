@@ -26,6 +26,7 @@ SOFTWARE.
 package superfreeze.tool.android.userInterface.mainActivity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.app.usage.UsageStats
@@ -36,6 +37,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -83,8 +85,8 @@ class MainActivity : AppCompatActivity() {
 
 		val listView = list
 
-		appsListAdapter = AppsListAdapter(this, listComparator(prefListSortMode))
 		listView.layoutManager = LinearLayoutManager(this)
+		appsListAdapter = AppsListAdapter(this, listComparator(prefListSortMode))
 		listView.adapter = appsListAdapter
 
 		progressBar = progress
@@ -194,7 +196,11 @@ class MainActivity : AppCompatActivity() {
 			R.id.action_settings -> {
 				startActivity(Intent(this, SettingsActivity::class.java))
 				// Recreate after the settingsActivity was shown as settings might have changed:
-				doOnResume { recreate(); false }
+				doOnResume {
+					Handler().post { recreate() }
+					// BTW Handler().post{...} is necessary because recreate() should not be called from onResume().
+					false
+				}
 				true
 			}
 
@@ -291,12 +297,12 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	companion object {
-		private val toBeDoneOnResume: MutableList<() -> Boolean> = mutableListOf()
+		private val toBeDoneOnResume: MutableList<Activity.() -> Boolean> = mutableListOf()
 		/**
 		 * Execute this task on resume.
 		 * @param task If it returns true, then it will be executed again at the next onResume.
 		 */
-		internal fun doOnResume(task: () -> Boolean) {
+		internal fun doOnResume(task: Activity.() -> Boolean) {
 			toBeDoneOnResume.add(task)
 		}
 

@@ -26,6 +26,7 @@ package superfreeze.tool.android.userInterface
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -33,6 +34,7 @@ import androidx.appcompat.app.AlertDialog
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
 import superfreeze.tool.android.database.neverCalled
+import superfreeze.tool.android.database.usageStatsAvailable
 import superfreeze.tool.android.userInterface.mainActivity.MainActivity
 
 /**
@@ -108,17 +110,21 @@ internal fun showAccessibilityDialog(context: Context) {
 internal fun showSortChooserDialog(context: Context, current: Int, onChosen: (which: Int) -> Unit) {
 	lateinit var dialog: AlertDialog
 	dialog = AlertDialog.Builder(context)
-			.setTitle("Sort by")
+			.setTitle(context.getString(R.string.sort_by))
 			.setSingleChoiceItems(R.array.sortmodes, current) { _, which ->
 				dialog.dismiss()
 				
 				// 2 means "Last time used" and requires usagestats access
-				if (current == 2 && !usageStatsPermissionGranted(context)) {
+				if (which == 2 && !usageStatsAvailable) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 						showUsageStatsSettings(context)
 						MainActivity.doOnResume {
 							if (usageStatsPermissionGranted(context)) {
 								onChosen(which)
+								Handler().post { recreate() }
+								// Recreate because the list items need shall show the "Intelligent freeze"
+								// button now (they have to change). The easiest possibility to refresh them
+								// is to recreate the whole activity.
 							}
 							false
 						}
