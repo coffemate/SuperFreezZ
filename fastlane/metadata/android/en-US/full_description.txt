@@ -31,3 +31,12 @@ Credits
 The code to show the app list is from ApkExtractor.
 
 Robin Naumann made a nice intro.
+
+
+Q/A:
+
+Q: But the correct spelling would be "SuperFreeze"!
+A: I know.
+
+Q: Do you have any intentions to sell freezers?
+A: No.

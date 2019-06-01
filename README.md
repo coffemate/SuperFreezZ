@@ -68,7 +68,6 @@ Robin Naumann made a nice intro.
 Copying
 -------
 
-
 ```
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocuri
@@ -86,3 +85,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SuperFreezZ. If not, see <https://www.gnu.org/licenses/>.
 ```
+
+Q/A
+---
+
+Q/A:
+
+Q: But the correct spelling would be "SuperFreeze"!
+A: I know.
+
+Q: Do you have any intentions to sell freezers?
+A: No.
