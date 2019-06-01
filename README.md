@@ -1,30 +1,37 @@
 SuperFreezZ
 ===========
 
-An android app that makes it possible to entirely freeze all background activities of an app.
-Please note that this is a very beta version.
+Android app (beta) making it possible to entirely freeze all background activities of any app.
 
-Greenify is another app that can do this, but it is not Open Source.
+Greenify can also do this, but it is not Open Source.
 
-Any contributions are welcome.
+All contributions are welcome.
 
-SuperFreezZ is not yet another task manager promising to delete 10GB of data per month or making your device 2x as fast. This is impossible. You should freeze only
-* apps that you do not trust (and do not want to run in background) and 
-* apps that you use very few.
+SuperFreezZ is not yet another task manager promising to delete 10 GB of data per month or making your device 2x as fast. This is impossible.
+Only freeze:
+ * Untrusted apps (that you do not want to run in the background)
+ * Apps used very few
 
+Freezing daily used apps drains your battery a little faster. Also, these apps will take longer to start when you use them the next time.
 
-If you freeze apps that you use daily, the battery of your device will drain faster and these apps will take longer to load. You should take the name seriously: SuperFreezZ will super freeze your apps, and it is not that easy to defrost them.
+SuperFreezZ will super freeze your apps, it takes some seconds to defrost them.
+
+Greenify has the same disadvantages, except that the author of Greenify does not warn you about it.
 
 Features
 --------
 
-* Optionally works without accessibility service as this slows down the device
-* Option to freeze only apps that you did not use for a week
+ * Optionally works without accessibility service as this slows down the device
+ * Can freeze only apps not used for a week (can be configured)
+ * Choose a white list (freeze all by standard) or a black list (do not freeze anything by standard)
+ * Can freeze apps when the screen goes off
+ * Options to freeze system apps and even SuperFreezZ itself
+ * Completely open source and free software
 
 Build
 -----
 
-The build should succeed out of the box with Android Studio and Gradle. If not, it is probably my fault, please open an issue then. Others will probably also have this problem then.
+The build should succeed out of the box with Android Studio and Gradle. If not, open an issue. Others will probably also have the problem.
 
 Download
 --------
@@ -36,23 +43,27 @@ Download
 Contributing to SuperFreezZ
 ------------
 
-If you have a problem or a question or an idea or whatever, just open an issue!
+If you have a problem, question or an idea, just open an issue!
 
-If you would like to help, have a look at the issues or think about what could be improved and open an issue for it. Please tell me what you are going to do to avoid that I also implement the same thing at the same time :-)
+If you would like to help with developing, have a look at the issues, or think of something that could be improved, and open an issue for it.
 
-You can also [donate](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18) or [translate SuperFreezZ](https://crowdin.com/project/superfreezz). If you have problems with translating, see here: #21
+Please tell me what you are going to do, to avoid implementing the same thing at the same time :-)
+
+You can also [donate](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18) or [translate SuperFreezZ](https://crowdin.com/project/superfreezz). If you have problems with translating, see #21
 
 Donate
 ------
 
-I do not accept monetary donations currently (I tried to set up a liberapay account but it was too much of an effort so I gave it up for the time being). 
+Monetary donations are currently not accepted (setting up a Liberapay account was too much effort, so it was given up for the time being).
 
-However, to show me your support, you can [donate to WWF or the Christian Blind Mission and post about it here](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18). I would maybe also have put Fairphone to the list as I really like the idea but there seems not to be an option to donate to them, either. So just let me point out here that Fairphone is selling an ethical and modular smartphone.
+However, to show me your support, you can [donate to WWF or the Christian Blind Mission and post about it here](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18).
 
 Credits
 -------
 
-I took the code to show the apps list from [apkExtractor](https://f-droid.org/wiki/page/axp.tool.apkextractor).
+The code to show the app list is from [ApkExtractor](https://f-droid.org/wiki/page/axp.tool.apkextractor).
+
+Robin Naumann made a nice intro.
 
 Copying
 -------
@@ -62,16 +73,16 @@ Copying
 Copyright (c) 2015 axxapy
 Copyright (c) 2018 Hocuri
 
-SuperFreezZ is free software: you can redistribute it and/or modify
+SuperFreezZ is free software: You can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 SuperFreezZ is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+along with SuperFreezZ. If not, see <https://www.gnu.org/licenses/>.
 ```
