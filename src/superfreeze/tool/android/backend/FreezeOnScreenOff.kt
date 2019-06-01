@@ -42,6 +42,7 @@ import superfreeze.tool.android.userInterface.FreezeShortcutActivity
  * after freezing the apps.
  */
 class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) :
+// TODO Do also use the screenLockerFunction in newer versions of Android
 	BroadcastReceiver() {
 	private var lastTime = 0L
 	private var originalBrightness = -1

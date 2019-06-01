@@ -70,7 +70,6 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 					//directly load running applications
 					doAfterwards()
 				}
-				//TODO add negative button "never"
 				.setIcon(R.drawable.symbol_freeze_when_inactive)
 				.setCancelable(false)
 				.show()

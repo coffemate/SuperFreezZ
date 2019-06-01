@@ -202,8 +202,6 @@ class FreezerService : AccessibilityService() {
 		screenReceiver = registerScreenReceiver(this, screenLockerFunction = {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 				performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
-			} else {
-				// TODO
 			}
 		})
 	}
