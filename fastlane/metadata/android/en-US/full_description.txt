@@ -1,18 +1,33 @@
-Note that this is a beta version. Please report any bugs.
+Android app (beta) making it possible to entirely freeze all background activities of any app.
 
-Entirely freeze all background activities of apps.
+Greenify can also do this, but it is not Open Source.
 
-Greenify is another app that can do this, but it is not Open Source.
+All contributions are welcome.
 
-Contributions are very welcome.
+SuperFreezZ is not yet another task manager promising to delete 10 GB of data per month or making your device 2x as fast. This is impossible.
+Only freeze:
+ - Untrusted apps (that you do not want to run in the background)
+ - Apps used very few
 
-SuperFreezZ is not yet another task manager promising to delete 10GB of data per month or making your device 2x as fast. This is impossible. You should freeze only
-* apps that you do not trust (and do not want to run in background) and 
-* apps that you use very few.
+Freezing daily used apps drains your battery a little faster. Also, these apps will take longer to start when you use them the next time.
 
-If you freeze apps that you use daily, the battery of your device will drain faster and these apps will take longer to load. You should take the name seriously: SuperFreezZ will super freeze your apps, and it is not that easy to defrost them.
+SuperFreezZ will super freeze your apps, it takes some seconds to defrost them.
 
-Features:
+Greenify has the same disadvantages, except that the author of Greenify does not warn you about it.
 
-* Optionally works without accessibility service as this slows down the device
-* Option to freeze only apps that you did not use for a week
+
+Features
+
+ - Optionally works without accessibility service as this slows down the device
+ - Can freeze only apps not used for a week (can be configured)
+ - Choose a white list (freeze all by standard) or a black list (do not freeze anything by standard)
+ - Can freeze apps when the screen goes off
+ - Options to freeze system apps and even SuperFreezZ itself
+ - Completely open source and free software
+
+
+Credits
+
+The code to show the app list is from ApkExtractor.
+
+Robin Naumann made a nice intro.
