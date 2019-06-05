@@ -8,9 +8,11 @@ Greenify can also do this, but it is not Open Source.
 All contributions are welcome.
 
 SuperFreezZ is not yet another task manager promising to delete 10 GB of data per month or making your device 2x as fast. This is impossible.
-Only freeze:
+
+Examples for apps that deserve to be frozen:
  * Untrusted apps (that you do not want to run in the background)
  * Apps used very few
+ * Annoying apps
 
 Freezing daily used apps drains your battery a little faster. Also, these apps will take longer to start when you use them the next time.
 
@@ -63,14 +65,17 @@ Credits
 
 The code to show the app list is from [ApkExtractor](https://f-droid.org/wiki/page/axp.tool.apkextractor).
 
-Robin Naumann made a nice intro.
+Robin Naumann made a nice intro. The intro was created using the AppIntro library.
+
+The feature graphic background is from here: https://pixabay.com/photos/thunder-lighting-lightning-cloud-1368797/, the text was added with https://www.norio.be/android-feature-graphic-generator/.
 
 Copying
 -------
 
 ```
 Copyright (c) 2015 axxapy
-Copyright (c) 2018 Hocuri
+Copyright (c) 2018, 2019 Hocuri
+Copyright (c) 2019 Robin Naumann
 
 SuperFreezZ is free software: You can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -90,6 +95,9 @@ Q/A
 ---
 
 Q/A:
+
+Q: What is the difference between hibernating and freezing?
+A: There is none at all. If you hibernate an app with Greenify it will even be shown as frozen in SuperFreezZ and the other way round.
 
 Q: But the correct spelling would be "SuperFreeze"!
 A: I know.
