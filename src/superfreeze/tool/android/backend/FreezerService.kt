@@ -100,13 +100,13 @@ class FreezerService : AccessibilityService() {
 	}
 
 	private fun wrongScreenShown() {
-		// If the last action was more than 8 seconds ago, something went wrong and we should abort not to destroy anything.
+		// If the last action was more than 8 seconds ago, something went wrong and we should stop not to destroy anything.
 		if (System.currentTimeMillis() - lastActionTimestamp > 8000) {
 			Log.e(
 				TAG,
 				"An unexpected screen turned up and the last action was more than 8 seconds ago. Something went wrong. Aborted not to destroy anything"
 			)
-			abort() // Abort everything, it is to late to do anything :-(
+			stopAnyCurrentFreezing() // Stop everything, it is to late to do anything :-(
 		}
 		// else do nothing and simply wait for the next screen to show up.
 	}
@@ -141,6 +141,7 @@ class FreezerService : AccessibilityService() {
 		val node = event.source.expectNonNull(TAG) ?: return
 
 		val success = clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+
 		if (success) nextAction = NextAction.PRESS_BACK
 
 		node.recycle()
@@ -165,7 +166,7 @@ class FreezerService : AccessibilityService() {
 
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
-			abort()
+			stopAnyCurrentFreezing()
 			Thread(exceptionHandler).start()
 			return false
 		} else if (nodes.size > 1) {
@@ -210,7 +211,7 @@ class FreezerService : AccessibilityService() {
 		Log.i(TAG, "FreezerService was destroyed.")
 		isEnabled = false
 		unregisterReceiver(screenReceiver)
-		abort()
+		stopAnyCurrentFreezing()
 	}
 
 	internal companion object {
@@ -251,7 +252,7 @@ class FreezerService : AccessibilityService() {
 			// After 4 seconds, assume that something went wrong
 			timeoutHandler.postDelayed({
 				Log.w(TAG, "timeout")
-				abort()
+				stopAnyCurrentFreezing()
 				exceptionHandler()
 			}, 4000)
 
@@ -262,8 +263,8 @@ class FreezerService : AccessibilityService() {
 		 * Cleans up when no more apps shall be frozen or before exceptionHandler() is called
 		 * (in the latter case, exceptionHandler() will care about restarting freeze)
 		 */
-		internal fun abort() {
-			Log.i(TAG, "aborting")
+		internal fun stopAnyCurrentFreezing() {
+			Log.i(TAG, "Stopping any current freezing, in case there was one in progress")
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}

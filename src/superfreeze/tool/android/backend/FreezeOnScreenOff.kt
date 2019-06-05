@@ -54,7 +54,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 				false
 			)
 		) {
-			FreezerService.abort() // If a freeze was already running, abort it
+			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
 			if (getAppsPendingFreeze(context).isEmpty()) {
 				// Reset screen timeout and brightness to the original values:
