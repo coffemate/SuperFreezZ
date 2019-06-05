@@ -40,7 +40,7 @@ class MyApplication : Application() {
 
 			val message = e.toString() + "\n\n" + getStackTrace(e)
 			val subject = "Crash report SuperFreezZ v${BuildConfig.VERSION_NAME}"
-			val email = "hocceruser-github@gmx.de"
+			val email = "superfreezz-automated@gmx.de"
 
 			Toast.makeText(
 				this,
