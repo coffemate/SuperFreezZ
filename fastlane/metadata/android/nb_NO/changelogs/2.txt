@@ -1,0 +1,10 @@
+Feilretting: Få SF til å virke på eldre Android-versjoner
+Manuell frysing: Fortell brukeren om å trykk "TVING STOPP", "OK", og "Tilbake", fikser #14
+Skjermavbildninger
+Oversettelser
+Ikke frys selve SuperFreezZ
+Kun anse et program som "brukt" hvis det ble brukt minst 2 s
+Fiks for bestemmelse av hvorvidt et program har blitt "brukt nylig"
+Ikke vis Autofrys/Frys når inaktiv -knapp (bør velge ett navn her forresten) når bruksstatistikk-tilgang ikke er innvilget
+Oppdateringer
+Tilgjengelighetstjeneste

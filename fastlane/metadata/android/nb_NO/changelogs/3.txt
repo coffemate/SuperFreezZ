@@ -1,0 +1,3 @@
+Feilfiks: Noen ganger ble programinnstillingene vist, men programmet ble ikke frosset
+Kommentarer
+Frysing mer stabilt, men tregere: Vent på at FreezeShortcutActivity.onResume skal bli kallet før frysing av neste program; takle #17 ?

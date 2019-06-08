@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Copyright (c) 2018,2019 Hocuri
-
-This file is part of SuperFreezZ.
-
-SuperFreezZ is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SuperFreezZ is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
--->
+  ~ Copyright (c) 2018,2019 Hocuri
+  ~
+  ~ This file is part of SuperFreezZ.
+  ~
+  ~ SuperFreezZ is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ SuperFreezZ is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="msg_search">Suche</string>
-    <string name="msg_search_help">Suchen&#8230;</string>
-    <string name="share_exception">Ein Fehler ist aufgetreten. Infos teilen über&#8230;</string>
+    <string name="msg_search_help">Suchen…</string>
+    <string name="share_exception">Unerwarteter Fehler. Bericht über..…</string>
     <string name="accessibility_service_description">"Die Bedienungshilfe ermöglicht es SuperFreezZ, das Einfrieren zu automatisieren.\n\nDies hat die folgenden Vorteile:\n - Der Benutzer muss es nicht selbst machen: Es ist deutlich schneller und der Benutzer muss sich nicht darum kümmern, wie das geht.\n - Benutzer mit Einschränkungen müssen nur den \"Einfrieren\"-Schnellzugriff starten (zum Beispiel mittels Spracherkennung). So können sie alle Apps automatisch einfrieren. \n\nSuperFreezZ benutzt die Bedienungshilfe nur, um \"Beenden erzwingen\", \"OK\" und \"Zurück\" zu drücken. \"Fensterinhalte abrufen\" ist nötig, um diese zu finden und \"Ihre Aktionen beobachten\" ist nötig, um mitzubekommen, wann diese erscheinen.
 \n\nAußerdem kann SuperFreezZ die Bedienungshilfe benutzen, um auf neueren Android-Versionen den Bildschirm nach dem Einfrieren zu sperren, falls Sie das wollen."</string>
     <string name="freeze_shortcut_label">Einfrieren</string>

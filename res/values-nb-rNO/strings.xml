@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="usatestats_explanation">Bruksstatistikk gjør det mulig for SuperFreezZ å fryse programmer kun når du ikke har brukt dem på en stund (INTELLIGENT FRYSING).</string>
+    <string name="usagestats_not_enabled">Du innvilget ikke bruksstatistikk-tilgang.</string>
+    <string name="pref_header_about_summary">Nyttige lenker, send loggføring</string>
+    <string name="freeze_shortcut_label">Frys</string>
+    <string name="pref_summary_appslist_show_special">Oppstarteren, selve SuperFreezZ, og systemprogrammer er skjult som forvalg.</string>
+    <string name="accessibility_arguments_yes">For:
+\n• Brukervennlighet
+\n• Frysing av mange programmer</string>
+    <string name="NothingToFreeze">Ingenting å fryse</string>
+    <string name="usagestats_access">Tilgang til bruksstatistikk</string>
+    <string name="used_recently">Brukt nylig</string>
+    <string name="Press_forcestop_ok_back">Frys et program ved å trykke \\\"TVING STOPP\\\", \\\"OK\\\", og så \\\"Tilbake\\\".</string>
+    <string name="accessibility_arguments_no">Å trykke \\\"TVING STOPP\\\", \\\"OK\\\" og \\\"Tilbake\\\" fryser et program manuelt.
+\nFor:
+\n• Trege enheter
+\n• Sikkerhetshensyn
+\n• Ingen registrering av SuperFreezZ som tilgjengelighetstjeneste</string>
+    <string name="pref_header_freezing">Frysing av programmer</string>
+    <string name="view_intro_again">Vis intro igjen</string>
+    <string name="automate_the_freezing_of_apps">Automatiser frysing av programmer\?</string>
+    <string name="credits_and_licenses">Bidragsytere og tredjepartslisenser</string>
+    <string name="freeze_off">Opptint</string>
+    <string name="no_apps_pending_freeze">[INGEN PROGRAMMER VENTER PÅ Å BLI FRYST]</string>
+    <string name="no">Nei</string>
+    <string name="info">Info</string>
+    <string name="icon">Ikon</string>
+    <string name="space_AND_space">" og "</string>
+    <string name="appslist_show_special">Vis spesialprogrammer i listen</string>
+    <string name="freeze_manually">Frys manuelt</string>
+    <string name="pref_header_appslist_summary">Vis spesialprogrammer, forvalgt frysemodus</string>
+    <string name="freeze_apps_now">Frys programmer nå</string>
+    <string name="intro_header_welcome">velkommen til</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Frys dette programmet hvis det ikke har blitt brukt på en god stund.</string>
+    <string name="intro_always_freeze_explanation">Det er tre frysemodus. Du kan velge ett for hvert program. ALLTID FRYS vil fryse et program uansett.</string>
+    <string name="short_description">SuperFreezZ gjør det enkelt å fryse alle programmer bakgrunnsaktiviteter.</string>
+    <string name="frozen">Frosset</string>
+    <string name="freeze_on_screen_off_title">Frys når skjermen skrus av</string>
+    <string name="problems">Problemer</string>
+    <string name="yes">Ja</string>
+    <string name="source_code">Kildekode</string>
+    <string name="pending_freeze">Ventende frysning</string>
+    <string name="send_logs">Send logger</string>
+    <string name="intro_auto_freeze_title">Frysemodus: INTELLIGENT</string>
+    <string name="intro_always_freeze_title">Frysemodus: ALLTID FRYS</string>
+    <string name="pref_title_standard_freeze_mode">Forvalgt frysemodus</string>
+    <string name="intro_auto_freeze_explanation">INTELLIGENT FRYSING vil fryse et program kun når det ikke har blitt brukt på en god stund (7 dager som forvalg)</string>
+    <string name="pref_intelligentfreeze_delay">Frysemodus INTELLIGENT: Programmer fryses etter… (i dager)</string>
+    <string name="do_never_freeze_this_app">Aldri frys dette programmet</string>
+    <string name="share_exception">Uventet feil. Innrapporter ved bruk av…</string>
+    <string name="license">Lisens</string>
+    <string name="intro_never_freeze_explanation">ALDRI FRYS vil skru av frysing og aldri fryse et program.</string>
+    <string name="intro_header_modes">modus</string>
+    <string name="msg_search_help">Søk…</string>
+    <string name="undo">Angre</string>
+    <string name="report">Innrapporter et problem, foreslå en funksjon, …</string>
+    <string name="create_freeze_shortcut">Opprett frysesnarvei</string>
+    <string name="intro_never_freeze_title">Frysemodus: ALDRI FRYS</string>
+    <string name="links">Lenker</string>
+    <string name="pref_ringtone_silent">Stille</string>
+    <string name="title_activity_settings">Innstillinger</string>
+    <string name="accessibility_service_description">Å skru dette på lar deg automatisk fryse programmer.
+\n
+\nFordeler:
+\n - Ingen brukerinteraksjon. Rasker. Inget behov for å vite hvordan man gjør det.
+\n - Handikappede brukere kan bruke frysesnarveien (for eksempel via talegjenkjenning), noe som fryser alle programmer automatisk.
+\n
+\nSuperFreezZ bruker tilgjengelighetstjenesten til å trykke \\\"TVING STOPP\\\", \\\"OK\\\", og \\\"Tilbake\\\". Innhenting av vindusinnhold finner disse knappene, og observering av handlinger trengs for å vite når de er der.
+\n
+\nTilgjengelighetstjenesten kan brukes for å låse skjermen etter frysing på nyere Android-versjoner.</string>
+    <string name="enable">Skru på</string>
+    <string name="intro_header_automaticfreezing">automatisk frysing</string>
+    <string name="pref_header_freezing_summary">Tilpass hvordan og hvilke programmer som fryses</string>
+    <string name="sort">Sortering</string>
+    <string name="settings">Innstillinger</string>
+    <string name="freeze_on_screen_off_sum">Du må skru av \\\"På-knapp låser umiddelbart\\\" i enhetsinnstillingene.</string>
+    <string name="sf_crashed">SuperFreezZ kræsjet. Send inn en rapport, hvis du ikke har gjort det allerede.</string>
+    <string name="always_freeze_this_app">Alltid frys dette programmet</string>
+    <string name="pref_header_about">Om</string>
+    <string name="pref_header_appslist">Programliste</string>
+    <string name="already_frozen">Allerede fryst</string>
+    <string name="msg_search">Søk</string>
+    <string name="share_logs">Del logger ved bruk av…</string>
+    <string name="all_apps">ALLE PROGRAMMER</string>
+    <string name="logs_copied">Logger kopiert til utklippstavlen.</string>
+    <string name="freeze_manually_no">Jeg ønsker ikke å måtte gjøre dette</string>
+</resources>
