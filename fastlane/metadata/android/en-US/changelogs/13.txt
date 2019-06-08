@@ -1,0 +1,5 @@
+New translations
+Edit descriptions
+Add feature graphic
+Minor tweaks
+Fix #29: Keep sort mode in the list at restart
