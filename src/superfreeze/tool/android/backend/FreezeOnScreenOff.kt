@@ -92,7 +92,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 					originalTimeout
 				)
 			} catch (e: SecurityException) {
-				Log.w(TAG, "Could not write change screen brightness an timeout")
+				Log.e(TAG, "Could not write change screen brightness an timeout")
 			}
 			originalBrightness = -1
 			originalTimeout = -1
