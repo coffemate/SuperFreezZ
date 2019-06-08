@@ -51,7 +51,7 @@ If you would like to help with developing, have a look at the issues, or think o
 
 Please tell me what you are going to do, to avoid implementing the same thing at the same time :-)
 
-You can also [donate](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18) or [translate SuperFreezZ](https://crowdin.com/project/superfreezz). If you have problems with translating, see #21
+You can also [donate](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18) or [translate SuperFreezZ](https://hosted.weblate.org/projects/superfreezz/). If you have problems with translating, see #21.
 
 Donate
 ------
