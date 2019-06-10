@@ -1,24 +1,20 @@
 SuperFreezZ
 ===========
 
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="70">](https://f-droid.org/packages/superfreeze.tool.android/)
+
 Android app (beta) making it possible to entirely freeze all background activities of any app.
 
 Greenify can also do this, but it is not Open Source.
 
-All contributions are welcome.
-
 SuperFreezZ is not yet another task manager promising to delete 10 GB of data per month or making your device 2x as fast. This is impossible.
+
+Instead, SuperFreezZ is honest about its disadvantages: Freezing daily used apps probably drains your battery a little faster. Also, these apps will take longer to start when you use them the next time: SuperFreezZ will super freeze your apps, it takes about 1-3 seconds to defrost them. Greenify has the same disadvantages, except that the author of Greenify does not warn you about it. So: Just do not overdo it, and SuperFreezZ will be super useful. 
 
 Examples for apps that deserve to be frozen:
  * Untrusted apps (that you do not want to run in the background)
  * Apps used very few
  * Annoying apps
-
-Freezing daily used apps drains your battery a little faster. Also, these apps will take longer to start when you use them the next time.
-
-SuperFreezZ will super freeze your apps, it takes some seconds to defrost them.
-
-Greenify has the same disadvantages, except that the author of Greenify does not warn you about it.
 
 Features
 --------
@@ -35,15 +31,10 @@ Build
 
 The build should succeed out of the box with Android Studio and Gradle. If not, open an issue. Others will probably also have the problem.
 
-Download
---------
-
-[<img src="https://f-droid.org/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="70">](https://f-droid.org/packages/superfreeze.tool.android/)
-
 Contributing to SuperFreezZ
 ------------
+
+### Development
 
 If you have a problem, question or an idea, just open an issue!
 
@@ -51,10 +42,15 @@ If you would like to help with developing, have a look at the issues, or think o
 
 Please tell me what you are going to do, to avoid implementing the same thing at the same time :-)
 
-You can also [donate](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18) or [translate SuperFreezZ](https://hosted.weblate.org/projects/superfreezz/). If you have problems with translating, see #21.
+### Translate
 
-Donate
-------
+You can [translate SuperFreezZ on Weblate](https://hosted.weblate.org/engage/superfreezz/). Current progress:
+
+[![Translation status](https://hosted.weblate.org/widgets/superfreezz/-/multi-auto.svg)](https://hosted.weblate.org/engage/superfreezz/?utm_source=widget)
+
+You can always add other lanuages.
+
+### Donate
 
 Monetary donations are currently not accepted (setting up a Liberapay account was too much effort, so it was given up for the time being).
 
