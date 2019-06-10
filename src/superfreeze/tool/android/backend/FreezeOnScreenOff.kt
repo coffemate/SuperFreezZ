@@ -99,6 +99,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		}
 	}
 
+	// TODO Actually use screenLockerFunction on newer versions of Android
 	private fun enableScreenUntilFrozen(context: Context) {
 		Log.i(TAG, "turning screen on for freeze...")
 
@@ -147,7 +148,6 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 			} catch (e: SecurityException) {
 				Log.w(TAG, "Could not write change screen brightness and timeout")
 			}
-
 		}
 	}
 
