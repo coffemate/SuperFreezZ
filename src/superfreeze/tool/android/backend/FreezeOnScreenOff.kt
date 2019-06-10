@@ -104,7 +104,7 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 				Settings.System.SCREEN_BRIGHTNESS, 0
 			)
 		} catch (e: SecurityException) {
-			Log.w(TAG, "Could not write change screen brightness and timeout")
+			Log.w(TAG, "Could not change screen brightness")
 		}
 
 		FreezeShortcutActivity.onFreezeFinishedListener = {
@@ -125,29 +125,34 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 					0
 				)
 			} catch (e: SecurityException) {
-				Log.w(TAG, "Could not write change screen brightness and timeout")
+				Log.w(TAG, "Could not change screen timeout")
 			}
 		}
 	}
 
 	private fun resetScreenIfNecessary(context: Context) {
-		if (originalBrightness > 0 && originalTimeout > 0) {
-			try {
+		try {
+
+			if (originalBrightness >= 0) {
 				Settings.System.putInt(
 					context.contentResolver,
 					Settings.System.SCREEN_BRIGHTNESS,
 					originalBrightness
 				)
+				originalBrightness = -1
+			}
+
+			if (originalTimeout >= 0) {
 				Settings.System.putInt(
 					context.contentResolver,
 					Settings.System.SCREEN_OFF_TIMEOUT,
 					originalTimeout
 				)
-			} catch (e: SecurityException) {
-				Log.e(TAG, "Could not write change screen brightness an timeout")
+				originalTimeout = -1
 			}
-			originalBrightness = -1
-			originalTimeout = -1
+
+		} catch (e: SecurityException) {
+			Log.e(TAG, "Could not change screen brightness an timeout")
 		}
 	}
 }
