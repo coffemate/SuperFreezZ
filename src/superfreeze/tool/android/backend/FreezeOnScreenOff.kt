@@ -78,27 +78,6 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		}
 	}
 
-	private fun resetScreenIfNecessary(context: Context) {
-		if (originalBrightness > 0 && originalTimeout > 0) {
-			try {
-				Settings.System.putInt(
-					context.contentResolver,
-					Settings.System.SCREEN_BRIGHTNESS,
-					originalBrightness
-				)
-				Settings.System.putInt(
-					context.contentResolver,
-					Settings.System.SCREEN_OFF_TIMEOUT,
-					originalTimeout
-				)
-			} catch (e: SecurityException) {
-				Log.e(TAG, "Could not write change screen brightness an timeout")
-			}
-			originalBrightness = -1
-			originalTimeout = -1
-		}
-	}
-
 	// TODO Actually use screenLockerFunction on newer versions of Android
 	private fun enableScreenUntilFrozen(context: Context) {
 		Log.i(TAG, "turning screen on for freeze...")
@@ -151,6 +130,26 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		}
 	}
 
+	private fun resetScreenIfNecessary(context: Context) {
+		if (originalBrightness > 0 && originalTimeout > 0) {
+			try {
+				Settings.System.putInt(
+					context.contentResolver,
+					Settings.System.SCREEN_BRIGHTNESS,
+					originalBrightness
+				)
+				Settings.System.putInt(
+					context.contentResolver,
+					Settings.System.SCREEN_OFF_TIMEOUT,
+					originalTimeout
+				)
+			} catch (e: SecurityException) {
+				Log.e(TAG, "Could not write change screen brightness an timeout")
+			}
+			originalBrightness = -1
+			originalTimeout = -1
+		}
+	}
 }
 
 internal fun registerScreenReceiver(
