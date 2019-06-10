@@ -12,6 +12,7 @@ SuperFreezZ is not yet another task manager promising to delete 10 GB of data pe
 Instead, SuperFreezZ is honest about its disadvantages: Freezing daily used apps probably drains your battery a little faster. Also, these apps will take longer to start when you use them the next time: SuperFreezZ will super freeze your apps, it takes about 1-3 seconds to defrost them. Greenify has the same disadvantages, except that the author of Greenify does not warn you about it. So: Just do not overdo it, and SuperFreezZ will be super useful. 
 
 Examples for apps that deserve to be frozen:
+
  * Untrusted apps (that you do not want to run in the background)
  * Apps used very few
  * Annoying apps
