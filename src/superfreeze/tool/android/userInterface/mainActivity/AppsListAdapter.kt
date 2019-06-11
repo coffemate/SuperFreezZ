@@ -248,68 +248,52 @@ internal class AppsListAdapter internal constructor(
 	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener {
 
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
+		
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		private val txtExplanation: TextView = v.findViewById(R.id.txtExplanation)
-		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
-		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
-		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
+
+		private val modeSymbols: Map<FreezeMode, ImageView> = mapOf(
+			FreezeMode.ALWAYS to v.findViewById(R.id.imageAlwaysFreeze),
+			FreezeMode.NEVER to v.findViewById(R.id.imageNeverFreeze),
+			FreezeMode.WHEN_INACTIVE to v.findViewById(R.id.imageFreezeWhenInactive)
+		)
+
 		private lateinit var listItem: ListItemApp
 
 		init {
 			v.setOnClickListener(this)
 
-			if (usageStatsAvailable) {
-				symbolFreezeWhenInactive.setOnClickListener {
-					setFreezeModeTo(FreezeMode.WHEN_INACTIVE)
+			if (!usageStatsAvailable) {
+				modeSymbols[FreezeMode.WHEN_INACTIVE]!!.visibility = View.GONE
+				// Hide as without usagestats we can not know whether an app is 'inactive'
+			}
+
+			// Set what happens when one of the mode symbols is clicked
+			modeSymbols.forEach { (mode, view) ->
+				view.setOnClickListener {
+					listItem.setFreezeModeTo(
+						mode,
+						changeSettings = true,
+						showSnackbar = true,
+						viewHolder = this
+					)
 				}
-			} else {
-				symbolFreezeWhenInactive.visibility = View.GONE
-				// Hide symbolFreezeWhenInactive as without usagestats we can not know whether an app is 'inactive'
-			}
-
-			symbolAlwaysFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.ALWAYS)
-			}
-
-			symbolNeverFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.NEVER)
 			}
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				symbolAlwaysFreeze.tooltipText = context.getString(R.string.always_freeze_this_app)
-				symbolFreezeWhenInactive.tooltipText = context.getString(R.string.freeze_this_app_if_it_has_not_been_used_for_a_longer_time)
-				symbolNeverFreeze.tooltipText = context.getString(R.string.do_never_freeze_this_app)
+				modeSymbols[FreezeMode.ALWAYS]!!.tooltipText = context.getString(R.string.always_freeze_this_app)
+				modeSymbols[FreezeMode.WHEN_INACTIVE]!!.tooltipText = context.getString(R.string.freeze_this_app_if_it_has_not_been_used_for_a_longer_time)
+				modeSymbols[FreezeMode.NEVER]!!.tooltipText = context.getString(R.string.do_never_freeze_this_app)
 			}
-		}
-
-		private fun setFreezeModeTo(mode: FreezeMode) {
-			listItem.setFreezeModeTo(
-				mode,
-				changeSettings = true,
-				showSnackbar = true,
-				viewHolder = this
-			)
 		}
 
 		private fun setButtonColours(freezeMode: FreezeMode) {
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
-
-			when (freezeMode) {
-				FreezeMode.ALWAYS -> {
-					symbolAlwaysFreeze.setColorFilter(null)
-					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
-					symbolNeverFreeze.setColorFilter(colorGreyedOut)
-				}
-				FreezeMode.WHEN_INACTIVE -> {
-					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
-					symbolFreezeWhenInactive.setColorFilter(null)
-					symbolNeverFreeze.setColorFilter(colorGreyedOut)
-				}
-				FreezeMode.NEVER -> {
-					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
-					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
-					symbolNeverFreeze.setColorFilter(null)
-				}
+			modeSymbols.forEach { (mode, view) ->
+				if (mode == freezeMode)
+					view.setColorFilter(colorGreyedOut)
+				else
+					view.colorFilter = null
 			}
 		}
 
@@ -374,7 +358,7 @@ internal class AppsListAdapter internal constructor(
 		}
 	}
 
-	internal class ViewHolderSectionHeader(private val v: View) : AbstractViewHolder(v) {
+	internal class ViewHolderSectionHeader(v: View) : AbstractViewHolder(v) {
 		private val textView = v.findViewById<TextView>(R.id.textView)
 
 		override fun bindTo(item: AbstractListItem) {
