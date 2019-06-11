@@ -35,13 +35,25 @@ import android.util.Log
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
+internal fun freezeOnScreenOff_init(
+	context: Context,
+	screenLockerFunction: () -> Unit
+): BroadcastReceiver {
+	val filter = IntentFilter().apply {
+		addAction(Intent.ACTION_SCREEN_OFF)
+	}
+	val screenReceiver = ScreenReceiver(context, screenLockerFunction)
+	context.registerReceiver(screenReceiver, filter)
+	return screenReceiver
+}
+
 /**
  * Receives and handles a broadcast when the screen turns off.
  * @param screenLockerFunction
  * A function that locks the screen on newer Android versions. (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
  * after freezing the apps.
  */
-class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) :
+private class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) :
 // TODO Do also use the screenLockerFunction in newer versions of Android
 	BroadcastReceiver() {
 	private var lastTime = 0L
@@ -56,9 +68,9 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		) {
 			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
+			resetScreenIfNecessary(context)
+
 			if (getAppsPendingFreeze(context).isEmpty()) {
-				// Reset screen timeout and brightness to the original values:
-				resetScreenIfNecessary(context)
 				return
 			}
 
@@ -108,28 +120,42 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 		}
 
 		FreezeShortcutActivity.onFreezeFinishedListener = {
-			Log.i(TAG, "turning screen off after freeze...")
-			wl?.release()
-			kl.reenableKeyguard()
-
-			// Turn screen off:
-			try {
-				originalTimeout = Settings.System.getInt(
-					context.contentResolver,
-					Settings.System.SCREEN_OFF_TIMEOUT,
-					1 * 60 * 1000
-				)
-				Settings.System.putInt(
-					context.contentResolver,
-					Settings.System.SCREEN_OFF_TIMEOUT,
-					0
-				)
-			} catch (e: SecurityException) {
-				Log.w(TAG, "Could not change screen timeout")
-			}
+			turnScreenOffAfterFreeze(wl, kl, context)
 		}
 	}
 
+	private fun turnScreenOffAfterFreeze(
+		wl: PowerManager.WakeLock?,
+		kl: KeyguardManager.KeyguardLock,
+		context: Context
+	) {
+		Log.i(TAG, "turning screen off after freeze...")
+		wl?.release()
+		kl.reenableKeyguard()
+
+		// Turn screen off:
+		try {
+			originalTimeout = Settings.System.getInt(
+				context.contentResolver,
+				Settings.System.SCREEN_OFF_TIMEOUT,
+				1 * 60 * 1000
+			)
+			Settings.System.putInt(
+				context.contentResolver,
+				Settings.System.SCREEN_OFF_TIMEOUT,
+				0
+			)
+		} catch (e: SecurityException) {
+			Log.w(TAG, "Could not change screen timeout")
+		}
+
+		// We do not have to take care about calling resetScreenIfNecessary here;
+		// onReceive will call it when the screen goes off
+	}
+
+	/**
+	 * Resets the settings that were changed
+	 */
 	private fun resetScreenIfNecessary(context: Context) {
 		try {
 
@@ -155,18 +181,6 @@ class ScreenReceiver(private val context: Context, private val screenLockerFunct
 			Log.e(TAG, "Could not change screen brightness an timeout")
 		}
 	}
-}
-
-internal fun registerScreenReceiver(
-	context: Context,
-	screenLockerFunction: () -> Unit
-): ScreenReceiver {
-	val filter = IntentFilter().apply {
-		addAction(Intent.ACTION_SCREEN_OFF)
-	}
-	val screenReceiver = ScreenReceiver(context, screenLockerFunction)
-	context.registerReceiver(screenReceiver, filter)
-	return screenReceiver
 }
 
 private const val TAG = "FreezeOnScreenOff"

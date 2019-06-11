@@ -21,7 +21,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 <resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="MissingTranslation">
 
-    <string name="app_name">SuperFreezZ</string>
     <string name="msg_search">搜索</string>
     <string name="msg_search_help">搜索&#8230;</string>
     <string name="share_exception">发生错误 用&#8230;分享信息</string>

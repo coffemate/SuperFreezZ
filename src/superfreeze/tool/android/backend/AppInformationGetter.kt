@@ -207,7 +207,7 @@ internal fun getAppsPendingFreeze(context: Context): List<String> {
 
 // Currently unused, instead
 // usageStats.totalTimeInForeground < 1000L * 2
-// is used directly currently (an app is only couted as 'used' if it was used at least 2s)
+// is used directly currently (an app is only counted as 'used' if it was used at least 2s)
 private fun getLastTimeUsed(usageStats: UsageStats?): Long {
 	return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 		usageStats?.lastTimeUsed

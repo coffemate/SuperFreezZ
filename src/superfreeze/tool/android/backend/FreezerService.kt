@@ -20,6 +20,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
+import android.content.BroadcastReceiver
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -192,7 +193,7 @@ class FreezerService : AccessibilityService() {
 		return true
 	}
 
-	private lateinit var screenReceiver: ScreenReceiver
+	private lateinit var screenReceiver: BroadcastReceiver
 
 	override fun onServiceConnected() {
 		isEnabled = true
@@ -200,7 +201,7 @@ class FreezerService : AccessibilityService() {
 		// From now on, expect that the service works:
 		prefUseAccessibilityService = true
 
-		screenReceiver = registerScreenReceiver(this, screenLockerFunction = {
+		screenReceiver = freezeOnScreenOff_init(this, screenLockerFunction = {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 				performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
 			}
