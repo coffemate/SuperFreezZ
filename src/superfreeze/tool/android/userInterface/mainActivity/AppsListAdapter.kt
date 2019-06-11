@@ -260,7 +260,7 @@ internal class AppsListAdapter internal constructor(
 
 			if (usageStatsAvailable) {
 				symbolFreezeWhenInactive.setOnClickListener {
-					setFreezeModeTo(FreezeMode.FREEZE_WHEN_INACTIVE)
+					setFreezeModeTo(FreezeMode.WHEN_INACTIVE)
 				}
 			} else {
 				symbolFreezeWhenInactive.visibility = View.GONE
@@ -268,11 +268,11 @@ internal class AppsListAdapter internal constructor(
 			}
 
 			symbolAlwaysFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.ALWAYS_FREEZE)
+				setFreezeModeTo(FreezeMode.ALWAYS)
 			}
 
 			symbolNeverFreeze.setOnClickListener {
-				setFreezeModeTo(FreezeMode.NEVER_FREEZE)
+				setFreezeModeTo(FreezeMode.NEVER)
 			}
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -295,17 +295,17 @@ internal class AppsListAdapter internal constructor(
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 
 			when (freezeMode) {
-				FreezeMode.ALWAYS_FREEZE -> {
+				FreezeMode.ALWAYS -> {
 					symbolAlwaysFreeze.setColorFilter(null)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
 				}
-				FreezeMode.FREEZE_WHEN_INACTIVE -> {
+				FreezeMode.WHEN_INACTIVE -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(null)
 					symbolNeverFreeze.setColorFilter(colorGreyedOut)
 				}
-				FreezeMode.NEVER_FREEZE -> {
+				FreezeMode.NEVER -> {
 					symbolAlwaysFreeze.setColorFilter(colorGreyedOut)
 					symbolFreezeWhenInactive.setColorFilter(colorGreyedOut)
 					symbolNeverFreeze.setColorFilter(null)

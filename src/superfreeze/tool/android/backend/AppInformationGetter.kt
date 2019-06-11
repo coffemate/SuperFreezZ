@@ -133,11 +133,11 @@ internal fun isPendingFreeze(
 
 	return when (freezeMode) {
 
-		FreezeMode.ALWAYS_FREEZE -> true
+		FreezeMode.ALWAYS -> true
 
-		FreezeMode.NEVER_FREEZE -> false
+		FreezeMode.NEVER -> false
 
-		FreezeMode.FREEZE_WHEN_INACTIVE -> {
+		FreezeMode.WHEN_INACTIVE -> {
 			unusedRecently(usageStats)
 		}
 	}
@@ -156,13 +156,13 @@ internal fun getPendingFreezeExplanation(
 
 	return when (freezeMode) {
 
-		FreezeMode.ALWAYS_FREEZE ->
+		FreezeMode.ALWAYS ->
 			if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
 
-		FreezeMode.NEVER_FREEZE ->
+		FreezeMode.NEVER ->
 			string(R.string.freeze_off)
 
-		FreezeMode.FREEZE_WHEN_INACTIVE -> {
+		FreezeMode.WHEN_INACTIVE -> {
 			if (unusedRecently(usageStats)) {
 				if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
 			} else {

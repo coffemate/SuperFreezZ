@@ -37,18 +37,18 @@ internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 
 	val sharedPreferences = getFreezeModesPreferences(context)
 	val standardFreezeMode = mGetDefaultSharedPreferences(context)
-			.getString("standard_freeze_mode", FreezeMode.FREEZE_WHEN_INACTIVE.ordinal.toString())
+			.getString("standard_freeze_mode", FreezeMode.WHEN_INACTIVE.ordinal.toString())
 			?.toIntOrNull()
 			.expectNonNull(TAG)
-			?: FreezeMode.FREEZE_WHEN_INACTIVE.ordinal
+			?: FreezeMode.WHEN_INACTIVE.ordinal
 
 	val ordinal = sharedPreferences.getInt(packageName, standardFreezeMode)
 	val result = values[ordinal]
 
-	return if (result == FreezeMode.FREEZE_WHEN_INACTIVE && !usageStatsAvailable) {
-		FreezeMode.NEVER_FREEZE
-		// If the usage stats are not available, FREEZE_WHEN_INACTIVE is not available, either. Instead, we use
-		// NEVER_FREEZE here.
+	return if (result == FreezeMode.WHEN_INACTIVE && !usageStatsAvailable) {
+		FreezeMode.NEVER
+		// If the usage stats are not available, WHEN_INACTIVE is not available, either. Instead, we use
+		// NEVER here.
 	} else {
 		result
 	}
@@ -101,22 +101,22 @@ internal var Context.prefUseAccessibilityService
 internal var usageStatsAvailable: Boolean = false
 
 /**
- * The freeze mode of an app: ALWAYS_FREEZE, NEVER_FREEZE or FREEZE_WHEN_INACTIVE
+ * The freeze mode of an app: ALWAYS, NEVER or WHEN_INACTIVE
  */
 enum class FreezeMode {
 
 	/**
 	 * This app will always be frozen if it is running, regardless of when it was used last.
 	 */
-	ALWAYS_FREEZE,
+	ALWAYS,
 
 	/**
 	 * This app will never be frozen, even if it has been running in background for whatever time.
 	 */
-	NEVER_FREEZE,
+	NEVER,
 
 	/**
 	 * This app will be frozen if it was not used for a specific time but is running in background.
 	 */
-	FREEZE_WHEN_INACTIVE
+	WHEN_INACTIVE
 }
