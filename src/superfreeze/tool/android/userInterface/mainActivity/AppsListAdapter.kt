@@ -38,7 +38,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -53,7 +52,6 @@ import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
-import superfreeze.tool.android.expectNonNull
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
@@ -245,10 +243,10 @@ internal class AppsListAdapter internal constructor(
 		abstract fun bindTo(item: AbstractListItem)
 	}
 
-	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener {
+	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v) {
 
 		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
-		
+
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		private val txtExplanation: TextView = v.findViewById(R.id.txtExplanation)
 
@@ -261,7 +259,10 @@ internal class AppsListAdapter internal constructor(
 		private lateinit var listItem: ListItemApp
 
 		init {
-			v.setOnClickListener(this)
+			v.setOnClickListener {
+				// what is done when a list item (that is, an app) is clicked.
+				listItem.freeze(context)
+			}
 
 			if (!usageStatsAvailable) {
 				modeSymbols[FreezeMode.WHEN_INACTIVE]!!.visibility = View.GONE
@@ -291,9 +292,10 @@ internal class AppsListAdapter internal constructor(
 			val colorGreyedOut = ContextCompat.getColor(context, R.color.button_greyed_out)
 			modeSymbols.forEach { (mode, view) ->
 				if (mode == freezeMode)
-					view.setColorFilter(colorGreyedOut)
-				else
+					// Show the symbol with the "current" mode in color:
 					view.colorFilter = null
+				else
+					view.setColorFilter(colorGreyedOut)
 			}
 		}
 
@@ -304,14 +306,6 @@ internal class AppsListAdapter internal constructor(
 				mainActivity.usageStatsMap?.get(listItem.packageName),
 				context
 			)
-		}
-
-		/**
-		 * This method defines what is done when a list item (that is, an app) is clicked.
-		 * @param v The clicked view.
-		 */
-		override fun onClick(v: View) {
-			list.getOrNull(adapterPosition).expectNonNull(TAG)?.freeze(context)
 		}
 
 		override fun setName(name: String, highlight: String?) {
