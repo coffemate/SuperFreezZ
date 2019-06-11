@@ -117,7 +117,7 @@ internal class AppsListAdapter internal constructor(
 	}
 
 	override fun onBindViewHolder(holder: AbstractViewHolder, i: Int) {
-		list[i].bindViewHolder(holder)
+		holder.bindTo(list[i])
 	}
 
 	override fun getItemCount(): Int {
@@ -242,6 +242,7 @@ internal class AppsListAdapter internal constructor(
 
 	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 		abstract fun setName(name: String, highlight: String?)
+		abstract fun bindTo(item: AbstractListItem)
 	}
 
 	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v), OnClickListener {
@@ -252,7 +253,7 @@ internal class AppsListAdapter internal constructor(
 		private val symbolAlwaysFreeze = v.findViewById<ImageView>(R.id.imageAlwaysFreeze)
 		private val symbolFreezeWhenInactive = v.findViewById<ImageView>(R.id.imageFreezeWhenInactive)
 		private val symbolNeverFreeze = v.findViewById<ImageView>(R.id.imageNeverFreeze)
-		lateinit var listItem: ListItemApp
+		private lateinit var listItem: ListItemApp
 
 		init {
 			v.setOnClickListener(this)
@@ -281,11 +282,11 @@ internal class AppsListAdapter internal constructor(
 			}
 		}
 
-		//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
-		internal fun setFreezeModeTo(
+		private fun setFreezeModeTo(
 				freezeMode: FreezeMode,
 				changeSettings: Boolean,
 				showSnackbar: Boolean = changeSettings,
+				//Usually, if the settings changed, this means that a snackbar with an undo button should be shown
 				listItem: ListItemApp = this.listItem
 		) {
 
@@ -424,7 +425,14 @@ internal class AppsListAdapter internal constructor(
 			}
 		}
 
-		fun loadImage(item: AbstractListItem) {
+		override fun bindTo(item: AbstractListItem) {
+			setName(item.text, searchPattern)
+			listItem = item as ListItemApp
+			loadImage(item)
+			setFreezeModeTo(item.freezeMode, changeSettings = false)
+		}
+
+		private fun loadImage(item: AbstractListItem) {
 			imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
 			if (cacheAppIcon[item.packageName] == null) {
 				executorServiceIcons.submit {
@@ -435,6 +443,9 @@ internal class AppsListAdapter internal constructor(
 	}
 
 	internal class ViewHolderSectionHeader(private val v: View) : AbstractViewHolder(v) {
+		override fun bindTo(item: AbstractListItem) {
+			setName(item.text.toUpperCase(), "")
+		}
 
 		override fun setName(name: String, highlight: String?) {
 			v.findViewById<TextView>(R.id.textView).text = name
@@ -447,7 +458,6 @@ internal class AppsListAdapter internal constructor(
 		abstract fun freeze(context: Context)
 		abstract fun refresh()
 		abstract fun isMatchingSearchPattern(): Boolean
-		abstract fun bindViewHolder(holder: AbstractViewHolder)
 
 		abstract val applicationInfo: ApplicationInfo?
 		abstract val packageName: String?
@@ -527,21 +537,6 @@ internal class AppsListAdapter internal constructor(
 			return false
 		}
 
-		override fun bindViewHolder(holder: AbstractViewHolder) {
-			holder.setName(text, searchPattern)
-
-			if (holder is ViewHolderApp) {
-
-				holder.listItem = this
-				holder.loadImage(this)
-				holder.setFreezeModeTo(freezeMode, changeSettings = false)
-
-			} else {
-				Log.e(TAG, "Holder of $text is not ViewHolderApp while the item at this position is ListItemApp")
-				RuntimeException().printStackTrace()
-			}
-		}
-
 		fun isPendingFreeze(): Boolean {
 			return isPendingFreeze(freezeMode, applicationInfo, mainActivity.usageStatsMap?.get(packageName))
 		}
@@ -562,10 +557,6 @@ internal class AppsListAdapter internal constructor(
 		}
 
 		override fun isMatchingSearchPattern() = true
-
-		override fun bindViewHolder(holder: AbstractViewHolder) {
-			holder.setName(text.toUpperCase(), "")
-		}
 
 		override val packageName: String? get() = null
 		override val applicationInfo: ApplicationInfo? get() = null
