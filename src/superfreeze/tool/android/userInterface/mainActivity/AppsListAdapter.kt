@@ -402,9 +402,9 @@ internal class AppsListAdapter internal constructor(
 
 					val icon = applicationInfo.loadIcon(packageManager)
 
+					cacheAppName[packageName] = appName
+					cacheAppIcon[packageName] = icon
 					mainActivity.runOnUiThread {
-						cacheAppName[packageName] = appName
-						cacheAppIcon[packageName] = icon
 						viewHolder.refresh()
 					}
 
@@ -442,7 +442,7 @@ internal class AppsListAdapter internal constructor(
 		override fun isMatchingSearchPattern(): Boolean {
 			if (searchPattern.isEmpty()) {
 				return true// empty search pattern: Show all apps
-			} else if (cacheAppName[packageName]?.toLowerCase()?.contains(searchPattern) != false) {
+			} else if (text.toLowerCase().contains(searchPattern)) {
 				return true// search in application name
 			}
 
