@@ -214,7 +214,7 @@ internal class AppsListAdapter internal constructor(
 								.asSequence()
 								.filter { it.isMatchingSearchPattern() }
 								.partition {
-									cacheAppName[it.packageName]?.toLowerCase()?.startsWith(searchPattern) != false
+									it.text.toLowerCase().startsWith(searchPattern)
 								}
 					importantApps + otherApps
 
