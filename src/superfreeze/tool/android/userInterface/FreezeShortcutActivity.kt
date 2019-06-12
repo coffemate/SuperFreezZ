@@ -20,10 +20,8 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.userInterface
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -67,7 +65,7 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private fun setupShortcut() {
-		val intent: Intent = createIntent(this)
+		val intent: Intent = createShortcutResultIntent(this)
 		// Now, return the result to the launcher
 		setResult(RESULT_OK, intent)
 	}
@@ -189,29 +187,38 @@ class FreezeShortcutActivity : Activity() {
 		 * See e.g https://developer.android.com/reference/android/content/pm/ShortcutManager.html#createShortcutResultIntent(android.content.pm.ShortcutInfo)
 		 */
 		@JvmStatic
-		fun createIntent(activity: Activity): Intent {
-			val intent: Intent
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+		fun createShortcutResultIntent(activity: Activity): Intent {
+			/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 				// There is a nice new api for shortcuts from Android O on, which we use here:
 				val shortcutManager = activity.getSystemService(ShortcutManager::class.java)
-				intent = shortcutManager.createShortcutResultIntent(
+				return shortcutManager.createShortcutResultIntent(
 						ShortcutInfo.Builder(activity.applicationContext, "FreezeShortcut").build()
 				)
-			} else {
-				// ...but for older versions we need to do everything manually :-(,
-				// so actually using the new api does not have any benefits:
-				val shortcutIntent = Intent(FREEZE_ACTION)
-				shortcutIntent.setClassName(activity, FreezeShortcutActivity::class.java.name)
+			}*/
 
-				intent = Intent()
-				intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-				intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, activity.getString(R.string.freeze_shortcut_label))
-				val iconResource = Intent.ShortcutIconResource.fromContext(
-						activity, R.drawable.ic_freeze
-				)
-				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
-			}
+			// ...but for older versions we need to do everything manually :-(,
+			// so actually using the new api does not have any benefits:
+			val shortcutIntent = createShortcutIntent(activity)
+
+			val intent = Intent()
+			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
+			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, activity.getString(R.string.freeze_shortcut_label))
+			val iconResource = Intent.ShortcutIconResource.fromContext(
+					activity, R.drawable.ic_freeze
+			)
+			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
 			return intent
+		}
+
+		internal fun createShortcutIntent(context: Context): Intent {
+			val shortcutIntent = Intent(FREEZE_ACTION)
+			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
+			shortcutIntent.addFlags(
+				Intent.FLAG_ACTIVITY_CLEAR_TASK +
+						Intent.FLAG_ACTIVITY_NEW_TASK +
+						Intent.FLAG_ACTIVITY_NO_ANIMATION
+			)
+			return shortcutIntent
 		}
 
 		@JvmStatic

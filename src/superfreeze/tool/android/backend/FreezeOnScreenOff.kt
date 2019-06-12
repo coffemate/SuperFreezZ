@@ -42,7 +42,7 @@ internal fun freezeOnScreenOff_init(
 	val filter = IntentFilter().apply {
 		addAction(Intent.ACTION_SCREEN_OFF)
 	}
-	val screenReceiver = ScreenReceiver(context, screenLockerFunction)
+	val screenReceiver = ScreenReceiver(screenLockerFunction)
 	context.registerReceiver(screenReceiver, filter)
 	return screenReceiver
 }
@@ -53,7 +53,7 @@ internal fun freezeOnScreenOff_init(
  * A function that locks the screen on newer Android versions. (performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)). This is needed to lock the screen
  * after freezing the apps.
  */
-private class ScreenReceiver(private val context: Context, private val screenLockerFunction: () -> Unit) :
+private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 // TODO Do also use the screenLockerFunction in newer versions of Android
 	BroadcastReceiver() {
 	private var lastTime = 0L
@@ -82,11 +82,9 @@ private class ScreenReceiver(private val context: Context, private val screenLoc
 				lastTime = System.currentTimeMillis()
 			}
 
-			enableScreenUntilFrozen(this.context)
+			enableScreenUntilFrozen(context)
 
-			context.startActivity(Intent(context, FreezeShortcutActivity::class.java).apply {
-				addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-			})
+			context.startActivity(FreezeShortcutActivity.createShortcutIntent(context))
 		}
 	}
 

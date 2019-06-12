@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
 			R.id.action_create_shortcut -> {
 				//Adding shortcut for FreezeShortcutActivity:
-				val intent = FreezeShortcutActivity.createIntent(this)
+				val intent = FreezeShortcutActivity.createShortcutResultIntent(this)
 				intent.action = "com.android.launcher.action.INSTALL_SHORTCUT"
 				//addIntent.putExtra("duplicate", false)  //uncomment to not install a shortcut if it's already there
 				applicationContext.sendBroadcast(intent)
