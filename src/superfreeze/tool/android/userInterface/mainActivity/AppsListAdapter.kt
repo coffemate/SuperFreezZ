@@ -331,24 +331,25 @@ internal class AppsListAdapter internal constructor(
 		}
 
 		override fun bindTo(item: AbstractListItem) {
-			setName(item.text, searchPattern)
 			listItem = item as ListItemApp
-			notifyFreezeModeChanged()
-			loadImage(item)
+			refresh()
 		}
 
-		private fun loadImage(item: AbstractListItem) {
-			imgIcon.setImageDrawable(cacheAppIcon[item.packageName])
-			if (cacheAppIcon[item.packageName] == null) {
+		internal fun refresh() {
+			// Refresh name:
+			setName(listItem.text, searchPattern)
+
+			// Refresh freeze mode:
+			setButtonColours(listItem.freezeMode)
+            refreshExplanation(listItem.freezeMode)
+
+			// Refresh icon:
+			imgIcon.setImageDrawable(cacheAppIcon[listItem.packageName])
+			if (cacheAppIcon[listItem.packageName] == null) {
 				executorServiceIcons.submit {
-					item.loadNameAndIcon(this)
+					listItem.loadNameAndIcon(this)
 				}
 			}
-		}
-
-		fun notifyFreezeModeChanged() {
-			setButtonColours(listItem.freezeMode)
-			refreshExplanation(listItem.freezeMode)
 		}
 	}
 
@@ -404,8 +405,7 @@ internal class AppsListAdapter internal constructor(
 					mainActivity.runOnUiThread {
 						cacheAppName[packageName] = appName
 						cacheAppIcon[packageName] = icon
-						viewHolder.setName(appName, searchPattern)
-						viewHolder.imgIcon.setImageDrawable(icon)
+						viewHolder.refresh()
 					}
 
 
@@ -467,7 +467,7 @@ internal class AppsListAdapter internal constructor(
 				this.freezeMode = freezeMode
 			}
 
-			viewHolder.notifyFreezeModeChanged()
+			viewHolder.refresh()
 
 			if (showSnackbar && freezeMode != oldFreezeMode) {
 				Snackbar.make(
