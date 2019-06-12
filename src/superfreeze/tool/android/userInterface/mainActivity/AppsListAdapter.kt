@@ -333,8 +333,8 @@ internal class AppsListAdapter internal constructor(
 		override fun bindTo(item: AbstractListItem) {
 			setName(item.text, searchPattern)
 			listItem = item as ListItemApp
+			notifyFreezeModeChanged()
 			loadImage(item)
-			item.setFreezeModeTo(item.freezeMode, changeSettings = false, showSnackbar = false, viewHolder = this)
 		}
 
 		private fun loadImage(item: AbstractListItem) {
