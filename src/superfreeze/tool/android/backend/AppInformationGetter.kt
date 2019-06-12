@@ -35,11 +35,14 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
-import superfreeze.tool.android.*
+import superfreeze.tool.android.BuildConfig
+import superfreeze.tool.android.R
 import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.mGetDefaultSharedPreferences
 import superfreeze.tool.android.database.usageStatsAvailable
+import superfreeze.tool.android.expectNonNull
+import superfreeze.tool.android.logErrorAndStackTrace
 
 
 private const val TAG = "AppInformationGetter"
@@ -58,19 +61,19 @@ internal fun getApplications(context: Context): List<PackageInfo> {
 	val launcherApplication = packageManager.resolveActivity(intent,
 			PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
 
+	val showLauncher = shownSpecialApps.contains("Launcher")
+	val showSuperFreezZ = shownSpecialApps.contains("SuperFreezZ")
+	val showSystem = shownSpecialApps.contains("Systemapps")
+
+	fun isToBeShown(info: PackageInfo): Boolean {
+		if (!showLauncher && info.packageName == launcherApplication) return false
+		if (!showSuperFreezZ && info.packageName == BuildConfig.APPLICATION_ID) return false
+		if (!showSystem && info.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)) return false
+		return true
+	}
+
 	return packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
-			.asSequence()
-			.filterIf(!shownSpecialApps.contains("Launcher")) {
-				it.packageName != launcherApplication
-			}
-			.filterIf(!shownSpecialApps.contains("SuperFreezZ")) {
-				it.packageName != BuildConfig.APPLICATION_ID
-			}
-			.filterIf(!shownSpecialApps.contains("Systemapps")) {
-				//Add the package only if it is NOT a system app:
-				!it.applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_SYSTEM)
-			}
-			.toList()
+		.filter(::isToBeShown)
 }
 
 /**

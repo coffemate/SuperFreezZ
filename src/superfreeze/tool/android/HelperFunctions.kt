@@ -71,14 +71,3 @@ fun getStackTrace(throwable: Throwable): String {
 	return stringWriter.buffer.toString()
 }
 
-/**
- * Returns a sequence containing only elements matching the given predicate
- * or returns the sequence unchanged if the condition is false.
- */
-fun <T> Sequence<T>.filterIf(condition: Boolean, predicate: (T) -> Boolean): Sequence<T> {
-	return if (condition) {
-		this.filter(predicate)
-	} else {
-		this
-	}
-}
