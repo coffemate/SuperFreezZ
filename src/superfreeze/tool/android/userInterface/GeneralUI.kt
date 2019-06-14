@@ -50,15 +50,15 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 		// Actually we want the dialog to be only shown in onResume, not in onCreate as the app intro is supposed to be shown before this dialog:
 		MainActivity.doOnResume {
 
-			AlertDialog.Builder(context, R.style.myAlertDialog)
-				.setTitle(context.getString(R.string.usagestats_access))
-				.setMessage(context.getString(R.string.usatestats_explanation))
-				.setPositiveButton(context.getString(R.string.enable)) { _, _ ->
-					showUsageStatsSettings(context)
+			AlertDialog.Builder(this, R.style.myAlertDialog)
+				.setTitle(this.getString(R.string.usagestats_access))
+				.setMessage(this.getString(R.string.usatestats_explanation))
+				.setPositiveButton(this.getString(R.string.enable)) { _, _ ->
+					showUsageStatsSettings(this)
 					MainActivity.doOnResume {
 
-						if (!usageStatsPermissionGranted(context)) {
-							toast(context, context.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
+						if (!usageStatsPermissionGranted(this)) {
+							toast(this, this.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
 						}
 						doAfterwards()
 
@@ -66,7 +66,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 						false
 					}
 				}
-				.setNegativeButton(context.getString(android.R.string.no)) { _, _ ->
+				.setNegativeButton(this.getString(android.R.string.no)) { _, _ ->
 					//directly load running applications
 					doAfterwards()
 				}
