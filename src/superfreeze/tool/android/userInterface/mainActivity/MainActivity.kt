@@ -48,6 +48,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getAllAggregatedUsageStats
 import superfreeze.tool.android.backend.getApplications
@@ -81,12 +84,17 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
+		// Accessing prefListSortMode sometimes took a lot of time -> I am doing it asynchronously
+		val listSortMode by AsyncDelegated { prefListSortMode }
+		// Likewise, access usageStatsMap so that it can be done faster later.
+		GlobalScope.launch { usageStatsMap }
+
 		setContentView(R.layout.activity_main)
 
 		val listView = list
 
 		listView.layoutManager = LinearLayoutManager(this)
-		appsListAdapter = AppsListAdapter(this, listComparator(prefListSortMode))
+		appsListAdapter = AppsListAdapter(this, listComparator(listSortMode))
 		listView.adapter = appsListAdapter
 
 		progressBar = progress

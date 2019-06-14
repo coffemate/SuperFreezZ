@@ -20,21 +20,51 @@
 
 package superfreeze.tool.android
 
-import org.junit.After
-import org.junit.Before
+import kotlinx.coroutines.delay
+import org.junit.Assert
 import org.junit.Test
 
 class AsyncDelegatedTest {
 
-	@Before
-	fun setUp() {
-	}
-
-	@After
-	fun tearDown() {
+	@Test
+	fun getValue() {
+		val b by AsyncDelegated {
+			"hi"
+		}
+		Thread.sleep(100)
+		Assert.assertEquals("hi", b)
+		Assert.assertEquals("hi", b)
 	}
 
 	@Test
-	fun getValue() {
+	fun getValue2() {
+		val b by AsyncDelegated {
+			Thread.sleep(100)
+			"hi"
+		}
+		Assert.assertEquals("hi", b)
+		Assert.assertEquals("hi", b)
+	}
+
+	@Test
+	fun getValue3() {
+		val b by AsyncDelegated {
+			delay(100)
+			"hi"
+		}
+		Assert.assertEquals("hi", b)
+		Assert.assertEquals("hi", b)
+	}
+
+	@Test
+	fun getValue4() {
+		repeat(1000) {
+			val b by AsyncDelegated {
+				"hi"
+			}
+			repeat (10) {
+				Assert.assertEquals("hi", b)
+			}
+		}
 	}
 }

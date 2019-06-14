@@ -190,16 +190,19 @@ internal class AppsListAdapter internal constructor(
 				it.isPendingFreeze()
 			}
 
-		originalList =
-				if (listPendingFreeze.isEmpty()) {
-					listOf(ListItemSectionHeader(mainActivity.getString(R.string.no_apps_pending_freeze)))
-				} else {
-					listOf(ListItemSectionHeader(mainActivity.getString(R.string.pending_freeze))) +
-							listPendingFreeze
-				} +
+		val newOriginalList = ArrayList<AbstractListItem>((appsList.size * 1.5).toInt())
 
-				ListItemSectionHeader(mainActivity.getString(R.string.all_apps)) +
-				appsList
+		if(listPendingFreeze.isEmpty()) {
+			newOriginalList.add(ListItemSectionHeader(mainActivity.getString(R.string.no_apps_pending_freeze)))
+		} else {
+			newOriginalList.add(ListItemSectionHeader(mainActivity.getString(R.string.pending_freeze)))
+			newOriginalList.addAll(listPendingFreeze)
+		}
+
+		newOriginalList.add(ListItemSectionHeader(mainActivity.getString(R.string.all_apps)))
+		newOriginalList.addAll(appsList)
+
+		originalList = newOriginalList
 
 		refreshList()
 	}

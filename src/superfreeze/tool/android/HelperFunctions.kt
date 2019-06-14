@@ -21,8 +21,12 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android
 
 import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.io.PrintWriter
 import java.io.StringWriter
+import kotlin.reflect.KProperty
 
 /**
  * This function gets all indexes of item in the receiver list.
@@ -70,4 +74,15 @@ fun getStackTrace(throwable: Throwable): String {
 	throwable.printStackTrace(PrintWriter(stringWriter, true))
 	return stringWriter.buffer.toString()
 }
+val a by AsyncDelegated { "Hi" }
 
+
+class AsyncDelegated<T>(val f: suspend () -> T) {
+	private val deferred = GlobalScope.async {
+		f()
+	}
+
+	operator fun getValue(thisRef: Any?, property: KProperty<*>): T = runBlocking {
+		deferred.await()
+	}
+}
