@@ -31,6 +31,12 @@ class MyApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
+		/*
+		//This can be used to delay the app start for debugging purposes (especially the Android Studio Profiler):
+		val start = System.currentTimeMillis()
+		while (start + 10000 > System.currentTimeMillis()) {
+			Thread.sleep(10);
+		}*/
 
 		// Setup handler for uncaught exceptions.
 		Thread.setDefaultUncaughtExceptionHandler { _, e ->

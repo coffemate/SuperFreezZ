@@ -53,6 +53,7 @@ import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
@@ -90,8 +91,8 @@ internal class AppsListAdapter internal constructor(
 	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
 	private val packageManager: PackageManager = mainActivity.packageManager
 
-	private val cacheAppName = Collections.synchronizedMap(LinkedHashMap<String, String>(10, 1.5f, true))
-	private val cacheAppIcon = Collections.synchronizedMap(LinkedHashMap<String, Drawable>(10, 1.5f, true))
+	private val cacheAppName = ConcurrentHashMap<String, String>()
+	private val cacheAppIcon = ConcurrentHashMap<String, Drawable>()
 
 	var searchPattern: String = ""
 		set(value) {
@@ -141,9 +142,11 @@ internal class AppsListAdapter internal constructor(
 				refreshBothLists()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
+				mainActivity.reportFullyDrawn()
 			}
 		}
 
+		//TODO check if these lines should be deleted:
 		refreshBothLists()
 		notifyDataSetChanged()
 	}
@@ -245,7 +248,7 @@ internal class AppsListAdapter internal constructor(
 
 	internal inner class ViewHolderApp(v: View, private val context: Context) : AbstractViewHolder(v) {
 
-		val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
+		private val imgIcon: ImageView = v.findViewById(R.id.imgIcon)
 
 		private val txtAppName: TextView = v.findViewById(R.id.txtAppName)
 		private val txtExplanation: TextView = v.findViewById(R.id.txtExplanation)
