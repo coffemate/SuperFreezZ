@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 		// Accessing prefListSortMode sometimes took a lot of time -> I am doing it asynchronously
 		val listSortMode by AsyncDelegated { prefListSortMode }
+		val applications by AsyncDelegated { getApplications(applicationContext) }
 
 		setContentView(R.layout.activity_main)
 
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 		progressBar.visibility = View.VISIBLE
 
 		requestUsageStatsPermission(this) {
-			val packages = getApplications(applicationContext)
+			val packages = applications
 			appsListAdapter.setAndLoadItems(packages)
 		}
 

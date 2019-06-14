@@ -83,6 +83,6 @@ class AsyncDelegated<T>(val f: suspend () -> T) {
 	}
 
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T = runBlocking {
-		deferred.await()
+		deferred.await() // TODO await() takes a lot of time (?)
 	}
 }
