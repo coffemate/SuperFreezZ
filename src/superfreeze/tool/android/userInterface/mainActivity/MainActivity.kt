@@ -29,33 +29,25 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
-import android.app.usage.UsageStats
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.getAllAggregatedUsageStats
 import superfreeze.tool.android.backend.getApplications
-import superfreeze.tool.android.backend.getPendingFreezeExplanation
-import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefIntroAlreadyShown
 import superfreeze.tool.android.database.prefListSortMode
@@ -76,25 +68,18 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var progressBar: ProgressBar
 
-	internal val usageStatsMap: Map<String, UsageStats>? by lazy {
-		getRecentAggregatedUsageStats(this)
-	}
-
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		// Accessing prefListSortMode sometimes took a lot of time -> I am doing it asynchronously
 		val listSortMode by AsyncDelegated { prefListSortMode }
-		// Likewise, access usageStatsMap so that it can be done faster later.
-		GlobalScope.launch { usageStatsMap }
 
 		setContentView(R.layout.activity_main)
 
 		val listView = list
 
 		listView.layoutManager = LinearLayoutManager(this)
-		appsListAdapter = AppsListAdapter(this, listComparator(listSortMode))
+		appsListAdapter = AppsListAdapter(this, listSortMode)
 		listView.adapter = appsListAdapter
 
 		progressBar = progress
@@ -216,7 +201,7 @@ class MainActivity : AppCompatActivity() {
 				showSortChooserDialog(this, prefListSortMode) { index ->
 					prefListSortMode = index
 
-					appsListAdapter.comparator = listComparator(index)
+					appsListAdapter.sortModeIndex = index
 
 					appsListAdapter.sortList()
 					appsListAdapter.refresh()
@@ -227,46 +212,6 @@ class MainActivity : AppCompatActivity() {
 			else -> false
 		}
 	}
-
-	private fun listComparator(index: Int): Comparator<AppsListAdapter.ListItemApp> = when (index) {
-
-		// 0: Sort by name
-		0 -> compareBy {
-			it.text
-		}
-
-		// 1: Sort by freeze state
-		1 -> compareBy<AppsListAdapter.ListItemApp> {
-			it.freezeMode
-		}.thenBy {
-			getPendingFreezeExplanation(
-				it.freezeMode,
-				it.applicationInfo,
-				usageStatsMap?.get(it.packageName),
-				this
-			)
-		}
-
-		// 2: Sort by last time used
-		2 -> {
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-				Toast.makeText(
-					this,
-					"Last time used is not available for your Android version",
-					Toast.LENGTH_LONG
-				).show()
-				compareBy { it.text }
-			} else {
-				val allUsageStats = getAllAggregatedUsageStats(this)
-				compareBy {
-					allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L
-				}
-			}
-		}
-
-		else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
-	}
-
 
 	override fun onConfigurationChanged(newConfig: Configuration?) {
 		super.onConfigurationChanged(newConfig)

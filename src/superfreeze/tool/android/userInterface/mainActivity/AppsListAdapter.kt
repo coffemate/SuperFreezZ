@@ -25,6 +25,7 @@ SOFTWARE.
 
 package superfreeze.tool.android.userInterface.mainActivity
 
+import android.app.usage.UsageStats
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -41,10 +42,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.allIndexesOf
 import superfreeze.tool.android.backend.*
@@ -65,12 +68,17 @@ import kotlin.collections.ArrayList
  */
 internal class AppsListAdapter internal constructor(
 	private val mainActivity: MainActivity,
-	internal var comparator: kotlin.Comparator<ListItemApp>
+	internal var sortModeIndex: Int
 ) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
 
 	private val tFactory = ThreadFactory { r ->
 		Thread(r).apply { isDaemon = true }
 	}
+
+	private val usageStatsMap: Map<String, UsageStats>? by AsyncDelegated {
+		getRecentAggregatedUsageStats(mainActivity)
+	}
+
 
 	/**
 	 * This list contains all apps in the list exactly once. That is, apps that appear twice in the list are contained only once.
@@ -152,7 +160,7 @@ internal class AppsListAdapter internal constructor(
 	}
 
 	internal fun sortList() {
-		Collections.sort(appsList, comparator)
+		Collections.sort(appsList, listComparator(sortModeIndex))
 	}
 
 
@@ -243,6 +251,47 @@ internal class AppsListAdapter internal constructor(
 		}.start()
 	}
 
+	private fun listComparator(index: Int): Comparator<ListItemApp> = when (index) {
+
+		// 0: Sort by name
+		0 -> compareBy {
+			it.text
+		}
+
+		// 1: Sort by freeze state
+		1 -> compareBy<ListItemApp> {
+			it.freezeMode
+		}.thenBy {
+			getPendingFreezeExplanation(
+				it.freezeMode,
+				it.applicationInfo,
+				usageStatsMap?.get(it.packageName),
+				mainActivity
+			)
+		}
+
+		// 2: Sort by last time used
+		2 -> {
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+				Toast.makeText(
+					mainActivity,
+					"Last time used is not available for your Android version",
+					Toast.LENGTH_LONG
+				).show()
+				compareBy { it.text }
+			} else {
+				val allUsageStats = getAllAggregatedUsageStats(mainActivity)
+				compareBy {
+					allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L
+				}
+			}
+		}
+
+		else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
+	}
+
+
+
 
 	internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 		abstract fun setName(name: String, highlight: String?)
@@ -309,7 +358,7 @@ internal class AppsListAdapter internal constructor(
 			txtExplanation.text = getPendingFreezeExplanation(
 				freezeMode,
 				listItem.applicationInfo,
-				mainActivity.usageStatsMap?.get(listItem.packageName),
+				usageStatsMap?.get(listItem.packageName),
 				context
 			)
 		}
@@ -456,7 +505,7 @@ internal class AppsListAdapter internal constructor(
 		}
 
 		fun isPendingFreeze(): Boolean {
-			return isPendingFreeze(freezeMode, applicationInfo, mainActivity.usageStatsMap?.get(packageName))
+			return isPendingFreeze(freezeMode, applicationInfo, usageStatsMap?.get(packageName))
 		}
 
 		internal fun setFreezeModeTo(
