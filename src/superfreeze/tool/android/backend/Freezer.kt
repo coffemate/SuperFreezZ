@@ -58,11 +58,18 @@ internal fun freezeApp(packageName: String, context: Context) {
  * It returns whether it wants to be executed again.
  */
 internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
+	val appsNonNull = apps ?: getAppsPendingFreeze(context)
+
+	// Always freeze SuperFreezZ itself last:
+	val appsSuperfreezzLast =
+		if (appsNonNull.contains(BuildConfig.APPLICATION_ID))
+			appsNonNull.sortedBy { it == BuildConfig.APPLICATION_ID }
+		else
+			appsNonNull
+
 	return _freezeAll(
 		context,
-		(apps ?: getAppsPendingFreeze(context))
-			// The following line is necessary to always freeze SuperFreezZ itself last:
-			.sortedBy{ it == BuildConfig.APPLICATION_ID }
+		appsSuperfreezzLast
 	)
 }
 

@@ -201,11 +201,14 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 internal fun getAppsPendingFreeze(context: Context): List<String> {
 
 	val usageStatsMap = getRecentAggregatedUsageStats(context)
-	return getApplications(context)
-		.asSequence()
-		.filter { isPendingFreeze(it, usageStatsMap?.get(it.packageName), context) }
-		.map { it.packageName }
-		.toList()
+
+	// We am not using map{} and filter{} here because it is faster that way:
+	val result = ArrayList<String>()
+	for (app in getApplications(context)) {
+		if (isPendingFreeze(app, usageStatsMap?.get(app.packageName), context))
+			result.add(app.packageName)
+	}
+	return result
 }
 
 // Currently unused, instead
