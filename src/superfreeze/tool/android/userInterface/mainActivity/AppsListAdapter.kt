@@ -449,13 +449,14 @@ internal class AppsListAdapter internal constructor(
 			var first = true
 			do {
 				try {
-					val appName = cacheAppName[packageName]
-						?: applicationInfo.loadLabel(packageManager).toString()
+					if (cacheAppName[packageName] == null) {
+						cacheAppName[packageName] = applicationInfo.loadLabel(packageManager).toString()
+					}
 
-					val icon = applicationInfo.loadIcon(packageManager)
+					if (cacheAppIcon[packageName] == null) {
+						cacheAppIcon[packageName] = applicationInfo.loadIcon(packageManager)
+					}
 
-					cacheAppName[packageName] = appName
-					cacheAppIcon[packageName] = icon
 					mainActivity.runOnUiThread {
 						viewHolder.refresh()
 					}

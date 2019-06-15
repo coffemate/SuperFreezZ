@@ -45,8 +45,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getApplications
