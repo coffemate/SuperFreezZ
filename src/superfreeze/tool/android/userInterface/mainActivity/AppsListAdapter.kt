@@ -47,6 +47,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.allIndexesOf
@@ -59,7 +63,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -151,12 +154,9 @@ internal class AppsListAdapter internal constructor(
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
 				mainActivity.reportFullyDrawn()
+				Log.v(TAG, "Fully drawn")
 			}
 		}
-
-		//TODO check if these lines should be deleted:
-		refreshBothLists()
-		notifyDataSetChanged()
 	}
 
 	internal fun sortList() {
@@ -210,9 +210,10 @@ internal class AppsListAdapter internal constructor(
 		newOriginalList.add(ListItemSectionHeader(mainActivity.getString(R.string.all_apps)))
 		newOriginalList.addAll(appsList)
 
-		originalList = newOriginalList
-
-		refreshList()
+		mainActivity.runOnUiThread {
+			originalList = newOriginalList
+			refreshList()
+		}
 	}
 
 	private fun refreshList() {
@@ -236,19 +237,15 @@ internal class AppsListAdapter internal constructor(
 	}
 
 	private fun loadAllNames(items: List<ListItemApp>, onAllNamesLoaded: () -> Unit) {
-		val executorServiceNames = Executors.newFixedThreadPool(3, tFactory)
-		for (item in items) {
-			executorServiceNames.submit {
-				cacheAppName[item.packageName] = item.applicationInfo.loadLabel(packageManager).toString()
-			}
-		}
-		executorServiceNames.shutdown()
-		Thread {
-			val finished = executorServiceNames.awaitTermination(2, TimeUnit.MINUTES)
-			if (!finished)
-				Log.e(TAG, "After 2 minutes, some app names were still not loaded")
+		GlobalScope.launch {
+			items.map { item ->
+				GlobalScope.async {
+					cacheAppName[item.packageName] =
+						item.applicationInfo.loadLabel(packageManager).toString()
+				}
+			}.joinAll()
 			onAllNamesLoaded()
-		}.start()
+		}
 	}
 
 	private fun listComparator(index: Int): Comparator<ListItemApp> = when (index) {
@@ -466,7 +463,7 @@ internal class AppsListAdapter internal constructor(
 
 				} catch (ex: OutOfMemoryError) {
 					cacheAppIcon.clear()
-					cacheAppName.clear()
+					//cacheAppName.clear()
 					if (first) {
 						first = false
 						continue

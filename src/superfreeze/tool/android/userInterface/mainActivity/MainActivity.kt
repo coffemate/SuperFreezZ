@@ -45,6 +45,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getApplications
@@ -56,8 +58,6 @@ import superfreeze.tool.android.userInterface.intro.IntroActivity
 import superfreeze.tool.android.userInterface.requestUsageStatsPermission
 import superfreeze.tool.android.userInterface.settingsActivity.SettingsActivity
 import superfreeze.tool.android.userInterface.showSortChooserDialog
-
-
 
 
 /**
@@ -87,8 +87,7 @@ class MainActivity : AppCompatActivity() {
 		progressBar.visibility = View.VISIBLE
 
 		requestUsageStatsPermission(this) {
-			val packages = applications
-			appsListAdapter.setAndLoadItems(packages)
+			appsListAdapter.setAndLoadItems(applications)
 		}
 
 		setSupportActionBar(toolbar)
