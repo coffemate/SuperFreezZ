@@ -61,8 +61,6 @@ import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
 import kotlin.collections.ArrayList
 
 
@@ -73,10 +71,6 @@ internal class AppsListAdapter internal constructor(
 	private val mainActivity: MainActivity,
 	internal var sortModeIndex: Int
 ) : RecyclerView.Adapter<AppsListAdapter.AbstractViewHolder>() {
-
-	private val tFactory = ThreadFactory { r ->
-		Thread(r).apply { isDaemon = true }
-	}
 
 	private val usageStatsMap: Map<String, UsageStats>? by AsyncDelegated {
 		getRecentAggregatedUsageStats(mainActivity)
@@ -99,7 +93,6 @@ internal class AppsListAdapter internal constructor(
 	private var list = emptyList<AbstractListItem>()
 
 
-	private val executorServiceIcons = Executors.newFixedThreadPool(3, tFactory)
 	private val packageManager: PackageManager = mainActivity.packageManager
 
 	private val cacheAppName = ConcurrentHashMap<String, String>()
@@ -398,8 +391,8 @@ internal class AppsListAdapter internal constructor(
 			// Refresh icon:
 			imgIcon.setImageDrawable(cacheAppIcon[listItem.packageName])
 			if (cacheAppIcon[listItem.packageName] == null) {
-				executorServiceIcons.submit {
-					listItem.loadNameAndIcon(this)
+				GlobalScope.launch {
+					listItem.loadNameAndIcon(this@ViewHolderApp)
 				}
 			}
 		}
