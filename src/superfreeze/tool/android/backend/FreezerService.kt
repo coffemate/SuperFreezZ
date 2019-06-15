@@ -28,6 +28,8 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.expectNonNull
 
@@ -168,7 +170,7 @@ class FreezerService : AccessibilityService() {
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
 			stopAnyCurrentFreezing()
-			Thread(exceptionHandler).start()
+			GlobalScope.launch { exceptionHandler }
 			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
