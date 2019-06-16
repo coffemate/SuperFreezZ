@@ -29,6 +29,7 @@ import android.net.Uri
 import android.os.Build
 import org.jetbrains.annotations.Contract
 import superfreeze.tool.android.BuildConfig
+import superfreeze.tool.android.Waiter
 
 /**
  * Freeze a package.
@@ -54,10 +55,11 @@ internal fun freezeApp(packageName: String, context: Context) {
  * Freezes all apps in the "apps" list or all apps that are pending freeze.
  * @param context: The context
  * @param apps: A list of apps to be frozen. If it is null or not given, a list of apps that pend freeze is computed automatically.
+ * @param waiter: Waiter that is notified onResume, so that the next app can be frozen.
  * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
  * It returns whether it wants to be executed again.
  */
-internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Boolean {
+internal suspend fun freezeAll(context: Context, apps: List<String>? = null, waiter: Waiter) {
 	val appsNonNull = apps ?: getAppsPendingFreeze(context)
 
 	// Always freeze SuperFreezZ itself last:
@@ -67,28 +69,11 @@ internal fun freezeAll(context: Context, apps: List<String>? = null): () -> Bool
 		else
 			appsNonNull
 
-	return _freezeAll(
-		context,
-		appsSuperfreezzLast
-	)
-}
-
-private fun _freezeAll(context: Context, apps: List<String>): () -> Boolean {
-	var nextIndex = 0
-
-	fun freezeNext(): Boolean {
-		if (nextIndex < apps.size) {
-			freezeApp(apps[nextIndex], context)
-			nextIndex++
-		}
-		//only execute again if nextIndex is a valid index
-		return nextIndex < apps.size
+	for (app in appsSuperfreezzLast) {
+		freezeApp(app, context)
+		waiter
+			.doWait()
 	}
-
-	freezeNext()
-
-	// The returned function will be called in onResume:
-	return ::freezeNext
 }
 
 internal fun setFreezerExceptionHandler(function: () -> Unit) {

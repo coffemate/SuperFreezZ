@@ -23,6 +23,7 @@ package superfreeze.tool.android
 import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -85,4 +86,18 @@ class AsyncDelegated<T>(val f: suspend () -> T) {
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T = runBlocking {
 		deferred.await() // TODO await() takes a lot of time (?)
 	}
+}
+
+
+inline class Waiter(private val channel: Channel<Unit> = Channel(0)) {
+
+	/**
+	 * Waits until another coroutine calls doNotify().
+	 */
+	suspend fun doWait() { channel.receive() }
+
+	/**
+	 * Notifies waiting coroutines. If nothing is waiting, this has no effect.
+	 */
+	fun doNotify() { channel.offer(Unit) }
 }

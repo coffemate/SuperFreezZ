@@ -26,8 +26,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
+import superfreeze.tool.android.Waiter
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.freezeAll
 import superfreeze.tool.android.backend.getAppsPendingFreeze
@@ -50,6 +53,8 @@ class FreezeShortcutActivity : Activity() {
 	 */
 	private var isBeingNewlyCreated = true
 
+	private val waiterForNextFreeze = Waiter()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -70,42 +75,27 @@ class FreezeShortcutActivity : Activity() {
 		setResult(RESULT_OK, intent)
 	}
 
+
 	private fun performFreeze(triesLeft: Int = 1) {
 
 		// Sometimes the accessibility service is disabled for some reason.
 		// In this case, tell the user to re-enable it:
 		if (!FreezerService.isEnabled && prefUseAccessibilityService) {
-			showAccessibilityDialog(this)
-			doOnReenterActivity {
-				prefUseAccessibilityService = FreezerService.isEnabled
-				performFreeze()
-				false
-			}
+			promptForAccessibility()
 			return
 		}
 
-		// Tell the user how to manually freeze if necessary, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/14:
-		fun showFreezeManuallyDialog() {
-			if (!FreezerService.isEnabled) {
-				AlertDialog.Builder(this, R.style.myAlertDialog)
-					.setTitle(R.string.freeze_manually)
-					.setMessage(R.string.Press_forcestop_ok_back)
-					.setPositiveButton(android.R.string.ok) { _, _ ->
-						performFreeze()
-					}
-					.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
-						showAccessibilityDialog(this)
-						doOnReenterActivity {
-							showFreezeManuallyDialog()
-							false
-						}
-					}
-					.show()
-				return
-			}
-		}
 		if (!FreezerService.isEnabled && neverCalled("dialog-how-to-freeze-without-accessibility-service", this)) {
-			showFreezeManuallyDialog()
+			AlertDialog.Builder(this, R.style.myAlertDialog)
+				.setTitle(R.string.freeze_manually)
+				.setMessage(R.string.Press_forcestop_ok_back)
+				.setPositiveButton(android.R.string.ok) { _, _ ->
+					performFreeze()
+				}
+				.setNegativeButton(R.string.freeze_manually_no) { _, _ ->
+					promptForAccessibility()
+				}
+				.show()
 			return
 		}
 
@@ -116,20 +106,20 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
+
 		// Now we can do the actual freezing work:
 
 		var somethingWentWrong = false
 
-		val freezeNextApp = freezeAll(this, appsPendingFreeze)
-		doOnReenterActivity {
-			Log.v(TAG, "Ready to freeze the next app.")
-			val appsLeft = freezeNextApp()
 
-			if (!appsLeft) {
+		GlobalScope.launch {
+			freezeAll(this@FreezeShortcutActivity, appsPendingFreeze, waiterForNextFreeze)
+
+			runOnUiThread {
 				if (somethingWentWrong && triesLeft > 0) {
 					// Sometimes an app can't be frozen due to a bug I did not find yet.
 					// So simply try again by calling performFreeze again
-					Log.v(TAG, "Didn't finish freezing, trying again.")
+					Log.e(TAG, "Didn't finish freezing, trying again.")
 					performFreeze(triesLeft - 1)
 				} else {
 					Log.v(TAG, "Finished freezing")
@@ -138,11 +128,7 @@ class FreezeShortcutActivity : Activity() {
 					finish()
 				}
 			}
-
-			appsLeft // Only execute again if there are still apps left
 		}
-		// We are still in onCreate. When we finish, onResume will be called and the resume() function will be called
-		// so that the first app can be frozen.
 
 		setFreezerExceptionHandler {
 			runOnUiThread {
@@ -153,8 +139,15 @@ class FreezeShortcutActivity : Activity() {
 				startActivity(i)
 			}
 		}
+	}
 
-		return
+	private fun promptForAccessibility() {
+		showAccessibilityDialog(this)
+		doOnReenterActivity {
+			prefUseAccessibilityService = FreezerService.isEnabled
+			performFreeze()
+			false
+		}
 	}
 
 	override fun onResume() {
@@ -163,6 +156,9 @@ class FreezeShortcutActivity : Activity() {
 		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
 		// NOT after onCreate finished
 		if (!isBeingNewlyCreated) {
+			// Maybe the next app is waiting to be frozen
+			waiterForNextFreeze.doNotify()
+
 			//Execute all tasks and retain only those that returned true.
 			toBeDoneOnReenterActivity.cloneAndRetainAll { it() }
 		}
@@ -174,7 +170,8 @@ class FreezeShortcutActivity : Activity() {
 
 
 	/**
-	 * Execute the task when this activity was left and re-entered
+	 * Execute the task when this activity was left and re-entered.
+	 * Only call from the UI thread!
 	 */
 	private fun doOnReenterActivity(task: () -> Boolean) {
 		toBeDoneOnReenterActivity.add(task)
@@ -210,6 +207,7 @@ class FreezeShortcutActivity : Activity() {
 			return intent
 		}
 
+		@JvmStatic
 		internal fun createShortcutIntent(context: Context): Intent {
 			val shortcutIntent = Intent(FREEZE_ACTION)
 			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
