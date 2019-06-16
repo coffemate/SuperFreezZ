@@ -73,8 +73,6 @@ class FreezerService : AccessibilityService() {
 			return
 		}
 
-		var node: AccessibilityNodeInfo? = null
-
 		when (nextAction) {
 			NextAction.DO_NOTHING -> { }
 
