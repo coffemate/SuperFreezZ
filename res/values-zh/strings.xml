@@ -51,8 +51,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	</string>
     <string name="yes">好的</string>
     <string name="no">不</string>
-    <string name="welcome">欢迎来到SuperFreezZ!</string>
-    <string name="short_description">SuperFreezZ让冻结APP所有的后台活动变得轻而易举</string>
     <string name="intro_always_freeze_title">冻结模式：始终冻结</string>
     <string name="intro_always_freeze_explanation">有三种冻结模式。您可以为每个APP选择一个。"始终冻结"将无论如何都冻结一个APP
 	</string>

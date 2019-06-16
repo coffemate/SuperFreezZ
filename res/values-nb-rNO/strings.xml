@@ -34,7 +34,6 @@
     <string name="intro_header_welcome">velkommen til</string>
     <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Frys dette programmet hvis det ikke har blitt brukt på en god stund.</string>
     <string name="intro_always_freeze_explanation">Det er tre frysemodus. Du kan velge ett for hvert program. ALLTID FRYS vil fryse et program uansett.</string>
-    <string name="short_description">SuperFreezZ gjør det enkelt å fryse alle programmer bakgrunnsaktiviteter.</string>
     <string name="frozen">Frosset</string>
     <string name="freeze_on_screen_off_title">Frys når skjermen skrus av</string>
     <string name="problems">Problemer</string>
