@@ -107,11 +107,19 @@ class FreezeShortcutActivity : Activity() {
 		}
 
 
-		// Now we can do the actual freezing work:
-
 		var somethingWentWrong = false
 
+		setFreezerExceptionHandler {
+			runOnUiThread {
+				somethingWentWrong = true
+				val i =
+					Intent(applicationContext, FreezeShortcutActivity::class.java)
+				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+				startActivity(i)
+			}
+		}
 
+		// Now we can do the actual freezing work:
 		GlobalScope.launch {
 			freezeAll(this@FreezeShortcutActivity, appsPendingFreeze, waiterForNextFreeze)
 
@@ -127,16 +135,6 @@ class FreezeShortcutActivity : Activity() {
 					onFreezeFinishedListener = null
 					finish()
 				}
-			}
-		}
-
-		setFreezerExceptionHandler {
-			runOnUiThread {
-				somethingWentWrong = true
-				val i =
-					Intent(applicationContext, FreezeShortcutActivity::class.java)
-				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-				startActivity(i)
 			}
 		}
 	}

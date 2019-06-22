@@ -71,8 +71,7 @@ internal suspend fun freezeAll(context: Context, apps: List<String>? = null, wai
 
 	for (app in appsSuperfreezzLast) {
 		freezeApp(app, context)
-		waiter
-			.doWait()
+		waiter.doWait()
 	}
 }
 
