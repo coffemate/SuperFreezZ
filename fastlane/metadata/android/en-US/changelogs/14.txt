@@ -1,0 +1,10 @@
+WARNING: I did a lot of refactoring, so there might be problems!! If SuperFreezZ is very important for you, wait for version 0.5.
+
+Please report any issues at https://gitlab.com/SuperFreezZ/SuperFreezZ/issues.
+
+Update translations
+Performance improvements
+CRASHFIX On startup: android.view.WindowManager$BadTokenException
+Do not show the MainActivity after freezing
+BUGFIX Sometimes the screen timeout stayed at 15s after freeze-on-screen-off: Fix #32
+Minor improvements
