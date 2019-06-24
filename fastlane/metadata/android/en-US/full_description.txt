@@ -1,4 +1,9 @@
 <p>Android app (beta) making it possible to entirely freeze all background activities of any app.</p>
+<ul>
+<li>Get back control over what runs on your phone</li>
+<li>Enhance battery life and reduce mobile data usage by freezing rarely used apps</li>
+<li>Especially useful while you are on a tour, where you need only some apps but a long battery life</li>
+</ul>
 <p>Greenify can also do this, but it is not Open Source.</p>
 <p>SuperFreezZ is not yet another task manager promising to delete 10 GB of data per month or making your device 2x as fast. This is impossible.</p>
 <p>Instead, SuperFreezZ is honest about its disadvantages: Freezing daily used apps probably drains your battery a little faster. Also, these apps will take longer to start when you use them the next time: SuperFreezZ will super freeze your apps, it takes about 1-3 seconds to defrost them. Greenify has the same disadvantages, except that the author of Greenify does not warn you about it. So: Just do not overdo it, and SuperFreezZ will be super useful.</p>
