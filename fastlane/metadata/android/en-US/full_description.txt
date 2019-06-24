@@ -5,7 +5,7 @@
 <p>Examples for apps that deserve to be frozen:</p>
 <ul>
 <li>Untrusted apps (that you do not want to run in the background)</li>
-<li>Apps used very few</li>
+<li>Apps you rarely use</li>
 <li>Annoying apps</li>
 </ul>
 <h2 id="features">Features</h2>

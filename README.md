@@ -14,7 +14,7 @@ Instead, SuperFreezZ is honest about its disadvantages: Freezing daily used apps
 Examples for apps that deserve to be frozen:
 
  * Untrusted apps (that you do not want to run in the background)
- * Apps used very few
+ * Apps you rarely use
  * Annoying apps
 
 Features
