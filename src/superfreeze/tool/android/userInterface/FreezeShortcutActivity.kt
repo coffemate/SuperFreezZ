@@ -155,7 +155,7 @@ class FreezeShortcutActivity : Activity() {
 		// NOT after onCreate finished
 		if (!isBeingNewlyCreated) {
 			// Maybe the next app is waiting to be frozen
-			waiterForNextFreeze.doNotify()
+			waiterForNextFreeze.notify()
 
 			//Execute all tasks and retain only those that returned true.
 			toBeDoneOnReenterActivity.cloneAndRetainAll { it() }

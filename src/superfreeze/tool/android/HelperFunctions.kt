@@ -92,12 +92,12 @@ class AsyncDelegated<T>(val f: suspend () -> T) {
 inline class Waiter(private val channel: Channel<Unit> = Channel(0)) {
 
 	/**
-	 * Waits until another coroutine calls doNotify().
+	 * Waits until another coroutine calls notify().
 	 */
-	suspend fun doWait() { channel.receive() }
+	suspend fun wait() { channel.receive() }
 
 	/**
 	 * Notifies waiting coroutines. If nothing is waiting, this has no effect.
 	 */
-	fun doNotify() { channel.offer(Unit) }
+	fun notify() { channel.offer(Unit) }
 }
