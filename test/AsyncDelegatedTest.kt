@@ -21,6 +21,9 @@
 package superfreeze.tool.android
 
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
@@ -57,14 +60,17 @@ class AsyncDelegatedTest {
 	}
 
 	@Test
-	fun getValue4() {
-		repeat(1000) {
-			val b by AsyncDelegated {
-				"hi"
+	fun getValue4() = runBlocking {
+		(0..1000).map {
+			launch {
+				val b by AsyncDelegated {
+					delay(10)
+					"hi"
+				}
+				repeat(1000) {
+					Assert.assertEquals("hi", b)
+				}
 			}
-			repeat (10) {
-				Assert.assertEquals("hi", b)
-			}
-		}
+		}.joinAll()
 	}
 }
