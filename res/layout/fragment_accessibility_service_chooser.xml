@@ -26,12 +26,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/colorPrimary"
+	android:paddingBottom="55dp"
 	tools:context=".userInterface.intro.IntroFragment">
-
-	<FrameLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:paddingBottom="55dp">
 
 		<androidx.constraintlayout.widget.ConstraintLayout
 			android:layout_width="match_parent"
@@ -58,21 +54,24 @@
 				android:layout_height="wrap_content"
 				android:text="@string/intro_header_automaticfreezing"
 				android:textColor="@color/secondary_text_material_dark"
-				android:textSize="40sp"
+				android:textSize="30sp"
 				app:fontFamily="@font/uni_sans_heavy"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 
-			<LinearLayout
+			<ScrollView
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+
+				android:layout_height="0dp"
 				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
 				android:orientation="vertical"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/txv_Welcome3"
-				app:layout_constraintVertical_bias="0.3">
+				app:layout_constraintHeight_max="wrap"
+				app:layout_constraintVertical_bias="0.4">
 
 				<!--	<LinearLayout
                         android:layout_width="match_parent"
@@ -90,68 +89,73 @@
                             android:paddingRight="16dp"
                             tools:ignore="ContentDescription" />
                     </LinearLayout>-->
-
 				<LinearLayout
-					android:id="@+id/accessibilityYes"
-					style="@style/myClickable"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:background="@drawable/rounded_corner_top"
-					android:orientation="vertical"
-					android:paddingLeft="16dp"
-					android:paddingTop="10dp"
-					android:paddingRight="16dp"
-					android:paddingBottom="10dp">
+					android:layout_gravity="center"
+					android:orientation="vertical">
 
-					<TextView
+					<LinearLayout
+						android:id="@+id/accessibilityYes"
+						style="@style/myClickable"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="left"
-						android:text="@string/yes"
-						android:textColor="@color/text_color_primary"
-						android:textSize="25sp" />
+						android:background="@drawable/rounded_corner_top"
+						android:orientation="vertical"
+						android:paddingLeft="16dp"
+						android:paddingTop="10dp"
+						android:paddingRight="16dp"
+						android:paddingBottom="10dp">
 
-					<TextView
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:gravity="left"
+							android:text="@string/yes"
+							android:textColor="@color/text_color_primary"
+							android:textSize="25sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:gravity="left"
+							android:text="@string/accessibility_arguments_yes"
+							android:textColor="@color/text_color_primary"
+							android:textSize="16sp" />
+					</LinearLayout>
+
+
+					<LinearLayout
+						android:id="@+id/accessibilityNo"
+						style="@style/myClickable"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:gravity="left"
-						android:text="@string/accessibility_arguments_yes"
-						android:textColor="@color/text_color_primary"
-						android:textSize="16sp" />
+						android:background="@drawable/rounded_corner_bottom"
+						android:orientation="vertical"
+						android:paddingLeft="16dp"
+						android:paddingTop="10dp"
+						android:paddingRight="16dp"
+						android:paddingBottom="10dp">
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:gravity="left"
+							android:text="@string/no"
+							android:textColor="@color/text_color_primary"
+							android:textSize="25sp" />
+
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:gravity="left"
+							android:text="@string/accessibility_arguments_no"
+							android:textColor="@color/text_color_primary"
+							android:textSize="16sp" />
+					</LinearLayout>
 				</LinearLayout>
-
-
-				<LinearLayout
-					android:id="@+id/accessibilityNo"
-					style="@style/myClickable"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:background="@drawable/rounded_corner_bottom"
-					android:orientation="vertical"
-					android:paddingLeft="16dp"
-					android:paddingTop="10dp"
-					android:paddingRight="16dp"
-					android:paddingBottom="10dp">
-
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="left"
-						android:text="@string/no"
-						android:textColor="@color/text_color_primary"
-						android:textSize="25sp" />
-
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:gravity="left"
-						android:text="@string/accessibility_arguments_no"
-						android:textColor="@color/text_color_primary"
-						android:textSize="16sp" />
-				</LinearLayout>
-			</LinearLayout>
+			</ScrollView>
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
-	</FrameLayout>
 
 </FrameLayout>

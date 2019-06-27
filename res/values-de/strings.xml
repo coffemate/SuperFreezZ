@@ -46,11 +46,9 @@
     <string name="enable">Einschalten</string>
     <string name="usagestats_not_enabled">Sie haben keinen Zugriff auf die Nutzungsdaten gewährt.</string>
     <string name="automate_the_freezing_of_apps">Apps einfrieren automatisieren?</string>
-    <string name="accessibility_arguments_yes">"Für Benutzer die: \n\u2022 es so einfach wie möglich haben wollen \n\u2022
-		viele Apps einfrieren wollen
+    <string name="accessibility_arguments_yes">"Für Benutzer die: \n\u2022 es so einfach wie möglich haben wollen \n\u2022 viele Apps einfrieren wollen
 	"</string>
-    <string name="accessibility_arguments_no">"Sie müssen manuell \"BEENDEN ERZWINGEN\", \"OK\" und Zurück drücken, um eine App einzufrieren.\nFür Benutzer die: \n\u2022 ein langsames Gerät haben \n\u2022 denen
-		Sicherheit sehr wichtig ist \n\u2022 SuperFreezZ nicht als Bedienungshilfe einrichten wollen
+    <string name="accessibility_arguments_no">"Sie müssen manuell \"BEENDEN ERZWINGEN\", \"OK\" und Zurück drücken, um eine App einzufrieren.\nFür Benutzer die: \n\u2022 ein langsames Gerät haben \n\u2022 denen Sicherheit sehr wichtig ist \n\u2022 SuperFreezZ nicht als Bedienungshilfe einrichten wollen
 	"</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
