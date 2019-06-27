@@ -77,18 +77,28 @@ fun getStackTrace(throwable: Throwable): String {
 }
 val a by AsyncDelegated { "Hi" }
 
-
+/**
+ * Delegated: Usge:
+ * val property by AsyncDelegated { /* heavy computation */ }
+ * The computation will start right away.
+ * Accessing the value will wait for it to complete.
+ */
 class AsyncDelegated<T>(val f: suspend () -> T) {
 	private val deferred = GlobalScope.async {
 		f()
 	}
 
+	/**
+	 * Wait for the value to be available and return it.
+	 */
 	operator fun getValue(thisRef: Any?, property: KProperty<*>): T = runBlocking {
 		deferred.await()
 	}
 }
 
-
+/**
+ * Provide wait() and notify() coroutine functions.
+ */
 inline class Waiter(private val channel: Channel<Unit> = Channel(0)) {
 
 	/**
