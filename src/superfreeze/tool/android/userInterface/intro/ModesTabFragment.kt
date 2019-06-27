@@ -19,6 +19,8 @@
  *
  */
 
+package superfreeze.tool.android.userInterface.intro
+
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,9 @@ import com.google.android.material.tabs.TabLayout
 import superfreeze.tool.android.R
 
 @SuppressLint("Registered")
+/**
+ * Class for the second intro page, explaining the freeze modes
+ */
 class ModesTabFragment : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

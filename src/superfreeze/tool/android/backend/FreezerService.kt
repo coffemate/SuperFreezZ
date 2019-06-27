@@ -243,7 +243,7 @@ class FreezerService : AccessibilityService() {
 			}
 		}
 
-		fun setExceptionHandler(function: () -> Unit) {
+		internal fun setExceptionHandler(function: () -> Unit) {
 			exceptionHandler = function
 		}
 

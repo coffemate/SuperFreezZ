@@ -283,7 +283,7 @@ internal class AppsListAdapter internal constructor(
 			}
 		}
 
-		else -> throw RuntimeException("sort dialog index should have been a number from 0-2")
+		else -> throw IllegalArgumentException("sort dialog index should have been a number from 0-2")
 	}
 
 

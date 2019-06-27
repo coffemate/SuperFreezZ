@@ -30,7 +30,9 @@ import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
 
-
+/**
+ * Fragment for the "Welcome to SuperFreezZ" intro page
+ */
 class IntroFragment : Fragment(), ISlidePolicy {
 
 

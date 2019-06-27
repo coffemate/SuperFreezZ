@@ -178,39 +178,45 @@ internal class ListItemApp(override val packageName: String,
 				.show()
 		}
 
-		fun refreshListsAfterFreezeModeChange() {
-			if (changeSettings && appsListAdapter.searchPattern == "") {
-				//Refresh the lists and notify the system that this item was potentially removed or added somewhere:
+		if (changeSettings) {
+			refreshListsAfterFreezeModeChange(wasPendingFreeze, viewHolder)
+		}
+	}
 
-				val isPendingFreeze = isPendingFreeze()
+	private fun refreshListsAfterFreezeModeChange(
+		wasPendingFreeze: Boolean,
+		viewHolder: ViewHolderApp
+	) {
+		if (appsListAdapter.searchPattern == "") {
+			//Refresh the lists and notify the system that this item was potentially removed or added somewhere:
 
-				if ((!wasPendingFreeze) && isPendingFreeze) {
-					appsListAdapter.refreshBothLists()
-					// The first index of the listItem is the entry in the "PENDING FREEZE" section
-					appsListAdapter.notifyItemInserted(appsListAdapter.list.indexOf(this))
-				} else if (wasPendingFreeze && (!isPendingFreeze)) {
-					val oldIndex = appsListAdapter.list.indexOf(this)
-					appsListAdapter.refreshBothLists()
-					appsListAdapter.notifyItemRemoved(oldIndex)
-				}
+			val isPendingFreeze = isPendingFreeze()
 
-				// Also refresh other list entries by getting all indexes of the current item, filtering
-				// out this holder's own index (=adapterPosition) and notifying it changed:
-				// (This is necessary because sometimes one item has multiple viewholders when it is shown at
-				// PENDING FREEZE and ALL APPS.)
-				appsListAdapter.list.allIndexesOf(this as AbstractListItem).filter { it != viewHolder.adapterPosition }.forEach {
+			if ((!wasPendingFreeze) && isPendingFreeze) {
+				appsListAdapter.refreshBothLists()
+				// The first index of the listItem is the entry in the "PENDING FREEZE" section
+				appsListAdapter.notifyItemInserted(appsListAdapter.list.indexOf(this))
+			} else if (wasPendingFreeze && (!isPendingFreeze)) {
+				val oldIndex = appsListAdapter.list.indexOf(this)
+				appsListAdapter.refreshBothLists()
+				appsListAdapter.notifyItemRemoved(oldIndex)
+			}
+
+			// Also refresh other list entries by getting all indexes of the current item, filtering
+			// out this holder's own index (=adapterPosition) and notifying it changed:
+			// (This is necessary because sometimes one item has multiple viewholders when it is shown at
+			// PENDING FREEZE and ALL APPS.)
+			appsListAdapter.list.allIndexesOf(this as AbstractListItem)
+				.filter { it != viewHolder.adapterPosition }.forEach {
 					appsListAdapter.notifyItemChanged(it)
 				}
 
-				appsListAdapter.notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
+			appsListAdapter.notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
 
-			} else if (changeSettings) {
-				appsListAdapter.refreshBothLists()
-				// The user is searching, so nothing in the current list changes => we do not need to call notifyItemChanged-or-whatever()
-			}
+		} else {
+			appsListAdapter.refreshBothLists()
+			// The user is searching, so nothing in the current list changes => we do not need to call notifyItemChanged-or-whatever()
 		}
-
-		refreshListsAfterFreezeModeChange()
 	}
 }
 

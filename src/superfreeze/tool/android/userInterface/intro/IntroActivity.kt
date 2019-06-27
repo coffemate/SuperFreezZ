@@ -65,7 +65,7 @@ class IntroActivity : AppIntro() {
 		done()
 	}
 
-	fun done() {
+	internal fun done() {
 		prefIntroAlreadyShown = false
 		finish()
 	}
