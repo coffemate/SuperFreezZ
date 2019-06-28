@@ -75,7 +75,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	</string>
     <string name="intro_auto_freeze_title">Freeze Mode: INTELLIGENT</string>
     <string name="intro_auto_freeze_explanation">INTELLIGENT FREEZE will freeze an app only if it has not been used for some
-		time (7 days by default)
+		time (7 days by default). Also, apps from F-Droid will not be frozen.
 	</string>
     <string name="freeze_manually">Freeze manually</string>
     <string name="Press_forcestop_ok_back">Freeze an app by pressing \"FORCE STOP\", \"OK\", and then \"Back\".</string>

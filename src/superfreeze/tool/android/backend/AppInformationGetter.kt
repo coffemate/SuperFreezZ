@@ -37,10 +37,7 @@ import android.os.Build
 import android.os.Process
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
-import superfreeze.tool.android.database.FreezeMode
-import superfreeze.tool.android.database.getFreezeMode
-import superfreeze.tool.android.database.mGetDefaultSharedPreferences
-import superfreeze.tool.android.database.usageStatsAvailable
+import superfreeze.tool.android.database.*
 import superfreeze.tool.android.expectNonNull
 import superfreeze.tool.android.logErrorAndStackTrace
 
@@ -142,6 +139,7 @@ internal fun isPendingFreeze(
 
 		FreezeMode.WHEN_INACTIVE -> {
 			unusedRecently(usageStats)
+					&& !fDroidPackages.contains(applicationInfo.packageName)
 		}
 	}
 }
