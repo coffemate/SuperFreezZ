@@ -125,52 +125,40 @@ internal fun isPendingFreeze(
 		freezeMode: FreezeMode,
 		applicationInfo: ApplicationInfo,
 		usageStats: UsageStats?
-): Boolean {
-
-	if (!isRunning(applicationInfo)) {
-		return false
-	}
-
-	return when (freezeMode) {
-
-		FreezeMode.ALWAYS -> true
-
-		FreezeMode.NEVER -> false
-
-		FreezeMode.WHEN_INACTIVE -> {
-			unusedRecently(usageStats)
-					&& !fDroidPackages.contains(applicationInfo.packageName)
-		}
-	}
-}
+) = getPendingFreezeInfo(freezeMode, applicationInfo, usageStats) == R.string.pending_freeze
 
 internal fun getPendingFreezeExplanation(
+	freezeMode: FreezeMode,
+	applicationInfo: ApplicationInfo,
+	usageStats: UsageStats?,
+	context: Context
+) = context.getString(getPendingFreezeInfo(freezeMode, applicationInfo, usageStats))
+
+private fun getPendingFreezeInfo(
 		freezeMode: FreezeMode,
 		applicationInfo: ApplicationInfo,
-		usageStats: UsageStats?,
-		context: Context
-): String {
-
-	fun string(stringID: Int) = context.getString(stringID)
+		usageStats: UsageStats?
+): Int {
 
 	val isRunning = isRunning(applicationInfo)
 
 	return when (freezeMode) {
 
 		FreezeMode.ALWAYS ->
-			if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
+			if (isRunning) R.string.pending_freeze else R.string.frozen
 
-		FreezeMode.NEVER ->
-			string(R.string.freeze_off)
+		FreezeMode.NEVER -> R.string.freeze_off
 
 		FreezeMode.WHEN_INACTIVE -> {
-			if (unusedRecently(usageStats)) {
-				if (isRunning) string(R.string.pending_freeze) else string(R.string.frozen)
+			if (fDroidPackages.contains(applicationInfo.packageName)) {
+				R.string.fdroid_app_not_pending_freeze
+
+			} else if (unusedRecently(usageStats)) {
+				if (isRunning) R.string.pending_freeze else R.string.frozen
+
 			} else {
-				if (isRunning)
-					string(R.string.used_recently)
-				else
-					string(R.string.used_recently) + string(R.string.space_AND_space) + string(R.string.frozen)
+				if (isRunning) R.string.used_recently else R.string.used_recently_and_frozen
+
 			}
 		}
 	}

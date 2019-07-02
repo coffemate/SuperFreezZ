@@ -46,7 +46,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="frozen">Frozen</string>
     <string name="freeze_off">Freeze off</string>
     <string name="used_recently">Used recently</string>
-    <string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
     <string name="no_apps_pending_freeze">[NO APPS PENDING FREEZE]</string>
     <string name="all_apps">ALL APPS</string>
     <string name="usagestats_access">UsageStats access</string>
@@ -144,4 +143,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="intro_header_automaticfreezing">automatic freezing</string>
     <string name="sort_by">Sort by</string>
     <string name="not_available">Not available</string>
+	<string name="fdroid_app_not_pending_freeze">F-Droid app</string>
+    <string name="used_recently_and_frozen">Used recently <![CDATA[&]]> frozen</string>
 </resources>
