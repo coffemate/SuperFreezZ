@@ -1,0 +1,11 @@
+GRANDE, nuova introduzione, grazie Robin!
+
+Prima Versione Beta
+
+Altre Modifiche:
+Traduzioni aggiornate
+Rinominata la modalità di congelamento "Auto" in "Intelligente" (#16)
+Toccare un'applicazione nell'elenco la congelerà. Non farlo se è già congelata.
+Possibilità di ri-guardare l'introduzione dalle Impostazioni
+Aggiunto un metodo decente per segnalare crash
+Altri miglioramenti minori e correzioni di bug

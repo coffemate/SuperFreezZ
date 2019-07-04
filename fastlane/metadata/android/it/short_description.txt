@@ -1,0 +1,1 @@
+Congela completamente le attività in background delle applicazioni.

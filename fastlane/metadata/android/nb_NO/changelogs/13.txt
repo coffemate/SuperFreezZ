@@ -1,0 +1,5 @@
+Nye oversettelser
+Rediger beskrivelser
+Tillegg av funksjonsgrafikk
+Små forbedringer
+Fikset #29: Behold sorteringsmetode i listen ved omstart

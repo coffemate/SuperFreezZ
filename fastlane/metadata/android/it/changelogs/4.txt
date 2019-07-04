@@ -1,0 +1,2 @@
+Altro tentativo di rendere più stabile il congelamento. Rimosso doOnFinished() non utilizzato da FreezerService.
+REGRESSION-FIX Non utilizzare il timeout quandoFreezerService non è in esecuzione

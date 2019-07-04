@@ -1,0 +1,3 @@
+Disattivato l'oscuramento per facilitare la correzione dei bug segnalati. Lo riattivare più avanti
+CRASHFIX SF crash quando il servizio di accessibilità è disabilitato
+CRASHFIX SF crash su vecchi dispositivi quando viene mostrata l'intro

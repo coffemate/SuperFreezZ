@@ -1,0 +1,2 @@
+Prøver å gjøre frysing mer stabilt igjen. Fjernet ubrukt doOnFinished() fra FreezerService.
+Regresjonsfiks: Ikke bruk tidsavbrudd når FreezerService ikke kjører

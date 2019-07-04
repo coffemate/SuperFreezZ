@@ -1,0 +1,40 @@
+<p>Androidprogram (beta), som gjør det mulig å fryse alle bakgrunnsaktiviteter tilhørende ethvert program fullstendig.</p>
+<p>Greenify kan også gjøre dette, men det er ikke fri programvare.</p>
+<p>SuperFreezZ er ikke enda en oppgavebehandler som lover å slette 10 GB data per måned, samtidig som den gjør enheten din dobbelt så rask. Det er umulig.</p>
+<p>Isteden er SuperFreezZ ærlig om dets ulemper: Frysing av daglig brukte programmer tapper batteriet litt raskere. Det vil også ta lengre tid å starte når du ønsker å bruke dem neste gang: SuperFreezZ vil superfryse programmene dine, det tar omentrent 1-3 sekunder å tine dem. Greenify har samme ulemper, rent bortsett fra at utvikleren bak Greenify ikke advarer deg om det. Så, ikke ta i for hardt, og SuperFreezZ vil være kjempenyttig for deg.</p>
+<p>Eksempler på programmer som fortjener å bli fryst:</p>
+<ul>
+<li>Ubetrodde programmer (som du ikke ønsker at skal kjøre i bakgrunnen)</li>
+<li>Programmer som sjeldent brukes</li>
+<li>Irriterende programmer</li>
+</ul>
+<h2 id="features">Funksjoner</h2>
+<ul>
+<li>Fungerer valgfritt uten tilgjengelighetstjenesten, siden denne sakker ned enheten</li>
+<li>Kan fryse programmer som ikke har blitt brukt på en uke (kan settes opp)</li>
+<li>Velg en hvitliste (frys alle som forvalg) eller en svarteliste (ikke frys noe som forvalg)</li>
+<li>Kan fryse programmer når skjermen slås av</li>
+<li>Valg for å fryse systemprogrammer, og faktisk også selve SuperFreezZ</li>
+<li>Helt fri programvare</li>
+</ul>
+<h2 id="contributing-to-superfreezz">Bidra til SuperFreezZ</h2>
+<h3 id="development">Utvikling</h3>
+<p>Hvis du har et problem, spørsmål eller idé, åpne en feilrapport.</p>
+<p>Hvis du vil hjelpe til i utviklingen, ta en titt på feilrapportene, eller tenk over noe som kan forbedret, og åpne en feilrapport for det.</p>
+<p>Fortell meg hva du har tenkt til å jobbe med, slik at vi unngår å gjøre det samme to ganger :-)</p>
+<h3 id="translate">Oversett</h3>
+<p>Du kan <a href="https://hosted.weblate.org/engage/superfreezz/">oversette SuperFreezZ på Vertstjent Weblate</a>. Nåværende framdrift:</p>
+<p><a href="https://hosted.weblate.org/engage/superfreezz/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/superfreezz/-/multi-auto.svg" alt="Oversettelsesstatus" /></a></p>
+<p>Du kan alltids legge til andre språk.</p>
+<h3 id="donate">Doner</h3>
+<p>Pengedonasjoner tas ikke imot akkurat nå (det var for mye jobb å sette opp en Liberapay-konto, så det har blitt lagt på is foreløpig).</p>
+<p>For å vise støtte kan du <a href="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18">donere til WWF eller den kristne blindemisjonen og skrive om det her</a>.</p>
+<h2 id="credits">Bidragsytere</h2>
+<p>Koden for visning av programlisten er fra <a href="https://f-droid.org/wiki/page/axp.tool.apkextractor">ApkExtractor</a>.</p>
+<p>Robin Naumann laget en fin intro. Den ble laget ved bruk av AppIntro-biblioteket.</p>
+<p>Funksjonsgrafikkbakgrunnen kommer herfra: https://pixabay.com/photos/thunder-lighting-lightning-cloud-1368797/, teksten ble lagt til med https://www.norio.be/android-feature-graphic-generator/.</p>
+<h2 id="qa">Spørsmål og svar</h2>
+<p>S/S:</p>
+<p>S: Hva er forskjellen mellom dvalgang og frysing? S: Ingen forskjell. Hvis du sender et program i dvale med Greenify, vil den bli vist som fryst i SuperFreezZ og motsatt.</p>
+<p>S: Den riktige stavemåten er “SuperFreeze”! S: Jeg vet det.</p>
+<p>S: Har du noen intensjon om å selge frysere? S: Nei.</p>
