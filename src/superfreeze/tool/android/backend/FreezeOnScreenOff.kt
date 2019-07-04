@@ -61,30 +61,33 @@ private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 	private var originalTimeout = -1
 
 	override fun onReceive(context: Context, intent: Intent) {
-		if (intent.action == Intent.ACTION_SCREEN_OFF && mGetDefaultSharedPreferences(context).getBoolean(
-				"freeze_on_screen_off",
-				false
-			)
-		) {
-			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
+		if (intent.action == Intent.ACTION_SCREEN_OFF) {
 
+			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 			resetScreenIfNecessary(context)
 
-			if (getAppsPendingFreeze(context).isEmpty()) {
-				return
+			if (mGetDefaultSharedPreferences(context).getBoolean(
+					"freeze_on_screen_off",
+					false
+				)
+			) {
+
+				if (getAppsPendingFreeze(context).isEmpty()) {
+					return
+				}
+
+				// Throttle to once a minute:
+				if (lastTime + 60 * 1000 > System.currentTimeMillis()) {
+					lastTime = Math.min(System.currentTimeMillis(), lastTime)
+					return
+				} else {
+					lastTime = System.currentTimeMillis()
+				}
+
+				enableScreenUntilFrozen(context)
+
+				context.startActivity(FreezeShortcutActivity.createShortcutIntent(context))
 			}
-
-			// Throttle to once a minute:
-			if (lastTime + 60 * 1000 > System.currentTimeMillis()) {
-				lastTime = Math.min(System.currentTimeMillis(), lastTime)
-				return
-			} else {
-				lastTime = System.currentTimeMillis()
-			}
-
-			enableScreenUntilFrozen(context)
-
-			context.startActivity(FreezeShortcutActivity.createShortcutIntent(context))
 		}
 	}
 
