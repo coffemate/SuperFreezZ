@@ -23,6 +23,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -59,6 +60,7 @@ class FreezeShortcutActivity : Activity() {
 		super.onCreate(savedInstanceState)
 
 		isBeingNewlyCreated = true
+		doFullStop = false
 
 		if (Intent.ACTION_CREATE_SHORTCUT == intent.action) {
 			setupShortcut()
@@ -119,11 +121,15 @@ class FreezeShortcutActivity : Activity() {
 			}
 		}
 
+		isWorking = true
+
 		// Now we can do the actual freezing work:
 		GlobalScope.launch {
 			freezeAll(this@FreezeShortcutActivity, appsPendingFreeze, waiterForNextFreeze)
 
 			runOnUiThread {
+				isWorking = false
+
 				if (somethingWentWrong && triesLeft > 0) {
 					// Sometimes an app can't be frozen due to a bug I did not find yet.
 					// So simply try again by calling performFreeze again
@@ -151,6 +157,13 @@ class FreezeShortcutActivity : Activity() {
 	override fun onResume() {
 		super.onResume()
 
+		if (doFullStop) {
+			doFullStop = false
+			Handler().post { finish() }
+			Log.i(TAG, "Finishing because doFullStop was true")
+			return
+		}
+
 		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
 		// NOT after onCreate finished
 		if (!isBeingNewlyCreated) {
@@ -165,8 +178,6 @@ class FreezeShortcutActivity : Activity() {
 	}
 
 	private val toBeDoneOnReenterActivity: MutableList<() -> Boolean> = mutableListOf()
-
-
 	/**
 	 * Execute the task when this activity was left and re-entered.
 	 * Only call from the UI thread!
@@ -181,7 +192,6 @@ class FreezeShortcutActivity : Activity() {
 		 * Returns an intent containing information for a launcher how to create a shortcut.
 		 * See e.g https://developer.android.com/reference/android/content/pm/ShortcutManager.html#createShortcutResultIntent(android.content.pm.ShortcutInfo)
 		 */
-		@JvmStatic
 		fun createShortcutResultIntent(activity: Activity): Intent {
 			/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 				// There is a nice new api for shortcuts from Android O on, which we use here:
@@ -205,7 +215,6 @@ class FreezeShortcutActivity : Activity() {
 			return intent
 		}
 
-		@JvmStatic
 		internal fun createShortcutIntent(context: Context): Intent {
 			val shortcutIntent = Intent(FREEZE_ACTION)
 			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
@@ -217,7 +226,9 @@ class FreezeShortcutActivity : Activity() {
 			return shortcutIntent
 		}
 
-		@JvmStatic
+		internal var doFullStop = false
+		var isWorking = false
+
 		internal var onFreezeFinishedListener: (() -> Unit)? = null
 	}
 }

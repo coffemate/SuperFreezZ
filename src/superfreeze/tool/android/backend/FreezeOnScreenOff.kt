@@ -63,8 +63,15 @@ private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 	override fun onReceive(context: Context, intent: Intent) {
 		if (intent.action == Intent.ACTION_SCREEN_OFF) {
 
-			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 			resetScreenIfNecessary(context)
+
+			if (FreezeShortcutActivity.isWorking) {
+				FreezeShortcutActivity.doFullStop = true
+				FreezerService.stopAnyCurrentFreezing()
+				return
+			}
+
+			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
 			if (mGetDefaultSharedPreferences(context).getBoolean(
 					"freeze_on_screen_off",
