@@ -140,7 +140,6 @@ internal class AppsListAdapter internal constructor(
 				refreshBothLists()
 				notifyDataSetChanged()
 				mainActivity.hideProgressBar()
-				mainActivity.reportFullyDrawn()
 				Log.v(TAG, "Fully drawn")
 			}
 		}
