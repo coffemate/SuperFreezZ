@@ -46,4 +46,12 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 		android:inputType="number"
 		android:dependency="use_usagestats"/>
 
+	<SwitchPreference
+		android:key="autofreeze_freeze_fdroid"
+		android:title="@string/pref_intelligentfreeze_freeze_fdroid"
+		android:summary="@string/pref_intelligentfreeze_freeze_fdroid_sum"
+		android:defaultValue="false"
+		android:dependency="use_usagestats"/>
+
+
 </PreferenceScreen>

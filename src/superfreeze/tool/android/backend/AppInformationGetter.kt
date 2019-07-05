@@ -48,7 +48,7 @@ private const val TAG = "AppInformationGetter"
  * Gets the applications to show in SF. Do not use from the UI thread.
  */
 internal fun getApplications(context: Context): List<PackageInfo> {
-	val preferences = mGetDefaultSharedPreferences(context)
+	val preferences = getPrefs(context)
 	val shownSpecialApps = preferences.getStringSet("appslist_show_special", setOf())
 			?: setOf()
 	val packageManager = context.packageManager
@@ -88,7 +88,7 @@ internal fun getRecentAggregatedUsageStats(context: Context): Map<String, UsageS
 	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
 	//Get all data starting with the whatever time the user specified in the settings ago
-	val preferences = mGetDefaultSharedPreferences(context)
+	val preferences = getPrefs(context)
 	val numberOfDays = preferences.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
@@ -117,27 +117,30 @@ internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, 
 	return isPendingFreeze(
 		getFreezeMode(context, packageInfo.packageName),
 		packageInfo.applicationInfo,
-		usageStats
+		usageStats,
+		context
 	)
 }
 
 internal fun isPendingFreeze(
 		freezeMode: FreezeMode,
 		applicationInfo: ApplicationInfo,
-		usageStats: UsageStats?
-) = getPendingFreezeInfo(freezeMode, applicationInfo, usageStats) == R.string.pending_freeze
+		usageStats: UsageStats?,
+		context: Context
+) = getPendingFreezeInfo(freezeMode, applicationInfo, usageStats, context) == R.string.pending_freeze
 
 internal fun getPendingFreezeExplanation(
 	freezeMode: FreezeMode,
 	applicationInfo: ApplicationInfo,
 	usageStats: UsageStats?,
 	context: Context
-) = context.getString(getPendingFreezeInfo(freezeMode, applicationInfo, usageStats))
+) = context.getString(getPendingFreezeInfo(freezeMode, applicationInfo, usageStats, context))
 
 private fun getPendingFreezeInfo(
 		freezeMode: FreezeMode,
 		applicationInfo: ApplicationInfo,
-		usageStats: UsageStats?
+		usageStats: UsageStats?,
+		context: Context
 ): Int {
 
 	val isRunning = isRunning(applicationInfo)
@@ -150,7 +153,9 @@ private fun getPendingFreezeInfo(
 		FreezeMode.NEVER -> R.string.freeze_off
 
 		FreezeMode.WHEN_INACTIVE -> {
-			if (fDroidPackages.contains(applicationInfo.packageName)) {
+
+			if (fDroidPackages.contains(applicationInfo.packageName)
+				&& !getPrefs(context).getBoolean("autofreeze_freeze_fdroid", false)) {
 				R.string.fdroid_app_not_pending_freeze
 
 			} else if (unusedRecently(usageStats)) {

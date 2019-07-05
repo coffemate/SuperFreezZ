@@ -32,7 +32,7 @@ import android.content.IntentFilter
 import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
-import superfreeze.tool.android.database.mGetDefaultSharedPreferences
+import superfreeze.tool.android.database.getPrefs
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
 internal fun freezeOnScreenOff_init(
@@ -73,7 +73,7 @@ private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 
 			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
-			if (mGetDefaultSharedPreferences(context).getBoolean(
+			if (getPrefs(context).getBoolean(
 					"freeze_on_screen_off",
 					false
 				)

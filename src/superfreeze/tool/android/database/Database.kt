@@ -36,7 +36,7 @@ private const val TAG = "DatabaseBackend"
 internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 
 	val sharedPreferences = getFreezeModesPreferences(context)
-	val standardFreezeMode = mGetDefaultSharedPreferences(context)
+	val standardFreezeMode = getPrefs(context)
 			.getString("standard_freeze_mode", FreezeMode.WHEN_INACTIVE.ordinal.toString())
 			?.toIntOrNull()
 			.expectNonNull(TAG)
@@ -82,7 +82,7 @@ private fun getMainPreferences(context: Context): SharedPreferences {
 	return context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.MAIN", Context.MODE_PRIVATE)
 }
 
-internal fun mGetDefaultSharedPreferences(context: Context): SharedPreferences {
+internal fun getPrefs(context: Context): SharedPreferences {
 	return PreferenceManager.getDefaultSharedPreferences(context)
 }
 

@@ -109,7 +109,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="pref_header_freezing">Freezing apps</string>
     <string name="pref_ringtone_silent">Silent</string>
     <string name="appslist_show_special">Show special apps in the list</string>
-    <string name="pref_intelligentfreeze_delay">Freeze mode INTELLIGENT: Apps are frozen after… (in days)</string>
+    <string name="pref_intelligentfreeze_delay">INTELLIGENT: Freeze after… (days)</string>
     <string name="pref_summary_appslist_show_special">The Launcher, SuperFreezZ itself and system apps are hidden by default.</string>
     <string name="create_freeze_shortcut">Create Freeze shortcut</string>
     <string name="settings">Settings</string>
@@ -145,4 +145,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="not_available">Not available</string>
 	<string name="fdroid_app_not_pending_freeze">F-Droid app</string>
     <string name="used_recently_and_frozen">Used recently <![CDATA[&]]> frozen</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid">INTELLIGENT: Freeze F-Droid apps</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid_sum">F-Droid apps usually do not run in the background that much.</string>
 </resources>

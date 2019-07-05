@@ -146,7 +146,8 @@ internal class ListItemApp(override val packageName: String,
 		return superfreeze.tool.android.backend.isPendingFreeze(
 			freezeMode,
 			applicationInfo,
-			appsListAdapter.usageStatsMap?.get(packageName)
+			appsListAdapter.usageStatsMap?.get(packageName),
+			appsListAdapter.mainActivity
 		)
 	}
 
