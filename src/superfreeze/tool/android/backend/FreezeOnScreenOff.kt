@@ -34,6 +34,7 @@ import android.provider.Settings
 import android.util.Log
 import superfreeze.tool.android.database.getPrefs
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
+import kotlin.math.min
 
 internal fun freezeOnScreenOff_init(
 	context: Context,
@@ -73,11 +74,7 @@ private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 
 			FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
-			if (getPrefs(context).getBoolean(
-					"freeze_on_screen_off",
-					false
-				)
-			) {
+			if (getPrefs(context).getBoolean("freeze_on_screen_off",false)) {
 
 				if (getAppsPendingFreeze(context).isEmpty()) {
 					return
@@ -85,7 +82,7 @@ private class ScreenReceiver(private val screenLockerFunction: () -> Unit) :
 
 				// Throttle to once a minute:
 				if (lastTime + 60 * 1000 > System.currentTimeMillis()) {
-					lastTime = Math.min(System.currentTimeMillis(), lastTime)
+					lastTime = min(System.currentTimeMillis(), lastTime)
 					return
 				} else {
 					lastTime = System.currentTimeMillis()
