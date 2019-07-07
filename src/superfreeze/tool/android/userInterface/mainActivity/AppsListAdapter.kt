@@ -284,10 +284,7 @@ internal class AppsListAdapter internal constructor(
 
 		else -> throw IllegalArgumentException("sort dialog index should have been a number from 0-2")
 	}
-
-
-	companion object {
-		private const val TAG = "AppsListAdapter"
-	}
-
 }
+
+
+private const val TAG = "AppsListAdapter"

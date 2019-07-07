@@ -39,7 +39,7 @@ class IntroActivity : AppIntro() {
 		actionBar?.hide()
 
 		val action = intent.action
-		if (SHOW_ACCESSIBILITY_SERVICE_CHOOSER == action) {
+		if (INTRO_SHOW_ACCESSIBILITY_SERVICE_CHOOSER == action) {
 
 			addSlide(AccessibilityServiceChooserFragment())
 
@@ -70,10 +70,7 @@ class IntroActivity : AppIntro() {
 		finish()
 	}
 
-	companion object {
-
-		const val SHOW_ACCESSIBILITY_SERVICE_CHOOSER =
-			BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER"
-	}
-
 }
+
+const val INTRO_SHOW_ACCESSIBILITY_SERVICE_CHOOSER =
+	BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER"

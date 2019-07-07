@@ -41,6 +41,7 @@ import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.usageStatsPermissionGranted
+import superfreeze.tool.android.userInterface.intro.INTRO_SHOW_ACCESSIBILITY_SERVICE_CHOOSER
 import superfreeze.tool.android.userInterface.intro.IntroActivity
 import java.io.BufferedReader
 import java.io.IOException
@@ -172,7 +173,7 @@ class SettingsActivity : AppCompatPreferenceActivity() {
 					val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
 					startActivity(intent)
 				} else {
-					val intent = Intent(IntroActivity.SHOW_ACCESSIBILITY_SERVICE_CHOOSER)
+					val intent = Intent(INTRO_SHOW_ACCESSIBILITY_SERVICE_CHOOSER)
 					intent.setClass(activity, IntroActivity::class.java)
 					startActivity(intent)
 				}
