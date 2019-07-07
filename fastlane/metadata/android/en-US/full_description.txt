@@ -28,9 +28,7 @@
 <p>If you would like to help with developing, have a look at the issues, or think of something that could be improved, and open an issue for it.</p>
 <p>Please tell me what you are going to do, to avoid implementing the same thing at the same time :-)</p>
 <h3 id="translate">Translate</h3>
-<p>You can <a href="https://hosted.weblate.org/engage/superfreezz/">translate SuperFreezZ on Weblate</a>. Current progress:</p>
-<p><a href="https://hosted.weblate.org/engage/superfreezz/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/superfreezz/-/multi-auto.svg" alt="Translation status" /></a></p>
-<p>You can always add other lanuages.</p>
+<p>You can <a href="https://hosted.weblate.org/engage/superfreezz/">translate SuperFreezZ on Weblate</a>.</p>
 <h3 id="donate">Donate</h3>
 <p>Monetary donations are currently not accepted (setting up a Liberapay account was too much effort, so it was given up for the time being).</p>
 <p>However, to show me your support, you can <a href="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18">donate to WWF or the Christian Blind Mission and post about it here</a>.</p>
