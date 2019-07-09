@@ -6,9 +6,12 @@ echo
 echo "Press Ctrl+C at any time to abort."
 echo
 
+
 echo "+git pull weblate master"
 git remote add weblate https://hosted.weblate.org/git/superfreezz/superfreezz/ 2>/dev/null || true
 git pull weblate master
+echo
+
 
 echo "Getting the list of apps on F-Droid"
 wget https://f-droid.org/repo/index-v1.jar
@@ -17,7 +20,7 @@ python3 <<EOF >src/superfreeze/tool/android/database/FDroidPackages.kt
 import re
 index = open("index-v1.json").read()
 list = re.findall(r'"packageName": "([\w\.]+)"', index)
-packages = set(list)
+packages = sorted(set(list))
 print("package superfreeze.tool.android.database")
 print()
 print('val fDroidPackages = hashSetOf(')
@@ -26,6 +29,8 @@ for p in packages:
 print('"superfreeze.tool.android.debug"')
 print(')')
 EOF
+
+
 rm index-v1.jar index-v1.json
 git add src/superfreeze/tool/android/database/FDroidPackages.kt
 
