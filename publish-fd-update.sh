@@ -7,7 +7,7 @@ echo "Press Ctrl+C at any time to abort."
 echo
 
 echo "+git pull weblate master"
-git remote add weblate https://hosted.weblate.org/git/superfreezz/superfreezz/ 2>/dev/null
+git remote add weblate https://hosted.weblate.org/git/superfreezz/superfreezz/ 2>/dev/null || true
 git pull weblate master
 
 echo "Getting the list of apps on F-Droid"
