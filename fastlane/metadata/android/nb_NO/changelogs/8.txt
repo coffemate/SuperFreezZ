@@ -1,0 +1,3 @@
+Frys ved skjermavstenging kan nå i praksis brukes (eksperimentelt) når påslått i innstillingene. Innrapporter feil i feilsporeren.
+Verktøystips
+Lisensiering

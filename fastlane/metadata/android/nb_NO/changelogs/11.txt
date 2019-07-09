@@ -1,0 +1,11 @@
+FLOTT ny intro, takk Robin!!
+
+Første betaversjon
+
+Andre endringer:
+Oppdaterte oversettelser
+Nytt navn på frysemodus fra "Auto" til "Intelligent" (#16)
+Å trykke på et program i listen vil fryse det. Ikke gjør dette hvis programmet allerede er nedfryst.
+Mulighet for å vise introen igjen fra innstillingene
+Ny formålstjenlig kræsjrapportering
+Andre mindre forbedringer og feilrettinger

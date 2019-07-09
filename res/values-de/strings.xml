@@ -17,8 +17,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
   ~
-  -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  --><resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="msg_search">Suche</string>
     <string name="msg_search_help">Suchen…</string>
     <string name="share_exception">Unerwarteter Fehler. Bericht über..…</string>
@@ -37,7 +36,6 @@
     <string name="frozen">Eingefroren</string>
     <string name="freeze_off">Einfrieren aus</string>
     <string name="used_recently">Kürzlich benutzt</string>
-    <string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
     <string name="no_apps_pending_freeze">[KEINE APPS MIT EINFRIEREN AUSSTEHEND]</string>
     <string name="all_apps">ALLE APPS</string>
     <string name="usagestats_access">Zugriff auf Nutzungsdaten</string>
@@ -52,7 +50,6 @@
 	"</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-
     <string name="intro_always_freeze_title">Einfriermodus: IMMER EINFRIEREN</string>
     <string name="intro_always_freeze_explanation">"Es gibt 3 Einfriermodi. Sie können diese für jede App einzeln
 		einstellen. IMMER EINFRIEREN friert eine App in jedem Fall ein.

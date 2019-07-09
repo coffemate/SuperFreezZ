@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 Copyright (c) 2018,2019 Hocuri
 
@@ -17,13 +16,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources xmlns:tools="http://schemas.android.com/tools"  tools:ignore="MissingTranslation">
-
+--><resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="msg_search">搜索</string>
-    <string name="msg_search_help">搜索&#8230;</string>
-    <string name="share_exception">发生错误 用&#8230;分享信息</string>
+    <string name="msg_search_help">搜索…</string>
+    <string name="share_exception">发生错误 用…分享信息</string>
     <string name="accessibility_service_description">启用此选项让自动冻结操作变得可能。其有下列几大优势：用户不需要自己做这件事；它比手动操作快得多，且用户不必关心如何操作；残障人士只需启动“自动冻结”的快捷方式（例如通过语音识别），然后他们可以自动冻结所有的应用程序。SuperFreezZ对使用情况访问权限的使用仅限于按下“强制停止”，“确定"和”返回“并评估这些交互的结果
 	</string>
     <string name="freeze_shortcut_label">冻结</string>
@@ -37,7 +33,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="frozen">已冻结</string>
     <string name="freeze_off">不冻结</string>
     <string name="used_recently">最近用过</string>
-    <string name="space_AND_space">\u0020<![CDATA[&]]>\u0020</string>
     <string name="no_apps_pending_freeze">[没有待冻结APP]</string>
     <string name="all_apps">全部APP</string>
     <string name="usagestats_access">授予SuperFreezZ使用情况访问权限</string>
@@ -62,24 +57,18 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="Press_forcestop_ok_back">要冻结一个APP,请依次按下"强制停止"和"确定",接着返回</string>
     <string name="freeze_manually_no">我不想这么做</string>
     <string name="title_activity_settings">设置</string>
-
     <!-- Strings related to Settings -->
-
     <string name="pref_header_appslist">App列表</string>
-
-
     <string-array name="appslist_show_special_titles">
         <item>启动器</item>
         <item>SuperFreezZ</item>
         <item>系统APP（系统会迅速解冻它们）</item>
     </string-array>
-    <string-array name="appslist_show_special_values"  translatable="false">
+    <string-array name="appslist_show_special_values" translatable="false">
         <item>Launcher</item>
         <item>SuperFreezZ</item>
         <item>Systemapps</item>
     </string-array>
-
-
     <string name="pref_title_standard_freeze_mode">标准冻结模式</string>
     <string-array name="standard_freeze_mode_titles">
         <item>始终冻结</item>
@@ -91,15 +80,11 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
         <item>1</item>
         <item>2</item>
     </string-array>
-
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_about">关于</string>
-
     <!-- Example settings for Notifications -->
     <string name="pref_header_freezing">正在冻结APP</string>
-
     <string name="pref_ringtone_silent">静默</string>
-
     <string name="appslist_show_special">在列表中显示特殊APP</string>
     <string name="pref_summary_appslist_show_special">默认隐藏启动器，SuperFreezZ和系统APP</string>
     <string name="create_freeze_shortcut">创建冻结快捷方式</string>
@@ -111,7 +96,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="freeze_apps_now">现在冻结APP</string>
     <string name="freeze_on_screen_off_title">屏幕关闭时冻结</string>
     <string name="freeze_on_screen_off_sum">您将需要在设备设置中禁用类似"按下电源键后立刻锁定"的选项</string>
-
     <string-array name="sortmodes">
         <item>名称</item>
         <item>冻结状态</item>

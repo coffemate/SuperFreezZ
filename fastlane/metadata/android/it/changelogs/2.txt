@@ -1,0 +1,10 @@
+Correzione per vecchie versioni Android
+Congelamento Manuale: l'utente deve premere "Termina", "OK" e "Indietro", fix #14
+Aggiunti Screenshot
+Traduzioni
+Impedire auto-congelamento SuperFreezZ
+App considerata "usata" solo se usata almeno 2s
+Correzione: Determinazione app "usata recentemente"
+Non mostrare pulsante AutoFreeze/Congela-quando-inattivo (nome da decidere) senza permesso usageStats
+Aggiornamenti
+Migliorato servizio accessibilità nella scelta frammenti ("Congela app automaticamente?")

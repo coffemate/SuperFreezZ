@@ -1,0 +1,3 @@
+Correzione: A volte le impostazioni dell'app vengono mostrate, ma l'app non viene congelata.
+Commenti
+Congelamento più stabile ma più lento: Attendere che sia chiamata FreezeShortcutActivity.onResume prima di congelare la prossima app; indirizzo #17 ?

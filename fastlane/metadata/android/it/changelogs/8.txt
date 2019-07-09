@@ -1,0 +1,3 @@
+Congelare a schermo spento (sperimentale), se attivato nelle Impostazioni. Segnalare bug usando il tracker dei problemi.
+Suggerimenti
+Licenze

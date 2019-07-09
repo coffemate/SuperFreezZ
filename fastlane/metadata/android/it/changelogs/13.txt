@@ -1,0 +1,5 @@
+Aggiunte Traduzioni
+Modifica Descrizioni
+Aggiunta Grafica delle Funzioni
+Cambiamenti Minori
+Fix #29: Mantenere l'ordine dell'elenco dopo il riavvio

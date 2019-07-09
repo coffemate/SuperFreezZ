@@ -1,0 +1,1 @@
+BUGFIX (speriamo) #26

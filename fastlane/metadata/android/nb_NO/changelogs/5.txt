@@ -1,0 +1,3 @@
+Det å finne "Tving stopp"-knappen er nå mer stabilt, fiks #20 ?
+Prøver å gjøre frysing mer stabilt igjen. Fjernet ubrukt doOnFinished() fra FreezerService.
+Regresjonsfiks: Ikke bruk tidsavbrudd når FreezerService ikke kjører
