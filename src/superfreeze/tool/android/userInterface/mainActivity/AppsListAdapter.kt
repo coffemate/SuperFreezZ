@@ -28,12 +28,15 @@ package superfreeze.tool.android.userInterface.mainActivity
 import android.app.usage.UsageStats
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -56,6 +59,11 @@ internal class AppsListAdapter internal constructor(
 	internal val mainActivity: MainActivity,
 	internal var sortModeIndex: Int
 ) : RecyclerView.Adapter<AbstractViewHolder>() {
+
+	internal val colorFilterGrey = PorterDuffColorFilter(
+		ContextCompat.getColor(mainActivity, R.color.button_greyed_out),
+		PorterDuff.Mode.SRC_ATOP
+	)
 
 	internal val usageStatsMap: Map<String, UsageStats>? by AsyncDelegated {
 		getRecentAggregatedUsageStats(mainActivity)

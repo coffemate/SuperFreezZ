@@ -33,7 +33,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -105,16 +104,13 @@ internal class ViewHolderApp(v: View, private val context: Context,
 	}
 
 	private fun setButtonColours(freezeMode: FreezeMode) {
-		val colorGreyedOut = ContextCompat.getColor(
-			context,
-			R.color.button_greyed_out
-		)
 		modeSymbols.forEach { (mode, view) ->
 			if (mode == freezeMode)
 				// Show the symbol with the "current" mode in color:
 				view.colorFilter = null
-			else
-				view.setColorFilter(colorGreyedOut)
+			else {
+				view.colorFilter = appsListAdapter.colorFilterGrey
+			}
 		}
 	}
 
