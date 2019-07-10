@@ -39,8 +39,6 @@ import superfreeze.tool.android.backend.setFreezerExceptionHandler
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefUseAccessibilityService
 
-const val FREEZE_ACTION = "${BuildConfig.APPLICATION_ID}.FREEZE"
-
 /**
  * This activity
  *  - creates a shortcut some launcher can use
@@ -216,7 +214,7 @@ class FreezeShortcutActivity : Activity() {
 		}
 
 		internal fun createShortcutIntent(context: Context): Intent {
-			val shortcutIntent = Intent(FREEZE_ACTION)
+			val shortcutIntent = Intent()
 			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
 			shortcutIntent.addFlags(
 				Intent.FLAG_ACTIVITY_CLEAR_TASK +
