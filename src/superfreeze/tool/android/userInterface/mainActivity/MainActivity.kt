@@ -135,6 +135,11 @@ class MainActivity : AppCompatActivity() {
 		appsListAdapter.deleteAppInfos() // The ApplicationInfos might be obsolete when we return anyway
 	}
 
+	override fun onStop() {
+		super.onStop()
+		appsListAdapter.trimMemory()
+	}
+
 
 	/**
 	 * At startup, there will be a spinning progress bar at the top right hand corner.
@@ -235,7 +240,7 @@ class MainActivity : AppCompatActivity() {
 		//See https://developer.android.com/topic/performance/memory#release
 
 		when (level) {
-			ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN,
+			ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN -> appsListAdapter.trimMemory()
 
 			ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE -> { }
 
