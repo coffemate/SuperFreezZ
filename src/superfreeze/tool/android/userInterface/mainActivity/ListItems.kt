@@ -41,7 +41,6 @@ import superfreeze.tool.android.database.setFreezeMode
 internal abstract class AbstractListItem {
 	abstract fun loadNameAndIcon(viewHolder: ViewHolderApp)
 	abstract fun freeze(context: Context)
-	abstract fun refresh()
 	abstract fun isMatchingSearchPattern(): Boolean
 
 	abstract val applicationInfo: ApplicationInfo?
@@ -53,7 +52,7 @@ internal abstract class AbstractListItem {
 internal class ListItemApp(override val packageName: String,
                            private val appsListAdapter: AppsListAdapter
 ) : AbstractListItem() {
-	override fun refresh() {
+	fun deleteAppInfo() {
 		_applicationInfo = null
 	}
 
@@ -104,10 +103,7 @@ internal class ListItemApp(override val packageName: String,
 	override fun freeze(context: Context) {
 		// If the app is already frozen and the freezer service is not enabled, we can just show
 		// the settings page to the user, as if we were freezing it.
-		if (FreezerService.isEnabled && !isRunning(
-				applicationInfo
-			)
-		) {
+		if (FreezerService.isEnabled && !isRunning(applicationInfo)) {
 			Snackbar.make(
 				appsListAdapter.mainActivity.myCoordinatorLayout,
 				R.string.already_frozen,
@@ -212,11 +208,13 @@ internal class ListItemApp(override val packageName: String,
 					appsListAdapter.notifyItemChanged(it)
 				}
 
-			appsListAdapter.notifyItemChanged(0) //The "PENDING FREEZE" section header might have changed
+			//The "PENDING FREEZE" section header might have changed:
+			appsListAdapter.notifyItemChanged(0)
 
 		} else {
 			appsListAdapter.refreshBothLists()
-			// The user is searching, so nothing in the current list changes => we do not need to call notifyItemChanged-or-whatever()
+			// The user is searching, so nothing in the current list changes => we do not need to
+			// call notifyItemChanged-or-whatever()
 		}
 	}
 }
@@ -226,9 +224,6 @@ internal class ListItemSectionHeader(override val text: String) : AbstractListIt
 	override val type = 1
 
 	//These functions here do nothing:
-	override fun refresh() {
-	}
-
 	override fun loadNameAndIcon(viewHolder: ViewHolderApp) {
 	}
 

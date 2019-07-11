@@ -130,6 +130,11 @@ class MainActivity : AppCompatActivity() {
 		appsListAdapter.refresh()
 	}
 
+	override fun onPause() {
+		super.onPause()
+		appsListAdapter.deleteAppInfos() // The ApplicationInfos might be obsolete when we return anyway
+	}
+
 
 	/**
 	 * At startup, there will be a spinning progress bar at the top right hand corner.

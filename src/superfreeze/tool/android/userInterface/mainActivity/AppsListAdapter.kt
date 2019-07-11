@@ -157,12 +157,13 @@ internal class AppsListAdapter internal constructor(
 		Collections.sort(appsList, listComparator(sortModeIndex))
 	}
 
+	internal fun deleteAppInfos() {
+		for (app in appsList) {
+			app.deleteAppInfo()
+		}
+	}
 
 	internal fun refresh() {
-		for (app in appsList) {
-			app.refresh()
-		}
-
 		//We need to test whether the applications are still installed and remove those that are not.
 		//Apparently, there is no better way for this than trying to access the applicationInfo.
 		appsList.removeAll {
