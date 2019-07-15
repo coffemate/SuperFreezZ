@@ -193,7 +193,7 @@ class FreezerService : AccessibilityService() {
 		return true
 	}
 
-	private lateinit var screenReceiver: BroadcastReceiver
+	private var screenReceiver: BroadcastReceiver? = null
 
 	override fun onServiceConnected() {
 		isEnabled = true
@@ -201,17 +201,19 @@ class FreezerService : AccessibilityService() {
 		// From now on, expect that the service works:
 		prefUseAccessibilityService = true
 
-		screenReceiver = freezeOnScreenOff_init(this, screenLockerFunction = {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-				performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
-			}
-		})
+		if (screenReceiver == null) {
+			screenReceiver = freezeOnScreenOff_init(this, screenLockerFunction = {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+					performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
+				}
+			})
+		}
 	}
 
 	override fun onDestroy() {
 		Log.i(TAG, "FreezerService was destroyed.")
 		isEnabled = false
-		unregisterReceiver(screenReceiver)
+		if (screenReceiver != null) unregisterReceiver(screenReceiver)
 		stopAnyCurrentFreezing()
 	}
 

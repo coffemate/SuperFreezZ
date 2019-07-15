@@ -29,7 +29,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.Waiter
 import superfreeze.tool.android.backend.FreezerService
