@@ -19,7 +19,7 @@
 \n• Non dover registrare SuperFreezZ come servizio di accessibilità</string>
     <string name="pref_header_freezing">Congelamento Applicazioni</string>
     <string name="view_intro_again">Guarda Introduzione</string>
-    <string name="automate_the_freezing_of_apps">Congelamento Automatico</string>
+    <string name="automate_the_freezing_of_apps">Congelamento Automatico\?</string>
     <string name="credits_and_licenses">Crediti e Licenze di Terze Parti</string>
     <string name="freeze_off">Congelamento Disattivato</string>
     <string name="no_apps_pending_freeze">[NESSUNA APP IN ATTESA DI CONGELAMENTO]</string>
