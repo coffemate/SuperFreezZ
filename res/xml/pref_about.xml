@@ -33,15 +33,15 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="If you like this app...">
+	<PreferenceCategory android:title="@string/if_you_like_this_app">
 
-		<Preference android:title="...Please help translating it!">
+		<Preference android:title="@string/plz_help_translating">
 			<intent
 				android:action="android.intent.action.VIEW"
 				android:data="https://hosted.weblate.org/projects/superfreezz/#languages"/>
 		</Preference>
 
-		<Preference android:title="...Please donate!">
+		<Preference android:title="@string/plz_donate">
 			<intent
 				android:action="android.intent.action.VIEW"
 				android:data="https://liberapay.com/Hocuri/donate"/>

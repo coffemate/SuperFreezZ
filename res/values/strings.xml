@@ -147,4 +147,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="used_recently_and_frozen">Used recently <![CDATA[&]]> frozen</string>
     <string name="pref_intelligentfreeze_freeze_fdroid">INTELLIGENT: Freeze F-Droid apps</string>
     <string name="pref_intelligentfreeze_freeze_fdroid_sum">F-Droid apps usually do not run in the background that much.</string>
+	<string name="if_you_like_this_app">If you like this app...</string>
+    <string name="plz_help_translating">...Please help translating it!</string>
+    <string name="plz_donate">...Please donate!</string>
 </resources>
