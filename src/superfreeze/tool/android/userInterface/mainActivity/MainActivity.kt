@@ -101,21 +101,20 @@ class MainActivity : AppCompatActivity() {
 		// Show the app intro at the first launch:
 		if (prefIntroAlreadyShown) {
 			startActivity(Intent(this, IntroActivity::class.java))
-			neverCalled("AutoToIntelChange", this) // TODO delete line
+			neverCalled("DonationsNowPossible", this) // TODO delete line
 			return
 			// TODO delete from here on:
 		} else {
-			if (neverCalled("AutoToIntelChange", this)) {
+			if (neverCalled("DonationsNowPossible", this)) {
 				AlertDialog.Builder(this, R.style.myAlertDialog)
-					.setTitle("Rename")
-					.setMessage("""The freeze mode "Auto" was renamed to "Intelligent". We are sorry for the inconvenience.""")
-					.setIcon(R.drawable.symbol_freeze_when_inactive)
-					.setPositiveButton("Ok") { _, _->}
-					.setNegativeButton("More info") {_,_->
+					.setTitle("Donating")
+					.setMessage("""It is now possible support the development of SuperFreezZ by donating. If you like SuperFreezZ, I would be very grateful to find a supporter in you!""")
+					.setPositiveButton("No") { _, _->}
+					.setNegativeButton("Donate") {_, _->
 						startActivity(
 							Intent(
 								Intent.ACTION_VIEW,
-								Uri.parse("https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/16")
+								Uri.parse("https://liberapay.com/Hocuri/donate")
 							)
 						)
 					}
