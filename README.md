@@ -1,7 +1,8 @@
 SuperFreezZ
 ===========
 
-[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="70">](https://f-droid.org/packages/superfreeze.tool.android/)
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="70">](https://f-droid.org/packages/superfreeze.tool.android/) 
+
 
 Android app (beta) making it possible to entirely freeze all background activities of any app.
 
@@ -57,9 +58,9 @@ You can always add other lanuages.
 
 ### Donate
 
-Monetary donations are currently not accepted (setting up a Liberapay account was too much effort, so it was given up for the time being).
+Developing SuperFreezZ is and was a lot of effort, which I did in my free time. Please donate to show me your support and to boost development.
 
-However, to show me your support, you can [donate to WWF or the Christian Blind Mission and post about it here](https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18).
+<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
 
 Credits
 -------
