@@ -27,13 +27,11 @@ package superfreeze.tool.android.userInterface.mainActivity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -48,7 +46,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getApplications
-import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefIntroAlreadyShown
 import superfreeze.tool.android.database.prefListSortMode
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
@@ -101,11 +98,11 @@ class MainActivity : AppCompatActivity() {
 		// Show the app intro at the first launch:
 		if (prefIntroAlreadyShown) {
 			startActivity(Intent(this, IntroActivity::class.java))
-			neverCalled("DonationsNowPossible", this) // TODO delete line
+//			neverCalled("DonationsNowPossible", this) // TODO delete line
 			return
 			// TODO delete from here on:
 		} else {
-			if (neverCalled("DonationsNowPossible", this)) {
+/*			if (Math.random() < 0.4 && neverCalled("DonationsNowPossible", this)) {
 				AlertDialog.Builder(this, R.style.myAlertDialog)
 					.setTitle("Donating")
 					.setMessage("""It is now possible support the development of SuperFreezZ by donating. If you like SuperFreezZ, I would be very grateful to find a supporter in you!""")
@@ -119,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 						)
 					}
 					.show()
-			}
+			}*/
 			// TODO delete up to here
 		}
 
