@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 			return
 			// TODO delete from here on:
 		} else {
-			if (neverCalled("DonationsNowPossible", this)) {
+			if (Math.random() < 0.05 && neverCalled("DonationsNowPossible", this)) {
 				AlertDialog.Builder(this, R.style.myAlertDialog)
 					.setTitle("Donating")
 					.setMessage("""It is now possible support the development of SuperFreezZ by donating. If you like SuperFreezZ, I would be very grateful to find a supporter in you!""")
