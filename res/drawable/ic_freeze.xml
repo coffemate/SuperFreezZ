@@ -1,27 +1,27 @@
 <!--
-Copyright (c) 2018,2019 Hocuri
+  ~ Copyright (c) 2019 Hocuri
+  ~
+  ~ This file is part of SuperFreezZ.
+  ~
+  ~ SuperFreezZ is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ SuperFreezZ is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  -->
 
-This file is part of SuperFreezZ.
-
-SuperFreezZ is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-SuperFreezZ is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<vector android:height="24dp" android:viewportHeight="737.0079"
-    android:viewportWidth="737.0079" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<vector android:height="24dp" android:viewportHeight="485.8335"
+    android:viewportWidth="485.8335" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillAlpha="1" android:fillColor="#2640d1"
+        android:pathData="M243.384,242.45m-243.384,0a243.384,243.384 0,1 1,486.767 0a243.384,243.384 0,1 1,-486.767 0" android:strokeWidth="0.93749994"/>
     <path android:fillAlpha="1" android:fillColor="#ffffff"
-        android:pathData="M368.504,368.504m-364.911,0a364.911,364.911 0,1 1,729.822 0a364.911,364.911 0,1 1,-729.822 0"
-        android:strokeAlpha="1" android:strokeColor="#00000000" android:strokeWidth="7.18607473"/>
-    <path android:fillAlpha="1" android:fillColor="#4fc3f7"
-        android:pathData="m402.541,134.121c-23.165,27.242 -48.856,57.453 -70.226,82.582 -29.16,34.289 -52.953,62.421 -52.874,62.517 0.079,0.096 23.057,1.102 51.062,2.234 28.005,1.133 51.074,2.175 51.262,2.316 0.189,0.141 0.341,0.456 0.341,0.702 0,0.616 -0.016,0.635 -84.876,97.881 -83.925,96.174 -79.069,90.58 -78.835,90.858 0.134,0.16 61.085,1.672 66.697,1.655 1.15,-0.004 1.412,0.162 1.412,0.886 0,0.541 -4.372,6.464 -11.178,15.147 -6.148,7.843 -31.342,39.963 -55.988,71.379 -24.645,31.415 -44.876,57.329 -44.955,57.587 -0.161,0.522 1.602,-0.587 31.009,-19.499 25.105,-16.145 233.256,-150.109 238.82,-153.702 3.535,-2.283 3.833,-2.569 2.823,-2.709 -0.621,-0.086 -18.829,0.069 -40.462,0.345 -21.633,0.276 -43.947,0.5 -49.588,0.5 -9.523,-0.003 -10.256,-0.062 -10.239,-0.802 0.012,-0.515 37.089,-34.939 104.639,-97.153l104.621,-96.354 -13.46,-0.281c-7.402,-0.154 -32.622,-0.307 -56.044,-0.341 -36.814,-0.053 -42.613,-0.152 -42.794,-0.723 -0.27,-0.851 -7.361,6.87 93.096,-101.375 4.294,-4.627 7.053,-7.607 11.207,-12.085z" android:strokeWidth="0.58229101"/>
+        android:pathData="m258.919,131.412c-16.142,22.713 -32.396,45.312 -48.437,68.126 40.397,2.466 0,0 40.397,2.466 -21.208,29.812 -43.177,58.837 -64.417,88.617 26.602,1.137 0,0 26.602,1.137 -42.922,66.307 0,0 -43.667,67.641 35.79,-27.387 71.62,-54.7 107.219,-82.44 -39.651,-0.056 0,0 -39.651,-0.056 27.217,-30.58 54.89,-60.574 82.34,-90.855 -44.265,-0.707 0,0 -44.265,-0.707 13.453,-18.009 27.446,-35.872 41.119,-53.641 -19.08,-0.244 -38.159,-0.044 -57.239,-0.289z" android:strokeWidth="0.25028071"/>
 </vector>
