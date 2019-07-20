@@ -87,7 +87,6 @@ SOFTWARE.
 		android:layout_marginRight="15dp"
 		android:layout_marginBottom="15dp"
 		android:tooltipText="@string/freeze_apps_now"
-		app:backgroundTint="@android:color/white"
-		app:maxImageSize="35dp"
-		app:srcCompat="@drawable/ic_freeze" />
+		app:backgroundTint="@color/design_default_color_primary"
+		app:srcCompat="@drawable/ic_lightning_bolt_white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
