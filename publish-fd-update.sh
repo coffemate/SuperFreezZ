@@ -13,27 +13,6 @@ git pull weblate master
 echo
 
 
-echo "Getting the list of apps on F-Droid"
-wget https://f-droid.org/repo/index-v1.jar
-unzip index-v1.jar -x "M*"
-python3 <<EOF >src/superfreeze/tool/android/database/FDroidPackages.kt
-import re
-index = open("index-v1.json").read()
-list = re.findall(r'"packageName": "([\w\.]+)"', index)
-packages = sorted(set(list))
-print("package superfreeze.tool.android.database")
-print()
-print('val fDroidPackages = hashSetOf(')
-for p in packages:
-    print('"' + p + '",')
-print('"superfreeze.tool.android.debug"')
-print(')')
-EOF
-
-
-rm index-v1.jar index-v1.json
-git add src/superfreeze/tool/android/database/FDroidPackages.kt
-
 echo
 echo "+git status"
 git status
@@ -58,14 +37,38 @@ cp F-Droid-new-version-RELEASE-NOTES.txt "./fastlane/metadata/android/en-US/chan
 echo "+git add fastlane/metadata/android/en-US/changelogs"
 git add fastlane/metadata/android/en-US/changelogs/
 
+
+echo "Getting the list of apps on F-Droid"
+wget https://f-droid.org/repo/index-v1.jar
+unzip index-v1.jar -x "M*"
+python3 <<EOF >src/superfreeze/tool/android/database/FDroidPackages.kt
+import re
+index = open("index-v1.json").read()
+list = re.findall(r'"packageName": "([\w\.]+)"', index)
+packages = sorted(set(list))
+print("package superfreeze.tool.android.database")
+print()
+print('val fDroidPackages = hashSetOf(')
+for p in packages:
+    print('"' + p + '",')
+print('"superfreeze.tool.android.debug"')
+print(')')
+EOF
+
+rm index-v1.jar index-v1.json
+git add src/superfreeze/tool/android/database/FDroidPackages.kt
+
+
+
 echo "+git commit -m 'Bump version'"
 git commit -m "Bump version to $vName"
 
 echo "+git tag -a v${vName} -F F-Droid-new-version-RELEASE-NOTES.txt"
 git tag -a "v${vName}" -F F-Droid-new-version-RELEASE-NOTES.txt
 
-echo "Press enter to publish the new version."
-read
+
+#echo "Press enter to publish the new version."
+#read
 echo "+git pull && git push && git push --tags"
 git pull && git push && git push --tags
 
