@@ -1,0 +1,6 @@
+Show info about donating
+Make the "Freeze" button better visible
+Edit description
+Small tweaks & crash fix
+Improve RAM usage
+Update translations

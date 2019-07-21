@@ -22,8 +22,8 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	package="superfreeze.tool.android"
-	android:versionCode="15"
-	android:versionName="0.5">
+	android:versionCode="16"
+	android:versionName="0.6">
 
 	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
