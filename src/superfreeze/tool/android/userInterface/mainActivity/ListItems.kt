@@ -154,7 +154,7 @@ internal class ListItemApp(override val packageName: String,
 		viewHolder: ViewHolderApp
 	) {
 
-		val oldFreezeMode = freezeMode
+		val oldFreezeMode = this.freezeMode
 		val wasPendingFreeze = isPendingFreeze()
 
 		if (changeSettings) {
