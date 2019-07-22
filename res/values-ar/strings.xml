@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) 2018,2019 Hocuri
+Copyright (c) 2019 Robin Naumann
+Copyright (c) 2019 bilux
+
+This file is part of SuperFreezZ.
+
+SuperFreezZ is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SuperFreezZ is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name" translatable="false">SuperFreezZ</string>
+    <string name="msg_search">بحث</string>
+    <string name="msg_search_help">بحث…</string>
+    <string name="share_exception">خطأ غير متوقع. تقرير باستخدام…</string>
+    <string name="accessibility_service_description">يتيح لك تشغيل هذه الإمكانية تجميد التطبيقات تلقائيًا.
+\n
+\nالمزايا:
+\n• عدم تفاعل المستخدم: أسرع. لا حاجة لك لمعرفة كيف يتم هذا.
+\n• يمكن للمستخدمين المعاقين استخدام اختصار التجميد (عبر التعرف على الكلام ، على سبيل المثال) ، وتجميد جميع التطبيقات تلقائيًا.
+\n
+\nيستخدم SuperFreezZ خدمة إمكانية الوصول للنقر على \"فرض الإيقاف\" و \"موافق\" و \"رجوع\". يؤدي استرداد محتوى النافذة إلى العثور على هذه الأزرار ، ويلزم مراقبة الإجراءات لمعرفة متى تظهر.
+\n
+\nيستخدم SuperFreezZ خدمة الوصول فقط للنقر على "فرض الإيقاف" ، "موافق" ، "رجوع". "استرداد محتوى النافذة" ضروري للعثور على هذه الأزرار و "مراقبة تصرفاتك" ضرورية لمعرفة متى تظهر.
+\n
+\nيمكن أيضًا استخدام خدمة الوصول لقفل الشاشة بعد التجميد على إصدارات أندرويد الأحدث.</string>
+    <string name="freeze_shortcut_label">تجميد</string>
+    <string name="NothingToFreeze">لا شيء لتجميده</string>
+    <string name="undo">تراجع</string>
+    <string name="icon">أيقونة</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">قم بتجميد هذا التطبيق إذا لم يتم استخدامه لفترة طويلة.</string>
+    <string name="always_freeze_this_app">تجميد هذا التطبيق دائما</string>
+    <string name="do_never_freeze_this_app">لا تجمد هذا التطبيق أبدًا</string>
+    <string name="pending_freeze">في انتظار التجميد</string>
+    <string name="frozen">مجمد</string>
+    <string name="freeze_off">تجميد</string>
+    <string name="used_recently">تم استخدامه مؤخرا</string>
+    <string name="no_apps_pending_freeze">[لا توجد تطبيقات في انتظار التجميد]</string>
+    <string name="all_apps">كل التطبيقات</string>
+    <string name="usagestats_access">إحصائيات استخدام الوصول</string>
+    <string name="usatestats_explanation">يتيح الوصول إلى إحصائيات الاستخدام لـ SuperFreezZ تجميد التطبيقات فقط إذا لم تستخدمها لبعض الوقت (تجميد ذكي).</string>
+    <string name="enable">فعل</string>
+    <string name="usagestats_not_enabled">أنت لم تمنح حق الوصول إلى إحصائيات الاستخدام.</string>
+    <string name="automate_the_freezing_of_apps">تجميد التطبيقات تلقائيا؟</string>
+    <string name="accessibility_arguments_yes">من أجل:
+\n• سهولة الاستخدام
+\n• تجميد الكثير من التطبيقات</string>
+    <string name="accessibility_arguments_no">سيكون عليك الضغط على \"فرض الإيقاف\" و \"موافق\" والعودة يدويًا لتجميد تطبيق ما.
+\nمن أجل:
+\n• الأجهزة البطيئة
+\n• مخاوف أمنية
+\n• لم يتم تسجيل SuperFreezZ كخدمة وصول</string>
+    <string name="yes">نعم</string>
+    <string name="no">ﻻ</string>
+    <string name="intro_always_freeze_title">وضع التجميد: تجميد دائمًا</string>
+    <string name="intro_always_freeze_explanation">هناك 3 طرق التجميد. يمكنك اختيار واحد لكل تطبيق. "تجميد دائمًا" سيجمد تطبيقًا في أي حال.</string>
+    <string name="intro_never_freeze_title">وضع التجميد: لا تجمد أبدًا</string>
+    <string name="intro_never_freeze_explanation">"لا تجمد أبدًا" - يقوم بإيقاف التجميد ولا يجمد التطبيقات مطلقًا.</string>
+    <string name="intro_auto_freeze_title">وضع التجميد: ذكي</string>
+    <string name="intro_auto_freeze_explanation">"التجميد الذكي" سوف يقوم بتجميد تطبيق إذا لم يتم استخدامه لبعض الوقت (7 أيام بشكل افتراضي). أيضا، لن يتم تجميد التطبيقات من F-Droid.</string>
+    <string name="freeze_manually">التجميد يدويا</string>
+    <string name="Press_forcestop_ok_back">تجميد أحد التطبيقات عن طريق الضغط على \"فرض الإيقاف\" ، \"موافق\" ، ثم \"رجوع\".</string>
+    <string name="freeze_manually_no">لا أريد أن أفعل ذلك</string>
+    <string name="title_activity_settings">الإعدادات</string>
+    <!-- Strings related to Settings -->
+    <string name="pref_header_appslist">قائمة التطبيقات</string>
+    <string-array name="appslist_show_special_titles">
+        <item>المشغل</item>
+        <item>SuperFreezZ بنفسه</item>
+        <item>تطبيقات النظام (سيقوم النظام بإزالة التجميد عنها بسرعة)</item>
+    </string-array>
+    <string-array name="appslist_show_special_values" translatable="false">
+        <item>Launcher</item>
+        <item>SuperFreezZ</item>
+        <item>Systemapps</item>
+    </string-array>
+    <string name="pref_title_standard_freeze_mode">وضع التجميد القياسي</string>
+    <string-array name="standard_freeze_mode_titles">
+        <item>التجميد دائما</item>
+        <item>لا تجمد أبدا</item>
+        <item>ذكي</item>
+    </string-array>
+    <string-array name="standard_freeze_mode_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_about">حول</string>
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_freezing">تجميد التطبيقات</string>
+    <string name="pref_ringtone_silent">صامت</string>
+    <string name="appslist_show_special">عرض تطبيقات خاصة في القائمة</string>
+    <string name="pref_intelligentfreeze_delay">ذكي: تجميد بعد … (أيام)</string>
+    <string name="pref_summary_appslist_show_special">لقد تم إخفاء المشغل و SuperFreezZ وتطبيقات النظام افتراضيًا.</string>
+    <string name="create_freeze_shortcut">إنشاء اختصار تجميد</string>
+    <string name="settings">الإعدادات</string>
+    <string name="sort">ترتيب</string>
+    <string name="pref_header_freezing_summary">تخصيص كيف يتم تجميد التطبيقات</string>
+    <string name="pref_header_about_summary">روابط مفيدة، إرسال السجلات</string>
+    <string name="pref_header_appslist_summary">عرض التطبيقات الخاصة، ووضع التجميد القياسي</string>
+    <string name="freeze_apps_now">تجميد التطبيقات الآن</string>
+    <string name="freeze_on_screen_off_title">التجميد عندما تنطفئ الشاشة</string>
+    <string name="freeze_on_screen_off_sum">ستحتاج إلى تعطيل \'زر الطاقة يقفل على الفور\' في إعدادات الجهاز</string>
+    <string name="problems">مشاكل</string>
+    <string name="links">الروابط</string>
+    <string name="info">معلومات</string>
+    <string name="view_intro_again">عرض المقدمة مرة أخرى</string>
+    <string name="logs_copied">نسخ السجلات إلى الحافظة.</string>
+    <string name="share_logs">مشاركة السجلات باستخدام…</string>
+    <string name="sf_crashed">تحطم تطبيق SuperFreezZ. الرجاء إرسال تقرير، إذا لم تكن قد قمت بذلك بالفعل.</string>
+    <string name="report">الإبلاغ عن مشكلة، اقتراح ميزة، …</string>
+    <string name="send_logs">إرسال السجلات</string>
+    <string name="source_code">الشفرة المصدرية</string>
+    <string name="license">الرخصة</string>
+    <string name="credits_and_licenses">الاعتمادات وتراخيص الجهات الخارجية</string>
+    <string name="already_frozen">المجمدة بالفعل</string>
+    <string-array name="sortmodes">
+        <item>الإسم</item>
+        <item>حالة التجميد</item>
+        <item>آخر مرة استخدم</item>
+    </string-array>
+    <string name="intro_header_welcome">مرحبا بك إلى</string>
+    <string name="intro_header_modes">الأوضاع</string>
+    <string name="intro_header_automaticfreezing">التجميد التلقائي</string>
+    <string name="sort_by">ترتيب حسب</string>
+    <string name="not_available">غير متوفر</string>
+    <string name="fdroid_app_not_pending_freeze">تطبيق F-Droid</string>
+    <string name="used_recently_and_frozen">المستخدمة مؤخرا <![CDATA[&]]> المجمدة</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid">التجميد الذكي: تجميد تطبيقات F-Droid</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid_sum">عادةً لا تعمل تطبيقات F-Droid في الخلفية كثيرًا.</string>
+    <string name="if_you_like_this_app">إذا كنت تحب هذا التطبيق...</string>
+    <string name="plz_help_translating">...الرجاء المساعدة في ترجمته!</string>
+    <string name="plz_donate">...يرجى التبرع!</string>
+</resources>
