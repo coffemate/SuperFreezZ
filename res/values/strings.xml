@@ -150,4 +150,5 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 	<string name="if_you_like_this_app">If you like this app...</string>
     <string name="plz_help_translating">...Please help translating it!</string>
     <string name="plz_donate">...Please donate!</string>
+	<string name="changed_freeze_mode">Changed freeze mode</string>
 </resources>
