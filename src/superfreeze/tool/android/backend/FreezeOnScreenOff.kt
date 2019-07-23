@@ -138,7 +138,13 @@ private val screenReceiver by lazy {
 			context: Context
 		) {
 			Log.i(TAG, "turning screen off after freeze...")
-			wl?.release()
+
+			try {
+				wl?.release()
+			} catch (e: RuntimeException) { // See https://stackoverflow.com/a/24057982.
+				Log.w(TAG, "release failed: ${e.message}")
+			}
+
 			kl.reenableKeyguard()
 
 			// Turn screen off:
