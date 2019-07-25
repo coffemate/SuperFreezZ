@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.expectNonNull
 
-
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
  */

@@ -87,9 +87,9 @@ private val screenReceiver by lazy {
 					if (lastTime + 60 * 1000 > System.currentTimeMillis()) {
 						lastTime = min(System.currentTimeMillis(), lastTime)
 						return
-					} else {
-						lastTime = System.currentTimeMillis()
 					}
+
+					lastTime = System.currentTimeMillis()
 
 					enableScreenUntilFrozen(context)
 
