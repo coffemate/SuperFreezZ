@@ -140,8 +140,13 @@ class FreezerService : AccessibilityService() {
 	private fun pressOkButton(event: AccessibilityEvent) {
 		val node = event.source.expectNonNull(TAG) ?: return
 
-		val success = clickAll(node.findAccessibilityNodeInfosByText(getString(android.R.string.ok)), "OK")
+		var nodesToClick = node.findAccessibilityNodeInfosByText(getString(android.R.string.ok))
 
+		if (nodesToClick.isEmpty())
+			nodesToClick = node.findAccessibilityNodeInfosByText(forceStopButtonName)
+			// Apparently necessary sometimes, see https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/43
+
+		val success = clickAll(nodesToClick, "OK")
 		if (success) nextAction = NextAction.PRESS_BACK
 
 		node.recycle()
