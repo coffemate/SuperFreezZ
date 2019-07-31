@@ -1,0 +1,5 @@
+Nuevas traducciones
+Editar descripciones
+Añadir gráfico de características
+Ajustes menores
+Solución # 29: Mantenga el modo de ordenación en la lista al reiniciar

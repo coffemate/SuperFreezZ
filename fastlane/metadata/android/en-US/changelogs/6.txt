@@ -1,6 +1,6 @@
-Add settings
-Add swipe refresh gesture
-Add Sort toolbar
-Fix bugs
-Show requestUsageStatsPermission dialog once, decision can be changed in the settings
-Fix race condition
+Added settings
+Added swipe refresh gesture
+Added Sort toolbar
+Fixed bugs
+RequestUsageStatsPermission dialog shown once, decision can be changed in the settings
+Fixed race condition

@@ -1,3 +1,3 @@
 Make finding of the Force Stop button more stable, fix #20 ?
 Trying to make freezing more stable again. Removed unused doOnFinished() from FreezerService.
-REGRESSION-FIX Do not use timeout when freezerservice is not running
+Regression-fix: Do not use timeout when freezerservice is not running

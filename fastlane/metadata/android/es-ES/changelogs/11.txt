@@ -1,0 +1,11 @@
+GRAN nueva introducción, gracias Robin !!
+
+Primera versión beta
+
+Otros cambios:
+Actualizar traducciones
+Cambie el nombre del modo de congelación "Auto" a "Inteligente" (# 16)
+Al tocar una aplicación en la lista, se congelará. No intente esto si ya está congelado.
+Posibilidad de ver la introducción nuevamente desde la configuración
+Agregar informes de fallas decentes
+Otras mejoras menores y correcciones de errores

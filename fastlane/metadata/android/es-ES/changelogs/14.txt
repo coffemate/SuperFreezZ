@@ -1,0 +1,9 @@
+ADVERTENCIA: Realicé muchas refactorizaciones, por lo que podría haber problemas. Si SuperFreezZ es muy importante para usted, espere la versión 0.5.
+
+Informe cualquier problema en https://gitlab.com/SuperFreezZ/SuperFreezZ/issues
+
+Traducciones actualizadas
+Mejoras de rendimiento.
+Crashfix: en el inicio: android.view.WindowManager $ BadTokenException
+MainActivity no se muestra después de congelar
+Corrección de errores: a veces, el tiempo de espera de la pantalla se mantuvo en 15 s después de con
