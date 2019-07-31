@@ -60,7 +60,7 @@ You can always add other lanuages.
 
 Developing SuperFreezZ is and was a lot of effort, which I did in my free time. Please donate to show me your support and to boost development.
 
-<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">
+[<img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg">](https://liberapay.com/Hocuri/)
 
 Credits
 -------
