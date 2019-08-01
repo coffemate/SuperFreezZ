@@ -166,7 +166,7 @@ internal class ListItemApp(override val packageName: String,
 		if (showSnackbar && freezeMode != oldFreezeMode) {
 			Snackbar.make(
 				appsListAdapter.mainActivity.myCoordinatorLayout,
-				context.getString(R.string.changed_freeze_mode),
+				R.string.changed_freeze_mode,
 				Snackbar.LENGTH_LONG
 			)
 				.setAction(R.string.undo) {
