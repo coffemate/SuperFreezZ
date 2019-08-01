@@ -1,0 +1,10 @@
+ADVARSEL: Mye kodeomskriving, så de kan oppstå problemer! Hvis SuperFreezZ er veldig viktig for deg, vent på versjon 0.5.
+
+Innrapporter feil til https://gitlab.com/SuperFreezZ/SuperFreezZ/issues.
+
+Oppdaterte oversettelser
+Ytelsesforbedringer
+Fiks av kræsj ved oppstart: android.view.WindowManager$BadTokenException
+MainActivity ikke vist etter frysing
+Feilretting, noen ganger varer skjermtidsavbrudd 15 s etter fryseskjermen er av: Fiks #32
+Små forbedringer

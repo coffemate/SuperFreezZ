@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="usatestats_explanation">L’accés a estadístiques d\'ús permet que SuperFreezZ congeli les aplicacions només si no les heu utilitzat durant un cert temps (CONGELAT INTEL·LIGENT).</string>
+    <string name="usagestats_not_enabled">No heu concedit accés a les estadístiques d\'ús.</string>
+    <string name="pref_header_about_summary">Enllaços útils, registres d’enviament</string>
+    <string name="if_you_like_this_app">Si t\'agrada aquesta aplicació...</string>
+    <string name="freeze_shortcut_label">Congela</string>
+    <string name="pref_summary_appslist_show_special">El llançador, el SuperFreezZ i les aplicacions del sistema s’oculten de manera predeterminada.</string>
+    <string name="accessibility_arguments_yes">Per a:
+\n• Facilitat d\'ús
+\n• Congelar moltes aplicacions</string>
+    <string name="NothingToFreeze">Res a congelar</string>
+    <string name="usagestats_access">Accés a estadístiques d\'ús</string>
+    <string name="used_recently">Utilitzat recentment</string>
+    <string name="Press_forcestop_ok_back">Congela una aplicació prement \"FORÇAR LA ATURADA\", \"D\'ACORD\" i, a continuació, \"Enrere\".</string>
+    <string name="used_recently_and_frozen">Usat recentment i congelat</string>
+    <string name="accessibility_arguments_no">Haureu de prémer \"FORÇAR L\'ATURADA\", \"OK\" i Endavant manualment per congelar una aplicació.
+\nPer a:
+\n• Dispositius lents
+\n• Problemes de seguretat
+\n• No hi ha registre de SuperFreezZ com a servei d’accessibilitat</string>
+    <string name="pref_header_freezing">Congelant aplicacions</string>
+    <string name="view_intro_again">Tornar a veure la introducció</string>
+    <string name="automate_the_freezing_of_apps">Automatitzar la congelació d\'aplicacions\?</string>
+    <string name="credits_and_licenses">Crèdits i llicències de tercers</string>
+    <string name="freeze_off">Congelar</string>
+    <string name="no_apps_pending_freeze">[CAP APLICACIÓ PER CONGELAR]</string>
+    <string name="no">No</string>
+    <string name="info">Info</string>
+    <string name="icon">Icona</string>
+    <string name="appslist_show_special">Mostra aplicacions especials a la llista</string>
+    <string name="freeze_manually">Congela manualment</string>
+    <string name="pref_header_appslist_summary">Mostra aplicacions especials, mode de congelació estàndard</string>
+    <string name="freeze_apps_now">Congela les aplicacions ara</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid_sum">Les aplicacions de F-Droid generalment no funcionen en segon pla.</string>
+    <string name="intro_header_welcome">Benvingut a</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Congela aquesta aplicació si no s\'ha utilitzat des de fa temps.</string>
+    <string name="intro_always_freeze_explanation">Hi ha 3 modes de congelació. Podeu triar-ne una per a cada aplicació. SEMPRE FREEZE congelarà la aplicació en qualsevol cas.</string>
+    <string name="frozen">Congelats</string>
+    <string name="freeze_on_screen_off_title">Congelar quan la pantalla s\'apaga</string>
+    <string name="problems">Problemes</string>
+    <string name="yes">Si</string>
+    <string name="source_code">Codi font</string>
+    <string name="pending_freeze">Pendent de congelar</string>
+    <string name="send_logs">Envia registres</string>
+    <string name="fdroid_app_not_pending_freeze">Aplicació F-Droid</string>
+    <string name="changed_freeze_mode">Manera de congelació canviada</string>
+    <string name="intro_auto_freeze_title">Mode de congelació: INTEL·LIGENT</string>
+    <string name="intro_always_freeze_title">Mode de congelació: SEMPRE CONGELAR</string>
+    <string name="sort_by">Ordenar per</string>
+    <string name="pref_title_standard_freeze_mode">Mode de congelació estàndard</string>
+    <string name="intro_auto_freeze_explanation">CONGELACIÓ INTEL·LIGENT congelarà una aplicació només si no s’ha utilitzat des de fa temps (per defecte 7 dies). A més, les aplicacions de F-Droid no es congelaran.</string>
+    <string name="not_available">No disponible</string>
+    <string name="pref_intelligentfreeze_delay">INTEL·LIGENT: Congelar després de... (dies)</string>
+    <string name="do_never_freeze_this_app">No congeleu mai aquesta aplicació</string>
+    <string name="share_exception">Error inesperat. Enviar informe…</string>
+    <string name="license">Llicencia</string>
+    <string name="intro_never_freeze_explanation">MAI CONGELAR: desactivarà la congelació i mai congelarà una aplicació.</string>
+    <string name="intro_header_modes">modes</string>
+    <string name="msg_search_help">Cercant…</string>
+    <string name="undo">Defer</string>
+    <string name="report">Informar d’un problema, proposar una funció,…</string>
+    <string name="create_freeze_shortcut">Crea la drecera de congelació</string>
+    <string name="plz_donate">...Donar per favor!</string>
+    <string name="intro_never_freeze_title">Mode de congelació: MAI CONGELAR</string>
+    <string name="links">Enllaços</string>
+    <string name="pref_ringtone_silent">Silenciós</string>
+    <string name="title_activity_settings">Ajustaments</string>
+    <string name="accessibility_service_description">Si activeu aquesta opció, podeu congelar automàticament les aplicacions.
+\n 
+\nAvantatges:
+\n• Sense interacció amb l’usuari: Més ràpid. No cal saber com fer-ho.
+\n• Els usuaris amb discapacitat poden utilitzar la drecera de congelació (per exemple, mitjançant reconeixement de veu), congelant totes les aplicacions automàticament.
+\n 
+\nSuperFreezZ utilitza el servei d’accessibilitat per tocar “FORCE STOP”, “OK” i “Back”. La recuperació del contingut de la finestra troba aquests botons i cal observar les accions per saber quan apareixen.
+\n 
+\nSuperFreezZ només utilitza el servei d’accessibilitat per fer clic en Forçar parada, OK, Enrere. Recupereu el contingut de la finestra és necessari per trobar aquests botons i cal que observeu les vostres accions per saber quan apareixen.
+\n 
+\nEl servei d\'accessibilitat també es pot utilitzar per bloquejar la pantalla després de congelar-se en versions més noves d\'Android.</string>
+    <string name="enable">Activar</string>
+    <string name="intro_header_automaticfreezing">congelació automàtica</string>
+    <string name="pref_header_freezing_summary">Personalitzeu com i quines aplicacions es congelen</string>
+    <string name="sort">Ordena</string>
+    <string name="settings">Ajustaments</string>
+    <string name="freeze_on_screen_off_sum">Haureu de desactivar \"El botó d\'engegada es bloqueja immediatament\" a la configuració del dispositiu</string>
+    <string name="sf_crashed">SuperFreezZ ha fallat. Envieu un informe si encara no ho heu fet.</string>
+    <string name="always_freeze_this_app">Congeleu sempre aquesta aplicació</string>
+    <string name="pref_header_about">Sobre</string>
+    <string name="pref_header_appslist">Llista d\'aplicacions</string>
+    <string name="already_frozen">Ja congelat</string>
+    <string name="msg_search">Cerca</string>
+    <string name="share_logs">Comparteix els registres mitjançant…</string>
+    <string name="all_apps">TOTES LES APLICACIÓNS</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid">INTEL·LIGENT: Congelar aplicacions F-Droid</string>
+    <string name="logs_copied">Registres copiats al porta-retalls.</string>
+    <string name="freeze_manually_no">No vull haver de fer això</string>
+    <string name="plz_help_translating">...Ajudeu a traduir-lo!</string>
+</resources>

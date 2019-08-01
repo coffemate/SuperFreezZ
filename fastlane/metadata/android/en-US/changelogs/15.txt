@@ -1,6 +1,6 @@
-Update translations
-Edit description
+Updated translations
+Edited description
 Small fixes and improvements
-Do not "intelligent" freeze apps from F-Droid by standard as they usually do not run overly in the background
-Make last intro page scrollable
+No "intelligent" freezing of apps from F-Droid by default, as they usually do not run overly in the background
+Last intro page made scrollable
 Abort freezing when the power button is pressed

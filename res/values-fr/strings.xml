@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_search">Rechercher</string>
+    <string name="msg_search_help">Rechercher…</string>
+    <string name="share_exception">Erreur inattendue. Reportez en utilisant…</string>
+    <string name="accessibility_service_description">Activer cette option vous laisse geler automatiquement des applications.
+\n
+\nAvantages:
+\n- Pas d\'interactions utilisateur: Plus rapide. Pas besoin de s\'y connaître.
+\n- Les utilisateurs desactives peuvent utiliser le raccourci de gel (par reconnaissance vocale par exemple), gelant automatiquement toutes les applications.
+\n
+\nSuperFreezZ utilise le service d\'accessibilité pour appuyer sur \"FORCER L\'ARRET\", \"OK\", et \"RETOUR\".</string>
+</resources>

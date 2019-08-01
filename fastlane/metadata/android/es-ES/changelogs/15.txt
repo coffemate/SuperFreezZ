@@ -1,0 +1,6 @@
+Traducciones actualizadas
+Descripción editada
+Pequeñas correcciones y mejoras
+No hay congelamiento "inteligente" de aplicaciones de F-Droid de forma predeterminada, ya que generalmente no se ejecutan demasiado en segundo plano
+Última página de introducción hecha desplazable
+Abortar la congelación cuando se presiona el botón de encendido

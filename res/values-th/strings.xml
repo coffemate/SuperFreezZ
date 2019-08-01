@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_search">ค้นหา</string>
+    <string name="msg_search_help">ค้นหา…</string>
+    <string name="freeze_shortcut_label">แช่แข็ง</string>
+    <string name="NothingToFreeze">ไม่มีแอพให้แช่แข็ง</string>
+    <string name="icon">ไอคอน</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">แช่แข็งแอพนี้ถ้าหากไม่มีการใช้เป็นเวลานาน</string>
+    <string name="always_freeze_this_app">แช่แข็งแอพนี้ตลอดเวลา</string>
+    <string name="do_never_freeze_this_app">ไม่ต้องแช่แข็งแอพนี้ตลอด</string>
+    <string name="pending_freeze">อยู่ในระหว่างแช่แข็ง</string>
+    <string name="frozen">แช่แข็งแล้ว</string>
+</resources>

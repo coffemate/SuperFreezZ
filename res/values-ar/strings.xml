@@ -18,9 +18,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+--><resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name" translatable="false">SuperFreezZ</string>
     <string name="msg_search">بحث</string>
     <string name="msg_search_help">بحث…</string>
@@ -50,7 +48,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="no_apps_pending_freeze">[لا توجد تطبيقات في انتظار التجميد]</string>
     <string name="all_apps">كل التطبيقات</string>
     <string name="usagestats_access">إحصائيات استخدام الوصول</string>
-    <string name="usatestats_explanation">يتيح الوصول إلى إحصائيات الاستخدام لـ SuperFreezZ تجميد التطبيقات فقط إذا لم تستخدمها لبعض الوقت (تجميد ذكي).</string>
+    <string name="usatestats_explanation">الوصول إلى إحصائيات الاستخدام يتيح لتطبيق SuperFreezZ تجميد التطبيقات فقط إذا لم تستخدمها لبعض الوقت (تجميد ذكي).</string>
     <string name="enable">فعل</string>
     <string name="usagestats_not_enabled">أنت لم تمنح حق الوصول إلى إحصائيات الاستخدام.</string>
     <string name="automate_the_freezing_of_apps">تجميد التطبيقات تلقائيا؟</string>
@@ -103,7 +101,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="pref_header_freezing">تجميد التطبيقات</string>
     <string name="pref_ringtone_silent">صامت</string>
     <string name="appslist_show_special">عرض تطبيقات خاصة في القائمة</string>
-    <string name="pref_intelligentfreeze_delay">ذكي: تجميد بعد … (أيام)</string>
+    <string name="pref_intelligentfreeze_delay">تجميد ذكي: تجميد بعد … (أيام)</string>
     <string name="pref_summary_appslist_show_special">لقد تم إخفاء المشغل و SuperFreezZ وتطبيقات النظام افتراضيًا.</string>
     <string name="create_freeze_shortcut">إنشاء اختصار تجميد</string>
     <string name="settings">الإعدادات</string>

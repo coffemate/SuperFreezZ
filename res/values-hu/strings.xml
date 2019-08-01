@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="usatestats_explanation">A Haszn. Stat. hozzáférés lehetővé teszi, hogy a SuperFreezZ csak akkor fagyassza le az alkalmazásokat, ha nem használtad egy ideig (INTELLIGENS FAGYASZTÁS).</string>
+    <string name="usagestats_not_enabled">Nem adtad meg a Haszn. adatok hozzáférést.</string>
+    <string name="pref_header_about_summary">Hasznos linkek, naplók küldése</string>
+    <string name="if_you_like_this_app">Ha tetszik ez az app...</string>
+    <string name="freeze_shortcut_label">Fagyaszt</string>
+    <string name="pref_summary_appslist_show_special">Az Indító, a SuperFreezZ és a rendszeralkalmazások alapértelmezés szerint rejtve vannak.</string>
+    <string name="accessibility_arguments_yes">Mert: 
+\n• Egyszerű a használat 
+\n• Sok alkalmazás fagyasztása</string>
+    <string name="NothingToFreeze">Semmi sem fagyaszt</string>
+    <string name="usagestats_access">Haszn.Stat. hozzáférés</string>
+    <string name="used_recently">Nemrég használt</string>
+    <string name="Press_forcestop_ok_back">Egy alkalmazás fagyasztása gomb megnyomásával \"MENÜ\", \"OK\", majd \"Vissza\".</string>
+    <string name="used_recently_and_frozen">Nemrég használt &amp; fagyott</string>
+    <string name="accessibility_arguments_no">Egy alkalmazás lefagyasztásához nyomd meg a \"MENÜ\", az \"OK\" és a Vissza gombot.
+\nMert:
+\n• Lassú az eszköz
+\n• Biztonsági aggályok
+\n• Nincs SuperFreezZ engedély Kisegítő lehetőségek szolgáltatásként</string>
+    <string name="pref_header_freezing">App fagyasztás</string>
+    <string name="view_intro_again">Intro ismételt megtekintése</string>
+    <string name="automate_the_freezing_of_apps">Automatizálod az alkalmazások befagyasztását\?</string>
+    <string name="credits_and_licenses">Elismerések és harmadik felek engedélyei</string>
+    <string name="freeze_off">Fagyasztás ki</string>
+    <string name="no_apps_pending_freeze">[NINCS FÜGGŐ FAGYASZTÁS]</string>
+    <string name="no">Nem</string>
+    <string name="info">Infó</string>
+    <string name="icon">Ikon</string>
+    <string name="appslist_show_special">A speciális alkalmazások megjelenítése a listában</string>
+    <string name="freeze_manually">Fagyasztás manuálisan</string>
+    <string name="pref_header_appslist_summary">Speciális appok megjelenítése, szabványos fagyasztási mód</string>
+    <string name="freeze_apps_now">Fagyassza le most az alkalmazásokat</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid_sum">Az F-Droid alkalmazások általában nem futnak a háttérben.</string>
+    <string name="intro_header_welcome">Köszönt a</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">Fagyaszd le ezt az alkalmazást, ha hosszabb ideig nem használtad.</string>
+    <string name="intro_always_freeze_explanation">3 fagyasztási mód van. Minden alkalmazáshoz választhatsz. A MINDIG FAGYASZT minden esetben befagyaszt egy alkalmazást.</string>
+    <string name="frozen">Fagyasztott</string>
+    <string name="freeze_on_screen_off_title">Fagyassza le, amikor a képernyő kikapcsol</string>
+    <string name="problems">Problémák</string>
+    <string name="yes">Igen</string>
+    <string name="source_code">Forráskód</string>
+    <string name="pending_freeze">Függőben lévő lefagyasztás</string>
+    <string name="send_logs">Naplók küldése</string>
+    <string name="fdroid_app_not_pending_freeze">F-Droid appok</string>
+    <string name="intro_auto_freeze_title">Fagyasztási mód: INTELLIGENS</string>
+    <string name="intro_always_freeze_title">Fagyasztási mód: MINDIG FAGYASZT</string>
+    <string name="sort_by">Rendezés</string>
+    <string name="pref_title_standard_freeze_mode">Szabványos fagyasztási mód</string>
+    <string name="intro_auto_freeze_explanation">Az INTELLIGENS FAGYASZTÁS csak akkor fog fagyasztani egy alkalmazást, ha azt egy ideig nem használták (alapértelmezés szerint 7 nap). Az F-Droid alkalmazásai nem fagynak meg.</string>
+    <string name="not_available">Nem elérhető</string>
+    <string name="pref_intelligentfreeze_delay">INTELLIGENS: Fagyasztás… (nap)</string>
+    <string name="do_never_freeze_this_app">Soha ne fagyassza le ezt az alkalmazást</string>
+    <string name="share_exception">Váratlan hiba. Használati jelentés…</string>
+    <string name="license">Licensz</string>
+    <string name="intro_never_freeze_explanation">SOHA NE FAGYASSZON - kikapcsolja a fagyasztást, és soha ne fagyaszt le egy alkalmazást.</string>
+    <string name="intro_header_modes">Módok</string>
+    <string name="msg_search_help">Keresés…</string>
+    <string name="undo">Visszavon</string>
+    <string name="report">Jelents problémát, javasolj funkciót, …</string>
+    <string name="create_freeze_shortcut">Fagyasztás parancsikon létrehozása</string>
+    <string name="plz_donate">...Kérlek, adományozz!</string>
+    <string name="intro_never_freeze_title">Fagyasztási mód: SOHA NE FAGYASSZON</string>
+    <string name="links">Linkek</string>
+    <string name="pref_ringtone_silent">Csendes</string>
+    <string name="title_activity_settings">Beállítások</string>
+    <string name="accessibility_service_description">Ezt bekapcsolva automatikusan leállíthatók az alkalmazások.
+\n 
+\nElőnyök: 
+\n• Nincs felhasználói interakció: Gyorsabb. Nem kell tudni, mit hogyan kell csinálni. 
+\n• A fogyatékkal élő felhasználók használhatják a fagyasztás parancsikont (például beszédfelismerés révén), és minden alkalmazás automatikusan befagyasztható.
+\n 
+\nA SuperFreezZ a Használati adatokat használja a \"MENÜ\", az \"OK\" és a \"Vissza\" megérintéséhez. Az ablak tartalmának kiolvasása ezeket a gombokat találja meg, és az intézkedések megfigyelése szükséges ahhoz, hogy megtudd, mikor jelennek meg. 
+\n 
+\nA SuperFreezZ csak a Kisegítő lehetőségek szolgáltatást használja a MENÜ, OK, Vissza megérintés felismeréséhez. Az ablakok tartalmának lekérése és a műveletek megfigyelése szükséges ahhoz, hogy ezeket a gombokat megtalálhassa, és tudja, hogy mikor jelennek meg. 
+\n 
+\nA Kisegítő lehetőségek szolgáltatás az újabb Android verziókban lefagyasztás után a képernyő zárolására is használható.</string>
+    <string name="enable">Bekapcsol</string>
+    <string name="intro_header_automaticfreezing">auto. fagyasztás</string>
+    <string name="pref_header_freezing_summary">Testreszabható, hogyan és milyen alkalmazások legyenek lefagyasztva</string>
+    <string name="sort">Rendez</string>
+    <string name="settings">Beállítások</string>
+    <string name="freeze_on_screen_off_sum">A készülék beállításainál le kell tiltani a \"Tápkapcsoló azonnal lezárását</string>
+    <string name="sf_crashed">A SuperFreezZ összeomlott. Kérjük küldj jelentést, ha még nem tetted meg.</string>
+    <string name="always_freeze_this_app">Mindig fagyassza le ezt az alkalmazást</string>
+    <string name="pref_header_about">Rólunk</string>
+    <string name="pref_header_appslist">App lista</string>
+    <string name="already_frozen">Már fagyasztva</string>
+    <string name="msg_search">Keresés</string>
+    <string name="share_logs">Haszn. jelentés megosztása…</string>
+    <string name="all_apps">ÖSSZ. APP</string>
+    <string name="pref_intelligentfreeze_freeze_fdroid">INTELLIGENS: F-Droid appok fagyasztása</string>
+    <string name="logs_copied">Naplók vágólapra másolva.</string>
+    <string name="freeze_manually_no">Nem akarom ezt tenni</string>
+    <string name="plz_help_translating">...Kérjük segíts lefordítani!</string>
+</resources>
