@@ -88,6 +88,7 @@ class FreezeShortcutActivity : Activity() {
 			AlertDialog.Builder(this, R.style.myAlertDialog)
 				.setTitle(R.string.freeze_manually)
 				.setMessage(R.string.Press_forcestop_ok_back)
+				.setCancelable(false)
 				.setPositiveButton(android.R.string.ok) { _, _ ->
 					performFreeze()
 				}
