@@ -33,6 +33,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import superfreeze.tool.android.database.getPrefs
+import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 import kotlin.math.min
 
@@ -78,7 +79,7 @@ private val screenReceiver by lazy {
 				FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
 				if (getPrefs(context).getBoolean("freeze_on_screen_off", false)
-					&& getPrefs(context).getBoolean("use_accessibility_service", true)) {
+					&& context.prefUseAccessibilityService) {
 
 					if (getAppsPendingFreeze(context).isEmpty()) {
 						return
