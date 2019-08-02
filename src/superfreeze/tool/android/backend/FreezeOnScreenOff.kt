@@ -77,7 +77,8 @@ private val screenReceiver by lazy {
 
 				FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
-				if (getPrefs(context).getBoolean("freeze_on_screen_off", false)) {
+				if (getPrefs(context).getBoolean("freeze_on_screen_off", false)
+					&& getPrefs(context).getBoolean("use_accessibility_service", true)) {
 
 					if (getAppsPendingFreeze(context).isEmpty()) {
 						return
