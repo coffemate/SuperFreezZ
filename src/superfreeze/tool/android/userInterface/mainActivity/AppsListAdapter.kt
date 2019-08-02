@@ -296,4 +296,4 @@ internal class AppsListAdapter internal constructor(
 }
 
 
-private const val TAG = "AppsListAdapter"
+private const val TAG = "SF-AppsListAdapter"

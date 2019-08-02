@@ -31,7 +31,7 @@ import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.expectNonNull
 
 val values = FreezeMode.values()
-private const val TAG = "DatabaseBackend"
+private const val TAG = "SF-DatabaseBackend"
 
 internal fun getFreezeMode(context: Context, packageName: String): FreezeMode {
 

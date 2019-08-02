@@ -80,4 +80,4 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
     }
 }
 
-private const val TAG = "AccessibilityServiceChooserFragment"
+private const val TAG = "SF-AccessibilityServiceChooserFragment"

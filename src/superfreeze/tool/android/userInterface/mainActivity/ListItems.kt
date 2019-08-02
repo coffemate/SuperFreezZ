@@ -32,11 +32,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.R
 import superfreeze.tool.android.allIndexesOf
 import superfreeze.tool.android.backend.FreezerService
-import superfreeze.tool.android.backend.freezeApp
+
 import superfreeze.tool.android.backend.isRunning
 import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
+import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
 internal abstract class AbstractListItem {
 	abstract fun loadNameAndIcon(viewHolder: ViewHolderApp)
@@ -110,7 +111,7 @@ internal class ListItemApp(override val packageName: String,
 				Snackbar.LENGTH_SHORT
 			).show()
 		} else {
-			freezeApp(packageName, context)
+			FreezeShortcutActivity.freezeApp(packageName, context)
 		}
 	}
 

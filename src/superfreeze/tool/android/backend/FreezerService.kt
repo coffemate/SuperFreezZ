@@ -173,7 +173,7 @@ class FreezerService : AccessibilityService() {
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
 			stopAnyCurrentFreezing()
-			GlobalScope.launch { FreezeShortcutActivity.activity?.handleException() }
+			GlobalScope.launch { FreezeShortcutActivity.activity?.onAppCouldNotBeFrozen() }
 			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
@@ -255,15 +255,15 @@ class FreezerService : AccessibilityService() {
 			timeoutHandler.postDelayed({
 				Log.w(TAG, "timeout")
 				stopAnyCurrentFreezing()
-				FreezeShortcutActivity.activity?.handleException()
+				FreezeShortcutActivity.activity?.onAppCouldNotBeFrozen()
 			}, 4000)
 
 			lastActionTimestamp = System.currentTimeMillis()
 		}
 
 		/**
-		 * Cleans up when no more apps shall be frozen or before handleException() is called
-		 * (in the latter case, handleException() will care about restarting freeze)
+		 * Cleans up when no more apps shall be frozen or before onAppCouldNotBeFrozen() is called
+		 * (in the latter case, onAppCouldNotBeFrozen() will care about restarting freeze)
 		 */
 		internal fun stopAnyCurrentFreezing() {
 			Log.i(TAG, "Stopping any current freezing, in case there was one in progress")
@@ -275,4 +275,4 @@ class FreezerService : AccessibilityService() {
 
 }
 
-private const val TAG = "FreezerService"
+private const val TAG = "SF-FreezerService"

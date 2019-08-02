@@ -25,7 +25,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 
-const val TAG = "MyApplication"
+const val TAG = "SF-MyApplication"
 
 class MyApplication : Application() {
 	override fun onCreate() {

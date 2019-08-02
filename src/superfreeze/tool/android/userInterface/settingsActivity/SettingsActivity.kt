@@ -48,7 +48,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-private const val TAG = "SettingsActivity"
+private const val TAG = "SF-SettingsActivity"
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On

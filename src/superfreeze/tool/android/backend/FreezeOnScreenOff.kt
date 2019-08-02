@@ -200,4 +200,4 @@ private val screenReceiver by lazy {
 	}
 }
 
-private const val TAG = "FreezeOnScreenOff"
+private const val TAG = "SF-FreezeOnScreenOff"

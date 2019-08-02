@@ -125,7 +125,7 @@ class FreezeShortcutActivity : Activity() {
 				isWorking = false
 
 				if (somethingWentWrong) {
-					// Try again
+					// Try again:
 					performFreeze()
 				} else {
 					Log.v(TAG, "Finished freezing")
@@ -147,7 +147,7 @@ class FreezeShortcutActivity : Activity() {
 	/**
 	 * Called after one app could not be frozen
 	 */
-	internal fun handleException() {
+	internal fun onAppCouldNotBeFrozen() {
 		runOnUiThread {
 			if (failedFreezeAttempts >= 2) {
 				finish()
@@ -195,28 +195,9 @@ class FreezeShortcutActivity : Activity() {
 				appsNonNull
 
 		for (app in appsSuperfreezzLast) {
-			freezeApp(app)
+			freezeApp(app, this)
 			waiterForNextFreeze.wait()
 		}
-	}
-
-
-	/**
-	 * Freeze a package.
-	 * @param packageName The name of the package to freeze
-	 */
-	@Contract(pure = true)
-	internal fun freezeApp(packageName: String) {
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
-			// performFreeze will wait for the Force stop button to appear and then click Force stop, Ok, Back.
-			FreezerService.performFreeze()
-		}
-
-		val intent = Intent()
-		intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
-		intent.data = Uri.fromParts("package", packageName, null)
-		startActivity(intent)
 	}
 
 	@Suppress("unused")
@@ -276,6 +257,25 @@ class FreezeShortcutActivity : Activity() {
 			return shortcutIntent
 		}
 
+		/**
+		 * Freeze a package.
+		 * @param packageName The name of the package to freeze
+		 */
+		@Contract(pure = true)
+		internal fun freezeApp(packageName: String, context: Context) {
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
+				// performFreeze will wait for the Force stop button to appear and then click Force stop, Ok, Back.
+				FreezerService.performFreeze()
+			}
+
+			val intent = Intent()
+			intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+			intent.data = Uri.fromParts("package", packageName, null)
+			context.startActivity(intent)
+		}
+
+
 		internal var activity: FreezeShortcutActivity? = null
 			private set
 
@@ -286,4 +286,4 @@ class FreezeShortcutActivity : Activity() {
 }
 
 
-private const val TAG = "FreezeShortcutActivity"
+private const val TAG = "SF-FreezeShortcutAct"

@@ -143,4 +143,4 @@ private fun toast(context: Context, s: String, duration: Int) {
 	Toast.makeText(context, s, duration).show()
 }
 
-private const val TAG = "GeneralUI"
+private const val TAG = "SF-GeneralUI"

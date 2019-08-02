@@ -36,7 +36,6 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,7 +48,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getApplications
-import superfreeze.tool.android.database.getPrefs
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefIntroAlreadyShown
 import superfreeze.tool.android.database.prefListSortMode
@@ -99,7 +97,6 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onResume() {
 		super.onResume()
-		Log.e("DEBUG", getPrefs(this).getBoolean("freeze_on_screen_off", false).toString())
 
 		// Show the app intro at the first launch:
 		if (prefIntroAlreadyShown) {
@@ -273,4 +270,4 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-private const val TAG = "MainActivity"
+private const val TAG = "SF-MainActivity"

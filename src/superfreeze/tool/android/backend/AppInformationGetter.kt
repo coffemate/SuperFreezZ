@@ -42,7 +42,7 @@ import superfreeze.tool.android.expectNonNull
 import superfreeze.tool.android.logErrorAndStackTrace
 
 
-private const val TAG = "AppInformationGetter"
+private const val TAG = "SF-AppInformationGetter"
 
 /**
  * Gets the applications to show in SF. Do not use from the UI thread.
