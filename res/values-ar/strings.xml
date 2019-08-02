@@ -142,4 +142,5 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
     <string name="if_you_like_this_app">إذا كنت تحب هذا التطبيق...</string>
     <string name="plz_help_translating">...الرجاء المساعدة في ترجمته!</string>
     <string name="plz_donate">...يرجى التبرع!</string>
+    <string name="changed_freeze_mode">تم تغيير وضع التجميد</string>
 </resources>
