@@ -70,7 +70,7 @@ private val screenReceiver by lazy {
 				resetScreenIfNecessary(context)
 
 				if (FreezeShortcutActivity.isWorking) {
-					FreezeShortcutActivity.doFullStop = true
+					FreezeShortcutActivity.activity?.finish()
 					FreezerService.stopAnyCurrentFreezing()
 					return
 				}
@@ -142,7 +142,7 @@ private val screenReceiver by lazy {
 
 			try {
 				wl?.release()
-			} catch (e: RuntimeException) { // See https://stackoverflow.com/a/24057982.
+			} catch (e: RuntimeException) { // See https://stackoverflow.com/a/24057982
 				Log.w(TAG, "release failed: ${e.message}")
 			}
 

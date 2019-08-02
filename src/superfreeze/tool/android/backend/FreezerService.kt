@@ -32,6 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.expectNonNull
+import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
@@ -172,7 +173,7 @@ class FreezerService : AccessibilityService() {
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
 			stopAnyCurrentFreezing()
-			GlobalScope.launch { exceptionHandler }
+			GlobalScope.launch { FreezeShortcutActivity.activity?.handleException() }
 			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
@@ -231,8 +232,6 @@ class FreezerService : AccessibilityService() {
 		var isEnabled = false
 			private set
 
-		private var exceptionHandler = { }
-
 		private val timeoutHandler = Handler()
 
 		/**
@@ -248,11 +247,7 @@ class FreezerService : AccessibilityService() {
 				Log.w(TAG, "Attempted to freeze, but was still busy (nextAction was $nextAction)")
 			}
 		}
-
-		internal fun setExceptionHandler(function: () -> Unit) {
-			exceptionHandler = function
-		}
-
+		
 		private fun notifyThereIsStillMovement() {
 			timeoutHandler.removeCallbacksAndMessages(null)
 
@@ -260,15 +255,15 @@ class FreezerService : AccessibilityService() {
 			timeoutHandler.postDelayed({
 				Log.w(TAG, "timeout")
 				stopAnyCurrentFreezing()
-				exceptionHandler()
+				FreezeShortcutActivity.activity?.handleException()
 			}, 4000)
 
 			lastActionTimestamp = System.currentTimeMillis()
 		}
 
 		/**
-		 * Cleans up when no more apps shall be frozen or before exceptionHandler() is called
-		 * (in the latter case, exceptionHandler() will care about restarting freeze)
+		 * Cleans up when no more apps shall be frozen or before handleException() is called
+		 * (in the latter case, handleException() will care about restarting freeze)
 		 */
 		internal fun stopAnyCurrentFreezing() {
 			Log.i(TAG, "Stopping any current freezing, in case there was one in progress")

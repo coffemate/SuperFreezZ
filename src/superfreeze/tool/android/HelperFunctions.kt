@@ -111,3 +111,14 @@ inline class Waiter(private val channel: Channel<Unit> = Channel(0)) {
 	 */
 	fun notify() { channel.offer(Unit) }
 }
+
+/**
+ * Executes retainAll() on a clone of this collection so that it is no problem if new entries
+ * are added to the original list while running this.
+ */
+fun <E> MutableCollection<E>.cloneAndRetainAll(predicate: (E) -> Boolean) {
+	val cloned = this.toMutableList()
+	this.clear()
+	cloned.retainAll(predicate)
+	this.addAll(cloned)
+}
