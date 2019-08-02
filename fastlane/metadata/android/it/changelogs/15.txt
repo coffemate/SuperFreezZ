@@ -1,0 +1,6 @@
+Aggiornate Traduzioni
+Modificata Descrizione 
+Piccole correzioni e miglioramenti
+Applicazioni di F-Droid senza congelamento "intelligente" per impostazione predefinita, in quanto solitamente non vengono eseguite in background.
+Ultima pagina dell'introduzione resa scorrevole
+Interrompere il congelamento quando si preme il pulsante di accensione

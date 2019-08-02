@@ -1,4 +1,9 @@
 <p>È un'applicazione (beta) che permette di congelare completamente tutte le attività in background di qualsiasi app.</p>
+<ul>
+<li>Prendi il controllo su ciò che è in esecuzione sul tuo dispositivo</li>
+<li>Migliora la durata della batteria e riduce il traffico dati mobile congelando le applicazioni usate di rado</li>
+<li>Particolarmente utile quando sei in giro, sono necessarie poche applicazioni e una lunga durata della batteria</li>
+</ul>
 <p>Anche Greenify può farlo, ma non è Open Source.</p>
 <p>SuperFreezZ non è uno di quei gestori attività che promettono di risparmiare 10 GB di dati al mese o di rendere il dispositivo 2 volte più veloce. È impossibile.</p>
 <p>SuperFreezZ è onesto riguardo i suoi svantaggi: Il congelamento delle applicazioni usate quotidianamente potrebbe scaricare la batteria più velocemente. Inoltre queste applicazioni richiederanno più tempo per essere avviate la volta successiva (circa 1-3 secondi). Greenify ha gli stessi svantaggi, ma l'autore di Greenify non vi avverte in proposito. Quindi basta non esagerare per permettere a SuperFreezZ di essere molto utile.</p>
@@ -23,9 +28,7 @@
 <p>Se vuoi contribuire allo sviluppo, dati un'occhiata alle segnalazioni, o pensa a qualcosa che potrebbe essere migliorato e apri una segnalazione.</p>
 <p>Per favore, dimmi cosa farai, così eviteremo di implementare la stessa cosa contemporaneamente :-)</p>
 <h3 id="translate">Traduzione</h3>
-<p>Puoi <a href="https://hosted.weblate.org/engage/superfreezz/">tradurre SuperFreezZ su Weblate</a>. Progressi attuali:</p>
-<p><a href="https://hosted.weblate.org/engage/superfreezz/?utm_source=widget"><img src="https://hosted.weblate.org/widgets/superfreezz/-/multi-auto.svg" alt="Stato Traduzione" /></a></p>
-<p>È sempre possibile aggiungere altre lingue.</p>
+<p>Puoi <a href="https://hosted.weblate.org/engage/superfreezz/">tradurre SuperFreezZ su Weblate</a>.</p>
 <h3 id="donate">Donazioni</h3>
 <p>Attualmente le donazioni in denaro non sono accettate (creare un conto Liberapay è stato uno sforzo eccessivo, quindi per il momento è stato abbandonato).</p>
 <p>Tuttavia, per mostrarmi il tuo sostegno, puoi <a href="https://gitlab.com/SuperFreezZ/SuperFreezZ/issues/18">donare al WWF o alla Christian Blind Mission e postarlo qui</a>.</p>

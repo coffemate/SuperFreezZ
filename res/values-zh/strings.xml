@@ -101,4 +101,6 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
         <item>冻结状态</item>
         <item>上次使用时间</item>
     </string-array>
+    <string name="problems">问题</string>
+    <string name="intro_header_welcome">欢迎到来</string>
 </resources>

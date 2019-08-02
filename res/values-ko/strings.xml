@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_search">검색</string>
+    <string name="msg_search_help">검색하기…</string>
+    <string name="share_exception">알 수 없는 오류입니다. 다음 방법으로 제보해주세요…</string>
+    <string name="freeze_shortcut_label">얼리기</string>
+    <string name="NothingToFreeze">얼릴 앱이 없음</string>
+    <string name="undo">되돌리기</string>
+    <string name="icon">아이콘</string>
+    <string name="freeze_this_app_if_it_has_not_been_used_for_a_longer_time">긴 시간동안 쓰지 않았다면 이 앱을 얼리세요.</string>
+    <string name="always_freeze_this_app">항상 이 앱을 얼리기</string>
+    <string name="do_never_freeze_this_app">이 앱을 얼리지 않기</string>
+    <string name="pending_freeze">얼리기 대기 중</string>
+    <string name="frozen">얼려짐</string>
+    <string name="freeze_off">녹이기</string>
+    <string name="used_recently">최근에 사용됨</string>
+    <string name="no_apps_pending_freeze">[얼리기 대기 중인 앱이 없음]</string>
+    <string name="all_apps">모든 앱</string>
+    <string name="enable">활성화</string>
+    <string name="automate_the_freezing_of_apps">자동으로 앱을 얼릴까요\?</string>
+</resources>

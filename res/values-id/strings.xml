@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_search">Pencarian</string>
+    <string name="msg_search_help">Pencarian…</string>
+    <string name="share_exception">Terjadi Kesalahan. Report menggunakan…</string>
+    <string name="accessibility_service_description">Mengaktifkan ini memungkinkan Anda membekukan aplikasi secara otomatis.
+\n
+\nKelebihan:
+\n• Tidak ada interaksi user: Faster. Tidak perlu tahu bagaimana ini dilakukan.
+\n• Pengguna yang dinonaktifkan dapat menggunakan shortcut pembekuan (melalui speech recognition, misalnya), membekukan semua aplikasi secara otomatis.
+\n
+\nSuperfreezer menggunakan layanan Aksesibilitas untuk menekan \"FORCE STOP\", \"OK\", dan \"kembali\". Pengambilan konten jendela menemukan tombol ini, dan pengamatan tindakan diperlukan untuk mengetahui kapan mereka muncul.
+\n
+\nSuperfreezer hanya menggunakan layanan Aksesibilitas untuk Tekan pada Angkatan stop, OK, kembali. Mengambil konten jendela diperlukan untuk menemukan tombol ini dan amati tindakan Anda diperlukan untuk mengetahui kapan mereka muncul.
+\n
+\nLayanan aksesibilitas juga dapat digunakan untuk mengunci layar setelah pembekuan pada versi Android yang lebih baru.</string>
+</resources>

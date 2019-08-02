@@ -1,0 +1,3 @@
+Deshabilite la ofuscación para facilitar la reparación de errores reportados. Lo volveré a habilitar más tarde.
+CRASHFIX SF se bloqueó cuando se deshabilitó el servicio de accesibilidad
+CRASHFIX SF se bloqueó en dispositivos más antiguos al mostrar la introducción

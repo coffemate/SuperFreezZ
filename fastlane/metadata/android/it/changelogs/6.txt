@@ -2,5 +2,5 @@ Aggiunte Impostazioni
 Aggiunta Gesture Aggiornamento Pagina
 Aggiunta Barra degli Strumenti per l'Ordinamento
 Correzione Bug
-Mostra requestUsageStatsPermission una volta sola, può essere modificato nelle Impostazioni
+RequestUsageStatsPermission mostrato una sola colta, può essere modificato nelle Impostazioni
 Correzione Race Condition

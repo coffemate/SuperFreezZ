@@ -1,0 +1,6 @@
+Oppdaterte oversettelser
+Redigering av beskrivelse
+Små fikser og forbedringer
+Ikke frys programmer fra F-Droid "intelligent" som forvalg, siden de ikke kjører så ofte i bakgrunnen
+Siste introside kan nå rulles
+Avbrutt frysing når av/på-knappen trykkes

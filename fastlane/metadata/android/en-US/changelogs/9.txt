@@ -1,4 +1,4 @@
 Make it possible to hit the last item
 Freeze SuperFreezZ itself last
 updates
-Add spanish translation
+Added spanish translation
