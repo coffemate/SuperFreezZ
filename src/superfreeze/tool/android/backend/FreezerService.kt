@@ -266,7 +266,8 @@ class FreezerService : AccessibilityService() {
 		 * (in the latter case, onAppCouldNotBeFrozen() will care about restarting freeze)
 		 */
 		internal fun stopAnyCurrentFreezing() {
-			Log.i(TAG, "Stopping any current freezing, in case there was one in progress")
+			if (nextAction != NextAction.DO_NOTHING)
+				Log.i(TAG, "Stopping current freeze process (stopAnyCurrentFreezing())")
 			nextAction = NextAction.DO_NOTHING
 			timeoutHandler.removeCallbacksAndMessages(null)
 		}

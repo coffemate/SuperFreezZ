@@ -68,6 +68,7 @@ private val screenReceiver by lazy {
 		override fun onReceive(context: Context, intent: Intent) {
 			if (intent.action == Intent.ACTION_SCREEN_OFF) {
 
+				Log.i(TAG, "Screen off.")
 				resetScreenIfNecessary(context)
 
 				if (FreezeShortcutActivity.isWorking) {
@@ -176,6 +177,7 @@ private val screenReceiver by lazy {
 			try {
 
 				if (originalBrightness >= 0) {
+					Log.i(TAG, "Reset brightness")
 					Settings.System.putInt(
 						context.contentResolver,
 						Settings.System.SCREEN_BRIGHTNESS,
@@ -185,6 +187,7 @@ private val screenReceiver by lazy {
 				}
 
 				if (originalTimeout >= 0) {
+					Log.i(TAG, "Reset timeout")
 					Settings.System.putInt(
 						context.contentResolver,
 						Settings.System.SCREEN_OFF_TIMEOUT,
@@ -194,7 +197,7 @@ private val screenReceiver by lazy {
 				}
 
 			} catch (e: SecurityException) {
-				Log.e(TAG, "Could not change screen brightness an timeout")
+				Log.e(TAG, "Could not change screen brightness and timeout")
 			}
 		}
 	}
