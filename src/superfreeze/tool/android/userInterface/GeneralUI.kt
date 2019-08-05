@@ -58,7 +58,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 					MainActivity.doOnResume {
 
 						if (!usageStatsPermissionGranted(this)) {
-							toast(this, this.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
+							toast(this.getString(R.string.usagestats_not_enabled), Toast.LENGTH_SHORT)
 						}
 						doAfterwards()
 
@@ -87,7 +87,7 @@ internal fun requestUsageStatsPermission(context: MainActivity, doAfterwards: ()
 private fun showUsageStatsSettings(context: Context) {
 	val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
 	context.startActivity(intent)
-	toast(context, "Please select SuperFreezZ, then enable access", Toast.LENGTH_LONG)
+	context.toast("Please select SuperFreezZ, then enable access", Toast.LENGTH_LONG)
 }
 
 
@@ -139,8 +139,8 @@ internal fun showSortChooserDialog(context: Context, current: Int, onChosen: (wh
 			.show()
 }
 
-private fun toast(context: Context, s: String, duration: Int) {
-	Toast.makeText(context, s, duration).show()
+internal fun Context.toast(s: String, duration: Int) {
+	Toast.makeText(this, s, duration).show()
 }
 
 private const val TAG = "SF-GeneralUI"

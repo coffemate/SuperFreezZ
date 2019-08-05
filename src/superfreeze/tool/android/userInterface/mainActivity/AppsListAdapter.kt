@@ -45,8 +45,10 @@ import kotlinx.coroutines.launch
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getAllAggregatedUsageStats
-import superfreeze.tool.android.backend.getPendingFreezeExplanation
+import superfreeze.tool.android.backend.getPendingFreezeInfo
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
+import superfreeze.tool.android.database.FreezeMode
+import superfreeze.tool.android.userInterface.toast
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
@@ -195,27 +197,31 @@ internal class AppsListAdapter internal constructor(
 
 		val newOriginalList = ArrayList<AbstractListItem>((appsList.size * 1.5).toInt())
 
+
 		if(listPendingFreeze.isEmpty()) {
 			newOriginalList.add(
-				ListItemSectionHeader(
-					mainActivity.getString(R.string.no_apps_pending_freeze)
-				)
+				ListItemSectionHeader(mainActivity.getString(R.string.no_apps_pending_freeze))
 			)
 		} else {
 			newOriginalList.add(
-				ListItemSectionHeader(
-					mainActivity.getString(R.string.pending_freeze)
-				)
+				ListItemSectionHeader(mainActivity.getString(R.string.pending_freeze))
 			)
 			newOriginalList.addAll(listPendingFreeze)
 		}
 
-		newOriginalList.add(
-			ListItemSectionHeader(
-				mainActivity.getString(R.string.all_apps)
+
+		if (sortModeIndex == 1) {// 1 means sort by freeze state, see gitlab.com/SuperFreezZ/SuperFreezZ/issues/48
+			newOriginalList.add(
+				ListItemSectionHeader(mainActivity.getString(R.string.other_apps))
 			)
-		)
-		newOriginalList.addAll(appsList)
+			newOriginalList.addAll(appsList.filter { !it.isPendingFreeze() })
+
+		} else {
+			newOriginalList.add(
+				ListItemSectionHeader(mainActivity.getString(R.string.all_apps))
+			)
+			newOriginalList.addAll(appsList)
+		}
 
 		mainActivity.runOnUiThread {
 			originalList = newOriginalList
@@ -263,27 +269,37 @@ internal class AppsListAdapter internal constructor(
 		}
 
 		// 1: Sort by freeze state
-		1 -> compareBy<ListItemApp> {
-			it.freezeMode
-		}.thenBy {
-			getPendingFreezeExplanation(
-				it.freezeMode,
-				it.applicationInfo,
-				usageStatsMap?.get(it.packageName),
-				mainActivity
-			)
+		1 -> compareBy {
+			when (it.freezeMode) {
+				FreezeMode.ALWAYS -> 1
+				FreezeMode.WHEN_INACTIVE -> when (getPendingFreezeInfo(
+					it.freezeMode,
+					it.applicationInfo,
+					usageStatsMap?.get(it.packageName),
+					mainActivity
+				)) {
+					R.string.frozen -> 2
+					R.string.used_recently_and_frozen -> 3
+					R.string.used_recently -> 4
+					R.string.fdroid_app_not_pending_freeze -> 5
+					R.string.pending_freeze -> 6
+					else -> throw IllegalStateException()
+				}
+				FreezeMode.NEVER -> 7
+			}
 		}
+
 
 		// 2: Sort by last time used
 		2 -> {
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-				Toast.makeText(
-					mainActivity,
+				mainActivity.toast(
 					"Last time used is not available for your Android version",
 					Toast.LENGTH_LONG
-				).show()
+				)
 				compareBy { it.text }
 			} else {
+				mainActivity.toast(mainActivity.getString(R.string.sort_last_time_used_explanation), Toast.LENGTH_LONG)
 				val allUsageStats = getAllAggregatedUsageStats(mainActivity)
 				compareBy {
 					allUsageStats?.get(it.packageName)?.lastTimeUsed ?: 0L

@@ -136,7 +136,7 @@ internal fun getPendingFreezeExplanation(
 	context: Context
 ) = context.getString(getPendingFreezeInfo(freezeMode, applicationInfo, usageStats, context))
 
-private fun getPendingFreezeInfo(
+internal fun getPendingFreezeInfo(
 		freezeMode: FreezeMode,
 		applicationInfo: ApplicationInfo,
 		usageStats: UsageStats?,

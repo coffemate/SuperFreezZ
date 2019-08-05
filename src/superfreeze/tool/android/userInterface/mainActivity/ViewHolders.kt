@@ -156,7 +156,7 @@ internal class ViewHolderApp(v: View, private val context: Context,
 
 		// Refresh freeze mode:
 		setButtonColours(listItem.freezeMode)
-refreshExplanation(listItem.freezeMode)
+		refreshExplanation(listItem.freezeMode)
 
 		// Refresh icon:
 		imgIcon.setImageDrawable(appsListAdapter.cacheAppIcon[listItem.packageName])
