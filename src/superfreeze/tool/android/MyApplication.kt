@@ -44,7 +44,7 @@ class MyApplication : Application() {
 
 			//Share info about the exception so that it can be viewed or sent to someone else
 
-			val message = e.toString() + "\n\n" + getStackTrace(e)
+			val message = "Android ${android.os.Build.VERSION.RELEASE}: $e \n\n ${getStackTrace(e)}"
 			val subject = "Crash report SuperFreezZ v${BuildConfig.VERSION_NAME}"
 			val email = "superfreezz-automated@gmx.de"
 
