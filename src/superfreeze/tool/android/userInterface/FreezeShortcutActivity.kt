@@ -28,15 +28,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Contract
 import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
-import superfreeze.tool.android.Waiter
 import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.backend.getAppsPendingFreeze
-import superfreeze.tool.android.cloneAndRetainAll
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefUseAccessibilityService
 
@@ -48,36 +44,34 @@ import superfreeze.tool.android.database.prefUseAccessibilityService
  */
 class FreezeShortcutActivity : Activity() {
 
-	/**
-	 * Whether the activity is in the process of being created.
-	 */
-	private var isBeingNewlyCreated = true
-
-	private val waiterForNextFreeze = Waiter()
-	private var somethingWentWrong = false
-	private var failedFreezeAttempts = 0
+	private var isBeingNewlyCreated: Boolean = true
+	private var appsToBeFrozenIter: ListIterator<String>? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		isBeingNewlyCreated = true
 		activity = this
-		failedFreezeAttempts = 0
+		isBeingNewlyCreated = true
 
 		if (Intent.ACTION_CREATE_SHORTCUT == intent.action) {
 			setResult(RESULT_OK, createShortcutResultIntent(this))
 			finish()
 		} else {
 			Log.i(TAG, "Performing Freeze.")
+			isWorking = true
+			FreezerService.doOnAppCouldNotBeFrozen = ::onAppCouldNotBeFrozen
 			performFreeze()
 		}
 	}
 
 	override fun onDestroy() {
 		super.onDestroy()
+		Log.i(TAG, "Destroying")
 		onFreezeFinishedListener?.invoke()
 		onFreezeFinishedListener = null
 		activity = null
+		isWorking = false
+		FreezerService.finishedFreezing()
 	}
 
 
@@ -90,8 +84,11 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-
-		if (!FreezerService.isEnabled && neverCalled("dialog-how-to-freeze-without-accessibility-service", this)) {
+		if (!FreezerService.isEnabled && neverCalled(
+				"dialog-how-to-freeze-without-accessibility-service",
+				this
+			)
+		) {
 			AlertDialog.Builder(this, R.style.myAlertDialog)
 				.setTitle(R.string.freeze_manually)
 				.setMessage(R.string.Press_forcestop_ok_back)
@@ -113,109 +110,56 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-
-		somethingWentWrong = false
-		isWorking = true
+		val appsSuperfreezzLast =
+			if (appsPendingFreeze.contains(BuildConfig.APPLICATION_ID))
+				appsPendingFreeze.sortedBy { it == BuildConfig.APPLICATION_ID }
+			else
+				appsPendingFreeze
 
 		// Now we can do the actual freezing work:
-		GlobalScope.launch {
-			freezeAll(appsPendingFreeze)
-
-			runOnUiThread {
-				isWorking = false
-
-				if (somethingWentWrong) {
-					// Try again:
-					performFreeze()
-				} else {
-					Log.v(TAG, "Finished freezing")
-					finish()
-				}
-			}
-		}
+		appsToBeFrozenIter = appsSuperfreezzLast.listIterator()
 	}
 
 	private fun promptForAccessibility() {
 		showAccessibilityDialog(this)
-		doOnReenterActivity {
+		onReenterActivityListener = {
 			prefUseAccessibilityService = FreezerService.isEnabled
 			performFreeze()
-			false
-		}
-	}
-
-	/**
-	 * Called after one app could not be frozen
-	 */
-	internal fun onAppCouldNotBeFrozen() {
-		runOnUiThread {
-			if (failedFreezeAttempts >= 2) {
-				finish()
-				Log.e(TAG, "Giving up, too many failed freeze attempts")
-			} else {
-				somethingWentWrong = true
-				failedFreezeAttempts++
-				val i = Intent(applicationContext, FreezeShortcutActivity::class.java)
-				i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-				startActivity(i)
-			}
 		}
 	}
 
 	override fun onResume() {
 		super.onResume()
 
-		// doOnReenterActivity() is used to register actions that should take place when the app is entered the next time,
-		// NOT after onCreate finished
+		// REenter means NOT on the first launch
 		if (!isBeingNewlyCreated) {
-			// Maybe the next app is waiting to be frozen
-			waiterForNextFreeze.notify()
-
-			//Execute all tasks and retain only those that returned true.
-			toBeDoneOnReenterActivity.cloneAndRetainAll { it() }
+			onReenterActivityListener?.invoke()
+			onReenterActivityListener = null
 		}
-
 		isBeingNewlyCreated = false
-	}
 
-	/**
-	 * Freezes all apps in the "apps" list or all apps that are pending freeze.
-	 * @param apps: A list of apps to be frozen. If it is null or not given, a list of apps that pend freeze is computed automatically.
-	 * @return A function that has to be called when the current activity is entered again so that the next app can be frozen.
-	 * It returns whether it wants to be executed again.
-	 */
-	private suspend fun freezeAll(apps: List<String>? = null) {
-		val appsNonNull = apps ?: getAppsPendingFreeze(this)
+		if (appsToBeFrozenIter != null) {
 
-		// Always freeze SuperFreezZ itself last:
-		val appsSuperfreezzLast =
-			if (appsNonNull.contains(BuildConfig.APPLICATION_ID))
-				appsNonNull.sortedBy { it == BuildConfig.APPLICATION_ID }
-			else
-				appsNonNull
+			if (appsToBeFrozenIter!!.hasNext()) {
+				freezeApp(appsToBeFrozenIter!!.next(), this)
+			} else {
+				finish()
+				Log.i(TAG, "Finished freezing")
+			}
 
-		for (app in appsSuperfreezzLast) {
-			freezeApp(app, this)
-			waiterForNextFreeze.wait()
 		}
 	}
 
 	@Suppress("unused")
 	fun getRandomNumber(): Int {
-		return 5    // chosen by fair dice roll,
+		return 5
+		// chosen by fair dice roll,
 		// guaranteed to be random.
 
 		// Greetings to anyone reviewing this code!
 	}
 
-	private val toBeDoneOnReenterActivity: MutableList<() -> Boolean> = mutableListOf()
-	/**
-	 * Execute the task when this activity was left and re-entered.
-	 * Only call from the UI thread!
-	 */
-	private fun doOnReenterActivity(task: () -> Boolean) {
-		toBeDoneOnReenterActivity.add(task)
-	}
+	private var onReenterActivityListener: (() -> Unit)? = null
 
 	companion object {
 
@@ -238,15 +182,18 @@ class FreezeShortcutActivity : Activity() {
 
 			val intent = Intent()
 			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent)
-			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, activity.getString(R.string.freeze_shortcut_label))
+			intent.putExtra(
+				Intent.EXTRA_SHORTCUT_NAME,
+				activity.getString(R.string.freeze_shortcut_label)
+			)
 			val iconResource = Intent.ShortcutIconResource.fromContext(
-					activity, R.drawable.ic_freeze
+				activity, R.drawable.ic_freeze
 			)
 			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource)
 			return intent
 		}
 
-		internal fun createShortcutIntent(context: Context): Intent {
+		fun createShortcutIntent(context: Context): Intent {
 			val shortcutIntent = Intent()
 			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
 			shortcutIntent.addFlags(
@@ -262,11 +209,17 @@ class FreezeShortcutActivity : Activity() {
 		 * @param packageName The name of the package to freeze
 		 */
 		@Contract(pure = true)
-		internal fun freezeApp(packageName: String, context: Context) {
+		fun freezeApp(packageName: String, context: Context) {
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
-				// performFreeze will wait for the Force stop button to appear and then click Force stop, Ok, Back.
-				FreezerService.performFreeze()
+				// clickFreezeButtons will wait for the Force stop button to appear and then click Force stop, Ok, Back.
+				try {
+					FreezerService.clickFreezeButtons(context)
+				} catch (e: IllegalStateException) {
+					Log.e(TAG, e.toString())
+					e.printStackTrace()
+					return
+				}
 			}
 
 			val intent = Intent()
@@ -276,12 +229,22 @@ class FreezeShortcutActivity : Activity() {
 		}
 
 
-		internal var activity: FreezeShortcutActivity? = null
+		var activity: FreezeShortcutActivity? = null
 			private set
 
 		var isWorking = false
 
-		internal var onFreezeFinishedListener: (() -> Unit)? = null
+		var onFreezeFinishedListener: (() -> Unit)? = null
+
+		/**
+		 * Called after one app could not be frozen
+		 */
+		private fun onAppCouldNotBeFrozen(context: Context) {
+			Log.w(TAG, "AppCouldNotBeFrozen, bringing FreezeShortcutActivity back to front")
+			val i = Intent(context.applicationContext, FreezeShortcutActivity::class.java)
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+			context.startActivity(i)
+		}
 	}
 }
 

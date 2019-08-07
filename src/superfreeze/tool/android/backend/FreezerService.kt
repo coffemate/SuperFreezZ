@@ -21,6 +21,7 @@ package superfreeze.tool.android.backend
 
 import android.accessibilityservice.AccessibilityService
 import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -28,11 +29,8 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.RequiresApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import superfreeze.tool.android.database.prefUseAccessibilityService
 import superfreeze.tool.android.expectNonNull
-import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
 /**
  * This is the Accessibility service class, responsible to automatically freeze apps.
@@ -158,8 +156,6 @@ class FreezerService : AccessibilityService() {
 	private fun pressBackButton() {
 		nextAction = NextAction.DO_NOTHING
 
-		timeoutHandler.removeCallbacksAndMessages(null)
-
 		performGlobalAction(GLOBAL_ACTION_BACK)
 	}
 
@@ -173,7 +169,7 @@ class FreezerService : AccessibilityService() {
 		if (nodes.isEmpty()) {
 			Log.e(TAG, "Could not find the $buttonName button.")
 			stopAnyCurrentFreezing()
-			GlobalScope.launch { FreezeShortcutActivity.activity?.onAppCouldNotBeFrozen() }
+			doOnAppCouldNotBeFrozen?.invoke(this)
 			return false
 		} else if (nodes.size > 1) {
 			Log.w(TAG, "Found more than one $buttonName button, clicking them all.")
@@ -193,7 +189,7 @@ class FreezerService : AccessibilityService() {
 			node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 		}
 
-		notifyThereIsStillMovement()
+		notifyThereIsStillMovement(this)
 
 		return true
 	}
@@ -222,11 +218,12 @@ class FreezerService : AccessibilityService() {
 		stopAnyCurrentFreezing()
 	}
 
-	internal companion object {
+	companion object {
 
+		var doOnAppCouldNotBeFrozen: ((Context) -> Unit)? = null
 		private var nextAction = NextAction.DO_NOTHING
 		/**
-		 * The timestamp of the last action. This can be clicking a button or performFreeze() being called.
+		 * The timestamp of the last action. This can be clicking a button or clickFreezeButtons() being called.
 		 */
 		private var lastActionTimestamp = 0L
 		var isEnabled = false
@@ -239,23 +236,29 @@ class FreezerService : AccessibilityService() {
 		 * Call this BEFORE starting the settings about the app you want to freeze!
 		 */
 		@RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
-		internal fun performFreeze() {
+		fun clickFreezeButtons(context: Context) {
 			if (nextAction == NextAction.DO_NOTHING) {
 				nextAction = NextAction.PRESS_FORCE_STOP
-				notifyThereIsStillMovement()
+				notifyThereIsStillMovement(context)
 			} else {
-				Log.w(TAG, "Attempted to freeze, but was still busy (nextAction was $nextAction)")
+				throw IllegalStateException("Attempted to freeze, but was still busy (nextAction was $nextAction)")
 			}
 		}
+
+		fun finishedFreezing() {
+			timeoutHandler.removeCallbacksAndMessages(null)
+		}
+
+		fun isBusy() = (nextAction != NextAction.DO_NOTHING)
 		
-		private fun notifyThereIsStillMovement() {
+		private fun notifyThereIsStillMovement(context: Context) {
 			timeoutHandler.removeCallbacksAndMessages(null)
 
 			// After 4 seconds, assume that something went wrong
 			timeoutHandler.postDelayed({
 				Log.w(TAG, "timeout")
 				stopAnyCurrentFreezing()
-				FreezeShortcutActivity.activity?.onAppCouldNotBeFrozen()
+				doOnAppCouldNotBeFrozen?.invoke(context)
 			}, 4000)
 
 			lastActionTimestamp = System.currentTimeMillis()
@@ -265,7 +268,7 @@ class FreezerService : AccessibilityService() {
 		 * Cleans up when no more apps shall be frozen or before onAppCouldNotBeFrozen() is called
 		 * (in the latter case, onAppCouldNotBeFrozen() will care about restarting freeze)
 		 */
-		internal fun stopAnyCurrentFreezing() {
+		fun stopAnyCurrentFreezing() {
 			if (nextAction != NextAction.DO_NOTHING)
 				Log.i(TAG, "Stopping current freeze process (stopAnyCurrentFreezing())")
 			nextAction = NextAction.DO_NOTHING
