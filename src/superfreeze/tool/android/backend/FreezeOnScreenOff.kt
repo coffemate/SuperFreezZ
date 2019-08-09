@@ -30,7 +30,7 @@ import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.PowerManager
-import android.provider.Settings
+import android.provider.Settings.System.*
 import android.util.Log
 import superfreeze.tool.android.database.getPrefs
 import superfreeze.tool.android.database.prefUseAccessibilityService
@@ -62,7 +62,9 @@ private val screenReceiver by lazy {
 	object : BroadcastReceiver() {
 		// TODO Do also use the screenLockerFunction in newer versions of Android
 		private var lastTime = 0L
+
 		private var originalBrightness = -1
+		private var originalBrightnessMode: Int? = null
 		private var originalTimeout = -1
 
 		override fun onReceive(context: Context, intent: Intent) {
@@ -80,7 +82,8 @@ private val screenReceiver by lazy {
 				FreezerService.stopAnyCurrentFreezing() // If a freeze was already running, stop it
 
 				if (getPrefs(context).getBoolean("freeze_on_screen_off", false)
-					&& context.prefUseAccessibilityService) {
+					&& context.prefUseAccessibilityService
+				) {
 
 					if (getAppsPendingFreeze(context).isEmpty()) {
 						return
@@ -117,15 +120,11 @@ private val screenReceiver by lazy {
 			kl.disableKeyguard()
 
 			try {
-				originalBrightness = Settings.System.getInt(
-					context.contentResolver,
-					Settings.System.SCREEN_BRIGHTNESS, 120
-				)
+				originalBrightness = getInt(context.contentResolver, SCREEN_BRIGHTNESS, 120)
+				putInt(context.contentResolver, SCREEN_BRIGHTNESS, 0)
 
-				Settings.System.putInt(
-					context.contentResolver,
-					Settings.System.SCREEN_BRIGHTNESS, 0
-				)
+				originalBrightnessMode = getInt(context.contentResolver, SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_AUTOMATIC)
+				putInt(context.contentResolver, SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
 			} catch (e: SecurityException) {
 				Log.w(TAG, "Could not change screen brightness")
 			}
@@ -152,16 +151,8 @@ private val screenReceiver by lazy {
 
 			// Turn screen off:
 			try {
-				originalTimeout = Settings.System.getInt(
-					context.contentResolver,
-					Settings.System.SCREEN_OFF_TIMEOUT,
-					1 * 60 * 1000
-				)
-				Settings.System.putInt(
-					context.contentResolver,
-					Settings.System.SCREEN_OFF_TIMEOUT,
-					0
-				)
+				originalTimeout = getInt(context.contentResolver, SCREEN_OFF_TIMEOUT, 1 * 60 * 1000)
+				putInt(context.contentResolver, SCREEN_OFF_TIMEOUT, 0)
 			} catch (e: SecurityException) {
 				Log.w(TAG, "Could not change screen timeout")
 			}
@@ -178,21 +169,19 @@ private val screenReceiver by lazy {
 
 				if (originalBrightness >= 0) {
 					Log.i(TAG, "Reset brightness")
-					Settings.System.putInt(
-						context.contentResolver,
-						Settings.System.SCREEN_BRIGHTNESS,
-						originalBrightness
-					)
+					putInt(context.contentResolver, SCREEN_BRIGHTNESS, originalBrightness)
 					originalBrightness = -1
+				}
+
+				if (originalBrightnessMode != null) {
+					Log.i(TAG, "Reset brightness mode")
+					putInt(context.contentResolver, SCREEN_BRIGHTNESS_MODE, originalBrightnessMode!!)
+					originalBrightnessMode = null
 				}
 
 				if (originalTimeout >= 0) {
 					Log.i(TAG, "Reset timeout")
-					Settings.System.putInt(
-						context.contentResolver,
-						Settings.System.SCREEN_OFF_TIMEOUT,
-						originalTimeout
-					)
+					putInt(context.contentResolver, SCREEN_OFF_TIMEOUT, originalTimeout)
 					originalTimeout = -1
 				}
 
