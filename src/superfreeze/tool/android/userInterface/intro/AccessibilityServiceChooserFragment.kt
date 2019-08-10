@@ -22,6 +22,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.userInterface.intro
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,7 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
             showAccessibilityDialog(context ?: activity!!)
         }
         layout.findViewById<View>(R.id.accessibilityNo).setOnClickListener {
+            Log.i(TAG, "Done on click")
             done()
         }
 
@@ -60,6 +62,7 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
     override fun onResume() {
         super.onResume()
         if (FreezerService.isEnabled) {
+            Log.i(TAG, "Done on resume")
             done()
         }
     }
@@ -80,4 +83,4 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
     }
 }
 
-private const val TAG = "SF-AccessibilityServiceChooserFragment"
+private const val TAG = "SF-AccessibilitySCFragm"

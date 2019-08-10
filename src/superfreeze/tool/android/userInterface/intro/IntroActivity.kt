@@ -22,6 +22,7 @@ along with SuperFreezZ.  If not, see <http://www.gnu.org/licenses/>.
 package superfreeze.tool.android.userInterface.intro
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 import superfreeze.tool.android.BuildConfig
@@ -62,6 +63,7 @@ class IntroActivity : AppIntro() {
 
 	override fun onDonePressed(currentFragment: Fragment?) {
 		super.onDonePressed(currentFragment)
+		Log.i(TAG, "Done on pressed")
 		done()
 	}
 
@@ -71,6 +73,8 @@ class IntroActivity : AppIntro() {
 	}
 
 }
+
+private const val TAG = "SF-IntroActivity"
 
 const val INTRO_SHOW_ACCESSIBILITY_SERVICE_CHOOSER =
 	BuildConfig.APPLICATION_ID + "SHOW_ACCESSIBILITY_SERVICE_CHOOSER"
