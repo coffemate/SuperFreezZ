@@ -30,7 +30,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.ISlidePolicy
 import superfreeze.tool.android.R
-import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.expectNonNull
 import superfreeze.tool.android.userInterface.showAccessibilityDialog
 
@@ -56,15 +55,6 @@ class AccessibilityServiceChooserFragment : Fragment(), ISlidePolicy {
         }
 
         return layout
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        if (FreezerService.isEnabled) {
-            Log.i(TAG, "Done on resume")
-            done()
-        }
     }
 
 

@@ -26,6 +26,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.github.paolorotolo.appintro.AppIntro
 import superfreeze.tool.android.BuildConfig
+import superfreeze.tool.android.backend.FreezerService
 import superfreeze.tool.android.database.prefIntroAlreadyShown
 
 /**
@@ -59,6 +60,26 @@ class IntroActivity : AppIntro() {
 	//If the user presses the back button it tends to break the AppIntro route logic
 	override fun onBackPressed() {
 		//do nothing
+	}
+
+	private var lastSlide = false
+	override fun onResume() {
+		super.onResume()
+		if (lastSlide && FreezerService.isEnabled) {
+			Log.i(TAG, "Done on resume activity")
+			done()
+		}
+	}
+
+	override fun onSlideChanged(oldFragment: Fragment?, newFragment: Fragment?) {
+		super.onSlideChanged(oldFragment, newFragment)
+		if (newFragment is AccessibilityServiceChooserFragment) {
+			lastSlide = true
+			if (FreezerService.isEnabled) {
+				Log.i(TAG, "Done on slide changed")
+				done()
+			}
+		}
 	}
 
 	override fun onDonePressed(currentFragment: Fragment?) {
