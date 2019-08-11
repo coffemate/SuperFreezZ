@@ -194,8 +194,7 @@ class FreezeShortcutActivity : Activity() {
 		}
 
 		fun createShortcutIntent(context: Context): Intent {
-			val shortcutIntent = Intent()
-			shortcutIntent.setClassName(context, FreezeShortcutActivity::class.java.name)
+			val shortcutIntent = Intent(context.applicationContext, FreezeShortcutActivity::class.java)
 			shortcutIntent.addFlags(
 				Intent.FLAG_ACTIVITY_CLEAR_TASK +
 						Intent.FLAG_ACTIVITY_NEW_TASK +
