@@ -42,14 +42,14 @@ import superfreeze.tool.android.database.FreezeMode
 import superfreeze.tool.android.database.usageStatsAvailable
 
 
-internal abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+abstract class AbstractViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 	abstract fun setName(name: String, highlight: String?)
 	abstract fun bindTo(item: AbstractListItem)
 }
 
 
 
-internal class ViewHolderApp(v: View, private val context: Context,
+class ViewHolderApp(v: View, private val context: Context,
                              private val appsListAdapter: AppsListAdapter
 ) : AbstractViewHolder(v) {
 

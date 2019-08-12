@@ -45,9 +45,8 @@ import kotlinx.coroutines.launch
 import superfreeze.tool.android.AsyncDelegated
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.getAllAggregatedUsageStats
-import superfreeze.tool.android.backend.getPendingFreezeInfo
 import superfreeze.tool.android.backend.getRecentAggregatedUsageStats
-import superfreeze.tool.android.database.FreezeMode
+import superfreeze.tool.android.backend.getSortByFreezeStateComparator
 import superfreeze.tool.android.userInterface.toast
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -57,7 +56,7 @@ import kotlin.collections.ArrayList
 /**
  * This class is responsible for viewing the list of installed apps.
  */
-internal class AppsListAdapter internal constructor(
+class AppsListAdapter internal constructor(
 	internal val mainActivity: MainActivity,
 	internal var sortModeIndex: Int
 ) : RecyclerView.Adapter<AbstractViewHolder>() {
@@ -269,26 +268,7 @@ internal class AppsListAdapter internal constructor(
 		}
 
 		// 1: Sort by freeze state
-		1 -> compareBy {
-			when (it.freezeMode) {
-				FreezeMode.ALWAYS -> 1
-				FreezeMode.WHEN_INACTIVE -> when (getPendingFreezeInfo(
-					it.freezeMode,
-					it.applicationInfo,
-					usageStatsMap?.get(it.packageName),
-					mainActivity
-				)) {
-					R.string.frozen -> 2
-					R.string.used_recently_and_frozen -> 3
-					R.string.used_recently -> 4
-					R.string.fdroid_app_not_pending_freeze -> 5
-					R.string.pending_freeze -> 6
-					else -> throw IllegalStateException()
-				}
-				FreezeMode.NEVER -> 7
-			}
-		}
-
+		1 -> getSortByFreezeStateComparator(usageStatsMap, mainActivity)
 
 		// 2: Sort by last time used
 		2 -> {

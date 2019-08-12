@@ -39,7 +39,7 @@ import superfreeze.tool.android.database.getFreezeMode
 import superfreeze.tool.android.database.setFreezeMode
 import superfreeze.tool.android.userInterface.FreezeShortcutActivity
 
-internal abstract class AbstractListItem {
+abstract class AbstractListItem {
 	abstract fun loadNameAndIcon(viewHolder: ViewHolderApp)
 	abstract fun freeze(context: Context)
 	abstract fun isMatchingSearchPattern(): Boolean
@@ -50,7 +50,7 @@ internal abstract class AbstractListItem {
 	abstract val type: Int
 }
 
-internal class ListItemApp(override val packageName: String,
+class ListItemApp(override val packageName: String,
                            private val appsListAdapter: AppsListAdapter
 ) : AbstractListItem() {
 	fun deleteAppInfo() {

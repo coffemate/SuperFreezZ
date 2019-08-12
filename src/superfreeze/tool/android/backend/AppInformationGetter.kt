@@ -40,6 +40,9 @@ import superfreeze.tool.android.R
 import superfreeze.tool.android.database.*
 import superfreeze.tool.android.expectNonNull
 import superfreeze.tool.android.logErrorAndStackTrace
+import superfreeze.tool.android.userInterface.mainActivity.ListItemApp
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val TAG = "SF-AppInformationGetter"
@@ -50,13 +53,15 @@ private const val TAG = "SF-AppInformationGetter"
 internal fun getApplications(context: Context): List<PackageInfo> {
 	val preferences = getPrefs(context)
 	val shownSpecialApps = preferences.getStringSet("appslist_show_special", setOf())
-			?: setOf()
+		?: setOf()
 	val packageManager = context.packageManager
 
 	val intent = Intent("android.intent.action.MAIN")
 	intent.addCategory("android.intent.category.HOME")
-	val launcherApplication = packageManager.resolveActivity(intent,
-			PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
+	val launcherApplication = packageManager.resolveActivity(
+		intent,
+		PackageManager.MATCH_DEFAULT_ONLY
+	).activityInfo.packageName
 
 	val showLauncher = shownSpecialApps.contains("Launcher")
 	val showSuperFreezZ = shownSpecialApps.contains("SuperFreezZ")
@@ -85,11 +90,13 @@ internal fun getRecentAggregatedUsageStats(context: Context): Map<String, UsageS
 		//In Android versions older than LOLLIPOP there is no UsageStatsManager
 		return null
 	}
-	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+	val usageStatsManager =
+		context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
 	//Get all data starting with the whatever time the user specified in the settings ago
 	val preferences = getPrefs(context)
-	val numberOfDays = preferences.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
+	val numberOfDays =
+		preferences.getString("autofreeze_delay", "7")?.toIntOrNull().expectNonNull(TAG) ?: 7
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * numberOfDays
 
@@ -101,7 +108,8 @@ internal fun getAllAggregatedUsageStats(context: Context): Map<String, UsageStat
 		//In Android versions older than LOLLIPOP there is no UsageStatsManager
 		return null
 	}
-	val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+	val usageStatsManager =
+		context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
 	val now = System.currentTimeMillis()
 	val startDate = now - 1000L * 60 * 60 * 24 * 356 * 2
@@ -113,21 +121,29 @@ internal fun isRunning(applicationInfo: ApplicationInfo): Boolean {
 	return !applicationInfo.flags.isFlagSet(ApplicationInfo.FLAG_STOPPED)
 }
 
-internal fun isPendingFreeze(packageInfo: PackageInfo, usageStats: UsageStats?, context: Context): Boolean {
-	return isPendingFreeze(
-		getFreezeMode(context, packageInfo.packageName),
-		packageInfo.applicationInfo,
-		usageStats,
-		context
-	)
-}
 
 internal fun isPendingFreeze(
-		freezeMode: FreezeMode,
-		applicationInfo: ApplicationInfo,
-		usageStats: UsageStats?,
-		context: Context
-) = getPendingFreezeInfo(freezeMode, applicationInfo, usageStats, context) == R.string.pending_freeze
+	packageInfo: PackageInfo,
+	usageStats: UsageStats?,
+	context: Context
+) = isPendingFreeze(
+	getFreezeMode(context, packageInfo.packageName),
+	packageInfo.applicationInfo,
+	usageStats,
+	context
+)
+
+internal fun isPendingFreeze(
+	freezeMode: FreezeMode,
+	applicationInfo: ApplicationInfo,
+	usageStats: UsageStats?,
+	context: Context
+) = getPendingFreezeInfo(
+	freezeMode,
+	applicationInfo,
+	usageStats,
+	context
+) == R.string.pending_freeze
 
 internal fun getPendingFreezeExplanation(
 	freezeMode: FreezeMode,
@@ -137,10 +153,10 @@ internal fun getPendingFreezeExplanation(
 ) = context.getString(getPendingFreezeInfo(freezeMode, applicationInfo, usageStats, context))
 
 internal fun getPendingFreezeInfo(
-		freezeMode: FreezeMode,
-		applicationInfo: ApplicationInfo,
-		usageStats: UsageStats?,
-		context: Context
+	freezeMode: FreezeMode,
+	applicationInfo: ApplicationInfo,
+	usageStats: UsageStats?,
+	context: Context
 ): Int {
 
 	val isRunning = isRunning(applicationInfo)
@@ -155,7 +171,8 @@ internal fun getPendingFreezeInfo(
 		FreezeMode.WHEN_INACTIVE -> {
 
 			if (fDroidPackages.contains(applicationInfo.packageName)
-				&& !getPrefs(context).getBoolean("autofreeze_freeze_fdroid", false)) {
+				&& !getPrefs(context).getBoolean("autofreeze_freeze_fdroid", false)
+			) {
 				R.string.fdroid_app_not_pending_freeze
 
 			} else if (unusedRecently(usageStats)) {
@@ -169,6 +186,31 @@ internal fun getPendingFreezeInfo(
 	}
 }
 
+fun getSortByFreezeStateComparator(
+	usageStatsMap: Map<String, UsageStats>?,
+	context: Context
+): Comparator<ListItemApp> {
+	return compareBy {
+		when (it.freezeMode) {
+
+			FreezeMode.ALWAYS -> 1
+
+			FreezeMode.WHEN_INACTIVE -> when (getPendingFreezeInfo(
+				it.freezeMode, it.applicationInfo, usageStatsMap?.get(it.packageName), context
+			)) {
+				R.string.frozen -> 2
+				R.string.used_recently_and_frozen -> 3
+				R.string.used_recently -> 4
+				R.string.fdroid_app_not_pending_freeze -> 5
+				R.string.pending_freeze -> 7
+				else -> throw IllegalStateException()
+			}
+
+			FreezeMode.NEVER -> 8
+		}
+	}
+}
+
 
 @SuppressLint("NewApi")
 private fun unusedRecently(usageStats: UsageStats?): Boolean {
@@ -177,7 +219,10 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 
 	return when {
 		Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP -> {
-			logErrorAndStackTrace("usageStats", "unusedRecently was called on an older Android version")
+			logErrorAndStackTrace(
+				"usageStats",
+				"unusedRecently was called on an older Android version"
+			)
 			false
 		}
 		usageStats == null -> true // There are no usagestats of this package -> it was not used recently
@@ -232,8 +277,8 @@ internal fun usageStatsPermissionGranted(context: Context): Boolean {
 	val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
 
 	val mode = appOpsManager.checkOpNoThrow(
-			AppOpsManager.OPSTR_GET_USAGE_STATS,
-			Process.myUid(),
+		AppOpsManager.OPSTR_GET_USAGE_STATS,
+		Process.myUid(),
 		context.packageName
 	)
 
