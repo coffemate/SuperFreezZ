@@ -80,6 +80,7 @@ class FreezeShortcutActivity : Activity() {
 
 		if (isRootAvailable()) {
 			freezeAppsUsingRoot(getAppsPendingFreeze(this), this)
+			finish()
 			return
 		}
 
