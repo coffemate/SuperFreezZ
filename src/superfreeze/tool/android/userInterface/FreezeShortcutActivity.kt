@@ -110,14 +110,12 @@ class FreezeShortcutActivity : Activity() {
 			return
 		}
 
-		val appsSuperfreezzLast =
-			if (appsPendingFreeze.contains(BuildConfig.APPLICATION_ID))
-				appsPendingFreeze.sortedBy { it == BuildConfig.APPLICATION_ID }
-			else
-				appsPendingFreeze
+		// Always freeze SuperFreezZ itself last:
+		if (appsPendingFreeze.contains(BuildConfig.APPLICATION_ID))
+			appsPendingFreeze.sortBy { it == BuildConfig.APPLICATION_ID }
 
 		// Now we can do the actual freezing work:
-		appsToBeFrozenIter = appsSuperfreezzLast.listIterator()
+		appsToBeFrozenIter = appsPendingFreeze.listIterator()
 	}
 
 	private fun promptForAccessibility() {

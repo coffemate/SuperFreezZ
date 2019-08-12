@@ -189,7 +189,7 @@ private fun unusedRecently(usageStats: UsageStats?): Boolean {
 /**
  * Queries the usage stats and returns those apps that are pending freeze.
  */
-internal fun getAppsPendingFreeze(context: Context): List<String> {
+internal fun getAppsPendingFreeze(context: Context): MutableList<String> {
 
 	val usageStatsMap = getRecentAggregatedUsageStats(context)
 
