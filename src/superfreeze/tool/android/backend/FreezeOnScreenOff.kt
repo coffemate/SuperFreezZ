@@ -99,7 +99,7 @@ private val screenReceiver by lazy {
 
 					enableScreenUntilFrozen(context)
 
-					context.startActivity(FreezeShortcutActivity.createShortcutIntent(context))
+					FreezeShortcutActivity.freezeAppsPendingFreeze(context)
 				}
 			}
 		}

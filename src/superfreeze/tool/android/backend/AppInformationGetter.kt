@@ -244,6 +244,11 @@ internal fun getAppsPendingFreeze(context: Context): MutableList<String> {
 		if (isPendingFreeze(app, usageStatsMap?.get(app.packageName), context))
 			result.add(app.packageName)
 	}
+
+	// Always freeze SuperFreezZ itself last:
+	if (result.contains(BuildConfig.APPLICATION_ID))
+		result.sortBy { it == BuildConfig.APPLICATION_ID }
+
 	return result
 }
 

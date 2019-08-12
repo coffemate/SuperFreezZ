@@ -29,10 +29,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import org.jetbrains.annotations.Contract
-import superfreeze.tool.android.BuildConfig
 import superfreeze.tool.android.R
 import superfreeze.tool.android.backend.FreezerService
+import superfreeze.tool.android.backend.freezeAppsUsingRoot
 import superfreeze.tool.android.backend.getAppsPendingFreeze
+import superfreeze.tool.android.backend.isRootAvailable
 import superfreeze.tool.android.database.neverCalled
 import superfreeze.tool.android.database.prefUseAccessibilityService
 
@@ -77,6 +78,11 @@ class FreezeShortcutActivity : Activity() {
 
 	private fun performFreeze() {
 
+		if (isRootAvailable()) {
+			freezeAppsUsingRoot(getAppsPendingFreeze(this), this)
+			return
+		}
+
 		// Sometimes the accessibility service is disabled for some reason.
 		// In this case, tell the user to re-enable it:
 		if (!FreezerService.isEnabled && prefUseAccessibilityService) {
@@ -109,10 +115,6 @@ class FreezeShortcutActivity : Activity() {
 			finish()
 			return
 		}
-
-		// Always freeze SuperFreezZ itself last:
-		if (appsPendingFreeze.contains(BuildConfig.APPLICATION_ID))
-			appsPendingFreeze.sortBy { it == BuildConfig.APPLICATION_ID }
 
 		// Now we can do the actual freezing work:
 		appsToBeFrozenIter = appsPendingFreeze.listIterator()
@@ -191,7 +193,7 @@ class FreezeShortcutActivity : Activity() {
 			return intent
 		}
 
-		fun createShortcutIntent(context: Context): Intent {
+		private fun createShortcutIntent(context: Context): Intent {
 			val shortcutIntent = Intent(context.applicationContext, FreezeShortcutActivity::class.java)
 			shortcutIntent.addFlags(
 				Intent.FLAG_ACTIVITY_CLEAR_TASK +
@@ -201,12 +203,23 @@ class FreezeShortcutActivity : Activity() {
 			return shortcutIntent
 		}
 
+		fun freezeAppsPendingFreeze(context: Context) {
+			if (isRootAvailable())
+				freezeAppsUsingRoot(getAppsPendingFreeze(context), context)
+			else
+				context.startActivity(createShortcutIntent(context))
+		}
+
 		/**
 		 * Freeze a package.
 		 * @param packageName The name of the package to freeze
 		 */
 		@Contract(pure = true)
 		fun freezeApp(packageName: String, context: Context) {
+			if (isRootAvailable()) {
+				freezeAppsUsingRoot(listOf(packageName), context)
+				return
+			}
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && FreezerService.isEnabled) {
 				// clickFreezeButtons will wait for the Force stop button to appear and then click Force stop, Ok, Back.
